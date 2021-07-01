@@ -1,0 +1,12 @@
+<?php
+
+class tran_cabecera
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
+}
+
+
+?>
