@@ -58,6 +58,24 @@ class db_funciones extends Conexion_pdo
             }
     }
 
+    public function insert_datos_2($consulta, $parametros)
+    {
+        try{
+                $resultado=$this->conexion_db->prepare($consulta);
+                $resultado->execute($parametros) ;
+
+                $resultado->closeCursor();
+
+            }
+            catch(Exception $e){
+                die('Error: '. $e->GetMessage());
+            }
+            finally
+            {
+                $base = -1;
+            }
+    }
+
     public function insert_historial($parametros)
     {
         try{

@@ -277,10 +277,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 									<div class="col-md-12">
 									<form method="POST" id="formulario" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 									<div class="row">
+                                    <?php
+										if($codigo > 0)
+										{
+                                            ?>
+                                    <div class='col-md-4'>
+                                        <div class='form-group'>
+                                            <label for='sucu'>&nbsp;</label>
+                                            <a href="#sucursales" > <label for="sucursales" class="btn btn-md btn-default" >
+                                        <i class="fa fa-home"></i>
+                                            Sucursales, Accesos y permisos <i class="fa fa-user"></i>
+                                        </label> </a>
+                                        </div>
+                                    </div>
+
 										<?php
+                                        }
 										//public function caja_texto($id,$titulo, $placeholder, $columnas, $tipo, $habilitado, $requerido, $valor ='')
 											$fgenerales->caja_texto('codigo', 'Código', 'Nuevo Código', '2', 'text','0',0,$codigo);
 										?>
+                                        
+                                       
+                                        
 										<input type="hidden" name="accion" id="accion" value="">
 										<input type="hidden" name="usuario_actual" id="usuario_actual" value="<?php echo $usuario; ?>">
 										
@@ -333,8 +351,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 										}
 									?>
 									
-									<div class="row">
-										<br >
+									<div class="form-row">
+                                    <br >
+                                       
+										
 									</div>
 									
 									</div>
@@ -344,6 +364,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 									</div>
 									</form>
 									
+                                    <?php
+										if($codigo > 0)
+										{
+                                            ?>
+<div class="accordion col-md-12" id="sucursales">
+                            <div class="card col-md-12">
+                                <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fa fa-home"></i> Sucursales o Agencias
+                                    </button>
+                                </h2>
+                                </div>
+
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                <a href="sis_sucursal_usuario.php?usua_codigo=<?php echo $codigo; ?>">
+                                    <label class="btn btn-link collapsed">
+                                    <i class="fa fa-home"></i>&nbsp;<i class="fa fa-edit"></i> Configurar
+                                    </label>
+                                </a>
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                </div>
+                                </div>
+                            </div>
+                            <div class="card col-md-12">
+                                <div class="card-header" id="headingTwo">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fa fa-user"></i> Accesos y Permisos
+                                    </button>
+                                    
+                                </h2>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                <div class="card-body">
+                                <a href="sis_acceso.php?usua_codigo=<?php echo $codigo; ?>">
+                                    <label class="btn btn-link collapsed">
+                                    <i class="fa fa-user"></i>&nbsp;<i class="fa fa-edit"></i> Configurar
+                                    </label>
+                                </a>
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                </div>
+                                </div>
+                            </div>
+
+                                            <?php
+                                        }
+											?>                
+                            
+
+                            </div>
+
+
 								</div>
 							</div>
 
