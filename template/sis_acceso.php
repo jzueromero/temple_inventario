@@ -16,20 +16,37 @@ $titulo_form = "Modulo Permisos";
 $descripcion_form = 'Configuracion de permisos para <strong>' . $_SESSION['nombre_usuario'] . '</strong>';
 $nombre_negocio = $objeto_datos->empresa;
 
+@$codigo_usuario = 0;
 
-$consulta = "select * from  form_formulario ff ";
-
-
+$consulta = "select '' as marca,  ff.form_codigo, form_nombre, ff.form_ruta, ff.form_acceso from  form_formulario ff";
 $parametros = array();
 $arreglo_datos = $objeto_datos->get_datos($consulta, $parametros);
+ 
+@$codigo_usuario = $_GET['usua_codigo'];
+
+$consulta_accesos = "select * from acce_acceso where acce_usua_codigo = :cod_usuario";
+$parametros_accesos = array(":cod_usuario" => $codigo_usuario);
+$arreglo_accesos = $objeto_datos->get_datos($consulta_accesos, $parametros_accesos);
+
+foreach($arreglo_accesos as $acceso)
+{
+    foreach ($arreglo_datos as &$dato) {
+        if($acceso['acce_form_codigo'] == $dato['form_codigo'])
+        {
+            $dato['marca'] = " checked ";
+        }
+    }
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') 
 {
+    $codigo_usuario = $_POST['hdd_codigo_usuario'];
 
     ///BORRAMOS LOS PERMISOS PREVIOS
         $consulta_delete = "DELETE FROM acce_acceso
                         WHERE acce_usua_codigo=:codigo;";
-			$parametros = array(":codigo"=>$_SESSION['usua_codigo']);
+			$parametros = array(":codigo"=>$codigo_usuario);
 
 			$objeto_datos = new db_funciones();
 
@@ -46,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             $consulta_insert = "INSERT INTO acce_acceso
                             (acce_usua_codigo, acce_form_codigo)
                             VALUES(:acce_usua_codigo, :acce_form_codigo);";
-            $parametros = array(":acce_usua_codigo"=>$_SESSION['usua_codigo'],
+            $parametros = array(":acce_usua_codigo"=>$codigo_usuario,
                                 ":acce_form_codigo"=>$seleccionado,  );
 
             $objeto_datos = new db_funciones();
@@ -104,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
                                 <div class="col-md-12">
                                     <div class="row">
                                     <div class="col-md-4 text-left">
-                                            
+                                            <input type="hidden" id="hdd_codigo_usuario" name="hdd_codigo_usuario" value="<?php echo $codigo_usuario;  ?>" />
                                                     <input type="submit" class="btn btn-default btn-block">Configurar <?php echo $modelo; ?> <submit/>
                                                 
                                         </div>
@@ -124,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
                                                     <div class="col-lg-6 col-md-6 col-6">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
-                                                                <input type="checkbox" aria-label="..."  name="seleccionados[]" value="<?php echo $item["form_codigo"]; ?>">
+                                                                <input type="checkbox" aria-label="..."  name="seleccionados[]" <?php echo $item["marca"]; ?> value="<?php echo $item["form_codigo"]; ?>">
                                                             </span>
                                                             <Label class="form-control" for=""><?php echo $item["form_nombre"]; ?></Label>
                                                         </div><!-- /input-group -->

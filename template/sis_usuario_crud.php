@@ -61,6 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $objeto_datos = new db_funciones();
         $arreglo_datos = $objeto_datos->get_datos($consulta, $parametros);
 
+        $consulta_accesos = "select form_nombre from acce_acceso 
+                            inner join form_formulario on form_codigo = acce_form_codigo
+                            where acce_usua_codigo = :cod_usuario";
+        $parametros_accesos = array(":cod_usuario" => $codigo);
+
+        $arreglo_accesos = $objeto_datos->get_datos($consulta_accesos, $parametros_accesos);   
+
         foreach ($arreglo_datos as $item) {
             @$codigo = $item['usua_codigo'];
             @$nombre = $item['usua_nombre'];
@@ -70,6 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             @$usuario_actual = $item['usua_usuario'];
             $descripcion_form = $descripcion_form . "<h4 ><spam class='text-primary'>Si desea conservar la misma contraseña,</spam><spam class='text-primary'>
 														&nbsp;deje en blanco las cajas de contraseña</spam></h4>";
+
+                                                         
 
         }
     }
@@ -405,7 +414,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <i class="fa fa-user"></i>&nbsp;<i class="fa fa-edit"></i> Configurar
                                     </label>
                                 </a>
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                <br>
+                                    <?php
+                                        foreach ($arreglo_accesos as $acceso)
+                                         {
+                                             ?>
+                                            <span class="label label-primary label-lg"><?php echo $acceso['form_nombre'] ?></span>
+                                            <br>
+                                            <?php
+                                        }
+                                    ?>
                                 </div>
                                 </div>
                             </div>
