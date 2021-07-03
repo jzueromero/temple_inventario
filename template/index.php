@@ -29,7 +29,8 @@
 		}
 		else
 		{
-			@$consulta = "SELECT usua_codigo, usua_nombre, usua_apellido, usua_usuario, usua_contra, usua_status, usua_fecha
+			@$consulta = "SELECT usua_codigo, usua_nombre, usua_apellido, usua_usuario,
+						 usua_contra, usua_status, usua_cajero, usua_fecha
 						  FROM usua_usuario 
 						  where usua_usuario  =  :usuario and usua_contra  = :contra and usua_status = 1 
 						  ;";
@@ -48,15 +49,62 @@
 			else
 			{
 
+				
+
 				date_default_timezone_set($fdb->get_zona_horaria());
 				foreach ($arreglo_datos as $item) 
 				{
 					$_SESSION['usua_codigo'] = $item['usua_codigo']; 
+					$_SESSION['es_cajero'] = $item['usua_cajero']; 
 					$_SESSION['nombre_usuario'] = $item['usua_nombre'].' '.$item['usua_apellido']; 
 					$_SESSION['token_temp_entrada'] = $fdb->generar_token_transaccion($item['usua_codigo'], $item['usua_nombre'].' '.$item['usua_apellido']);
 					$_SESSION['token_temp_salida'] = $fdb->generar_token_transaccion($item['usua_codigo'], $item['usua_nombre'].' '.$item['usua_apellido']);
 				}
+					$_SESSION['sucursal1'] = "no";
+					$_SESSION['sucursal2'] = "no";
+					$_SESSION['sucursal3'] = "no";
+					$_SESSION['sucursal4'] = "no";
+					$_SESSION['sucursal5'] = "no";
+
 				//$mostar_error = "Usuario es $usuario y contraseña $contra no coinciden.";
+				@$consulta_sucursal = "select sucu_sucursal_codigo codigo
+				from sucu_usuario su 
+				inner join sucu_sucursal ss  on ss.sucu_codigo = sucu_sucursal_codigo 
+				where  sucu_usuario_codigo = :codigo_usuario
+				order by ss.sucu_orden 
+				";
+				@$parametros_sucursal = array(":codigo_usuario" => $_SESSION['usua_codigo']);
+				
+				$arreglo_sucursal = $fdb->get_datos($consulta_sucursal,$parametros_sucursal);
+
+				foreach ($arreglo_sucursal as $sucursal) {
+					if($sucursal['codigo'] == 1)
+					{
+						$_SESSION['sucursal1'] = "si";
+					}
+
+					if($sucursal['codigo'] == 2)
+					{
+						$_SESSION['sucursal2'] = "si";
+					}
+
+					if($sucursal['codigo'] == 3)
+					{
+						$_SESSION['sucursal3'] = "si";
+					}
+
+					if($sucursal['codigo'] == 4)
+					{
+						$_SESSION['sucursal4'] = "si";
+					}
+
+					if($sucursal['codigo'] == 5)
+					{
+						$_SESSION['sucursal5'] = "si";
+					}
+
+				}
+
 				header('location:home.php');
 			}
 

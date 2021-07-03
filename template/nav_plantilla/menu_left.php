@@ -36,6 +36,11 @@
                     "clase" => "lnr lnr-user",
                     "titulo" => "Gestión Usuarios"),
 
+                    array( "sub"=>0,
+                    "archivo" => "sis_sucursal.php",
+                    "clase" => "lnr lnr-home",
+                    "titulo" => "Gestión Agencias - Sucursales"),
+
                     array( "sub"=>1,
                     "archivo" => "platilla.php",
                     "clase" => "lnr lnr-store",

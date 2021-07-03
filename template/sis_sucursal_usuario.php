@@ -4,34 +4,35 @@ if (!isset($_SESSION['usua_codigo'])) {
     header('location:index.php');
 }
 
-$formulario_acceso = "unidad";
+$formulario_acceso = "sucursal";
 
 
 require '../src_php/db/db_funciones.php';
 $objeto_datos = new db_funciones();
 
 $modelo = 'Permisos';
-$nombre_form = "sis_acceso";
-$titulo_form = "Modulo Permisos";
-$descripcion_form = 'Configuracion de permisos para <strong>' . $_GET['nombre_completo'] . '</strong>';
+$nombre_form = "sis_sucursal_usuario";
+$titulo_form = "Modulo Sucursal Agencias";
+$descripcion_form = 'Configuracion de sucursales para <strong>' . $_GET['nombre_completo'] . '</strong>';
 $nombre_negocio = $objeto_datos->empresa;
 
 @$codigo_usuario = 0;
 
-$consulta = "select '' as marca,  ff.form_codigo, form_nombre, ff.form_ruta, ff.form_acceso from  form_formulario ff";
+$consulta = "select '' marca, ss.sucu_codigo sscodigo, ss.sucu_nombre ssnombre from sucu_sucursal ss ";
 $parametros = array();
 $arreglo_datos = $objeto_datos->get_datos($consulta, $parametros);
  
 @$codigo_usuario = $_GET['usua_codigo'];
 
-$consulta_accesos = "select * from acce_acceso where acce_usua_codigo = :cod_usuario";
+$consulta_accesos = "select * from sucu_usuario where sucu_usuario_codigo = :cod_usuario";
+
 $parametros_accesos = array(":cod_usuario" => $codigo_usuario);
 $arreglo_accesos = $objeto_datos->get_datos($consulta_accesos, $parametros_accesos);
 
 foreach($arreglo_accesos as $acceso)
 {
     foreach ($arreglo_datos as &$dato) {
-        if($acceso['acce_form_codigo'] == $dato['form_codigo'])
+        if($acceso['sucu_sucursal_codigo'] == $dato['sscodigo'])
         {
             $dato['marca'] = " checked ";
         }
@@ -44,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     $codigo_usuario = $_POST['hdd_codigo_usuario'];
 
     ///BORRAMOS LOS PERMISOS PREVIOS
-        $consulta_delete = "DELETE FROM acce_acceso
-                        WHERE acce_usua_codigo=:codigo;";
+        $consulta_delete = "DELETE FROM sucu_usuario
+                        WHERE sucu_usuario_codigo=:codigo;";
 			$parametros = array(":codigo"=>$codigo_usuario);
 
 			$objeto_datos = new db_funciones();
@@ -60,11 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
         if($seleccionado != 0 )
         {
-            $consulta_insert = "INSERT INTO acce_acceso
-                            (acce_usua_codigo, acce_form_codigo)
-                            VALUES(:acce_usua_codigo, :acce_form_codigo);";
-            $parametros = array(":acce_usua_codigo"=>$codigo_usuario,
-                                ":acce_form_codigo"=>$seleccionado,  );
+            $consulta_insert = "INSERT INTO sucu_usuario
+                            (sucu_usuario_codigo, sucu_sucursal_codigo)
+                            VALUES(:sucu_usuario_codigo, :sucu_sucursal_codigo);";
+
+            $parametros = array(":sucu_usuario_codigo"=>$codigo_usuario,
+                                ":sucu_sucursal_codigo"=>$seleccionado,  );
 
             $objeto_datos = new db_funciones();
 
@@ -118,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
                             <p class="panel-subtitle"><?php echo $descripcion_form; ?></p>
                         </div>
                         <div class="panel-body no-padding">
-                            <form method="POST" action="sis_acceso.php">
+                            <form method="POST" action="sis_sucursal_usuario.php">
                                 <div class="col-md-12">
                                     <div class="row">
                                     <div class="col-md-4 text-left">
@@ -142,9 +144,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
                                                     <div class="col-lg-6 col-md-6 col-6">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">
-                                                                <input type="checkbox" aria-label="..."  name="seleccionados[]" <?php echo $item["marca"]; ?> value="<?php echo $item["form_codigo"]; ?>">
+                                                                <input type="checkbox" aria-label="..."  name="seleccionados[]" <?php echo $item["marca"]; ?> value="<?php echo $item["sscodigo"]; ?>">
                                                             </span>
-                                                            <Label class="form-control" for=""><?php echo $item["form_nombre"]; ?></Label>
+                                                            <Label class="form-control" for=""><?php echo $item["ssnombre"]; ?></Label>
                                                         </div><!-- /input-group -->
                                                     </div><!-- /.col-lg-6 -->
 

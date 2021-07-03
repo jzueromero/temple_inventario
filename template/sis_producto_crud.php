@@ -268,7 +268,7 @@ var campos = ["nombre", "barra"];
 									<ul class="nav nav-tabs" id="myForm">
 									<li class="active"><a href="#one">General</a></li>
 									<li><a href="#two">Equivalencia</a></li>
-									<li><a href="#three">Vencimiento</a></li>
+									<li><a href="#three">Existencias - Stock</a></li>
 									</ul>
 
 									
@@ -302,7 +302,7 @@ var campos = ["nombre", "barra"];
 												<div class="row">
 													<?php
 														//public function caja_texto($id,$titulo, $placeholder, $columnas, $tipo, $habilitado, $requerido, $valor ='')
-														$fgenerales->caja_texto('existencia', 'Existencia', '0', '3', 'text','1','1',$existencia);
+														//$fgenerales->caja_texto('existencia', 'Existencia', '0', '3', 'text','1','1',$existencia);
 														$fgenerales->caja_texto('unidad', 'Unidad', 'Unidad, caja, litro, etc', '3', 'text','1','1',$unidad);
 														$fgenerales->caja_texto('precio', 'Precio venta', '0', '3', 'text','1','1',$precio);
 													?>
@@ -338,7 +338,12 @@ var campos = ["nombre", "barra"];
 										</div>
 										<div class="tab-pane" id="two">
 										<div class="row">
+										<?php
+										if($codigo > 0)
+													{
+														?>
 										<a href="sis_equivalencia.php?equivalencia=0&codigo_producto=<?php echo $codigo;?>"><label class="btn btn-primary bnt-block">Nueva Equivalencia</button></a>
+										<?php } ?>
 											<table class="table table-hover">
 												<thead>
 													<tr>
@@ -382,7 +387,23 @@ var campos = ["nombre", "barra"];
 										</div>
 										</div>
 										<div class="tab-pane" id="three">
-										<button type="submit" class="btn btn-success">Submit</button>
+										<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Sucursal - Agencia</th>
+												<th>Existencias</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td></td>
+												<td>Total</td>
+												<td>Jobs</td>
+											</tr>
+											
+										</tbody>
+									</table>
 										</div>    
 									</div>
 								

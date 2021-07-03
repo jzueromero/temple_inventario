@@ -43,6 +43,7 @@ JAVASCRIPT validacion
 @$nombre = "";
 @$apellido = "";
 @$usuario = "";
+@$cajero = 0;
 @$estado = "";
 @$contra = "";
 @$contra2 = "";
@@ -66,7 +67,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             where acce_usua_codigo = :cod_usuario";
         $parametros_accesos = array(":cod_usuario" => $codigo);
 
-        $arreglo_accesos = $objeto_datos->get_datos($consulta_accesos, $parametros_accesos);   
+        $arreglo_accesos = $objeto_datos->get_datos($consulta_accesos, $parametros_accesos);
+        
+        $consulta_sucursales = "select sucu_nombre from sucu_sucursal ss 
+                    inner join sucu_usuario su on su.sucu_sucursal_codigo = ss.sucu_codigo 
+                    where su.sucu_usuario_codigo = :cod_usuario";
+        $parametros_sucur = array(":cod_usuario" => $codigo);
+
+        $arreglo_sucu = $objeto_datos->get_datos($consulta_sucursales, $parametros_sucur);
+
+
 
         foreach ($arreglo_datos as $item) {
             @$codigo = $item['usua_codigo'];
@@ -74,11 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             @$apellido = $item['usua_apellido'];
             @$usuario = $item['usua_usuario'];
             @$estado = $item['usua_status'];
+            @$cajero = $item['usua_cajero'];
             @$usuario_actual = $item['usua_usuario'];
             $descripcion_form = $descripcion_form . "<h4 ><spam class='text-primary'>Si desea conservar la misma contraseña,</spam><spam class='text-primary'>
-														&nbsp;deje en blanco las cajas de contraseña</spam></h4>";
-
-                                                         
+														&nbsp;deje en blanco las cajas de contraseña</spam></h4>";                                                        
 
         }
     }
@@ -91,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         @$apellido = $_POST["apellido"];
         @$usuario = $_POST["usuario"];
         @$estado = $_POST["estado"];
+        @$cajero = $_POST['cajero'];
         @$contra = $_POST["contra"];
         @$contra2 = $_POST["contra2"];
         @$usuario_actual = $_POST["usuario_actual"];
@@ -126,13 +136,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 } else {
 
                     $consulta = "INSERT INTO usua_usuario
-					(usua_nombre, usua_apellido, usua_usuario, usua_contra, usua_status, usua_fecha)
-					VALUES(:usua_nombre, :usua_apellido, :usua_usuario, :usua_contra, :usua_status, CURRENT_TIMESTAMP);";
+					(usua_nombre, usua_apellido, usua_usuario, usua_contra, usua_status, usua_cajero usua_fecha)
+					VALUES(:usua_nombre, :usua_apellido, :usua_usuario, :usua_contra, :usua_status, :usua_cajero, CURRENT_TIMESTAMP);";
                     $parametros = array(":usua_nombre" => $nombre,
                         ":usua_apellido" => $apellido,
                         ":usua_usuario" => $usuario,
                         ":usua_contra" => sha1($contra),
                         ":usua_status" => $estado,
+                        ":usua_cajero" => $cajero,
                     );
 
                     @$parametros_historial = array(":tabla" => 'usuario',
@@ -164,13 +175,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                      {
                         $consulta = "UPDATE usua_usuario
 									SET usua_nombre=:usua_nombre, usua_apellido=:usua_apellido, usua_usuario=:usua_usuario, usua_contra=:usua_contra,
-									usua_status=:usua_status, usua_fecha=CURRENT_TIMESTAMP
+									usua_status=:usua_status, usua_cajero=:usua_cajero, usua_fecha=CURRENT_TIMESTAMP
 									WHERE usua_codigo=:codigo;";
                         $parametros = array(":usua_nombre" => $nombre,
                             ":usua_apellido" => $apellido,
                             ":usua_usuario" => $usuario,
                             ":usua_contra" => sha1($contra),
                             ":usua_status" => $estado,
+                            ":usua_cajero" => $cajero,
                             ":codigo" => $codigo,
                         );
                         $objeto_datos = new db_funciones();
@@ -186,12 +198,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 else {
                     $consulta = "UPDATE usua_usuario
 									SET usua_nombre=:usua_nombre, usua_apellido=:usua_apellido, usua_usuario=:usua_usuario,
-									usua_status=:usua_status, usua_fecha=CURRENT_TIMESTAMP
+									usua_status=:usua_status, usua_cajero=:usua_cajero, usua_fecha=CURRENT_TIMESTAMP
 									WHERE usua_codigo=:codigo;";
                     $parametros = array(":usua_nombre" => $nombre,
                         ":usua_apellido" => $apellido,
                         ":usua_usuario" => $usuario,
                         ":usua_status" => $estado,
+                        ":usua_cajero" => $cajero,
                         ":codigo" => $codigo,
                     );
                     $objeto_datos = new db_funciones();
@@ -332,6 +345,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 										?>
 
 									</div>
+                                    <div class="row">
+										<?php
+											$lista_tipos = array(
+												array("v"=>"0", "t"=>"Normal"),
+												array("v"=>"1", "t"=>"Cajero")
+											);
+											$fgenerales->lista_valores('cajero','Es Cajero', '4', $lista_tipos, $cajero);
+										?>
+
+									</div>
 									<div class="row">
 									<?php
 											$fgenerales->caja_texto('contra', 'Contraseña', 'Escriba su nueva contraseña', '4', 'password','1','1','');
@@ -377,11 +400,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 										if($codigo > 0)
 										{
                                             ?>
-<div class="accordion col-md-12" id="sucursales">
+                    <div class="accordion col-md-12" id="sucursales">
                             <div class="card col-md-12">
                                 <div class="card-header" id="headingOne">
                                 <h2 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     <i class="fa fa-home"></i> Sucursales o Agencias
                                     </button>
                                 </h2>
@@ -389,19 +412,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                                 <div class="card-body">
-                                <a href="sis_sucursal_usuario.php?usua_codigo=<?php echo $codigo; ?>">
+                                
+                                    <!-- Detalle sucursales -->
+                                    <div class="panel panel-default">
+                                    <!-- Default panel contents -->
+                                    <!-- List group -->
+                                    <ul class="list-group">
+                                    <li class="list-group-item">
+                                    <a href="sis_sucursal_usuario.php?usua_codigo=<?php echo $codigo."&nombre_completo=$nombre $apellido"; ?>">
                                     <label class="btn btn-link collapsed">
                                     <i class="fa fa-home"></i>&nbsp;<i class="fa fa-edit"></i> Configurar
                                     </label>
                                 </a>
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                    </li>
+                                    <?php
+                                        foreach ($arreglo_sucu as $acceso)
+                                         {
+                                             ?>
+                                            <li class="list-group-item"><?php echo $acceso['sucu_nombre'] ?></li>
+                                            <?php
+                                        }
+                                    ?>
+                                    </ul>
+                                </div>
+
+                                    <!-- detalle sucrusales -->
                                 </div>
                                 </div>
                             </div>
                             <div class="card col-md-12">
                                 <div class="card-header" id="headingTwo">
                                 <h2 class="mb-0">
-                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     <i class="fa fa-user"></i> Accesos y Permisos
                                     </button>
                                     
@@ -409,21 +451,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
                                 <div class="card-body">
-                                <a href="sis_acceso.php?usua_codigo=<?php echo $codigo; ?>">
-                                    <label class="btn btn-link collapsed">
-                                    <i class="fa fa-user"></i>&nbsp;<i class="fa fa-edit"></i> Configurar
-                                    </label>
-                                </a>
+                                
                                 <br>
+                                <div class="panel panel-default">
+                                    <!-- Default panel contents -->
+                                    <!-- List group -->
+                                    <ul class="list-group">
+                                    <li class="list-group-item">
+                                    <a href="sis_acceso.php?usua_codigo=<?php echo $codigo."&nombre_completo=$nombre $apellido"; ?>">
+                                        <label class="btn btn-link collapsed">
+                                        <i class="fa fa-user"></i>&nbsp;<i class="fa fa-edit"></i> Configurar
+                                        </label>
+                                    </a>
+                                    </li>
                                     <?php
                                         foreach ($arreglo_accesos as $acceso)
                                          {
                                              ?>
-                                            <span class="label label-primary label-lg"><?php echo $acceso['form_nombre'] ?></span>
-                                            <br>
+                                            <li class="list-group-item"><?php echo $acceso['form_nombre'] ?></li>
                                             <?php
                                         }
                                     ?>
+                                    </ul>
+                                </div>
                                 </div>
                                 </div>
                             </div>
