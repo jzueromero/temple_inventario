@@ -1,9 +1,17 @@
 <?php
-
-echo $_SESSION['sucursal1'].'<hr>';
-echo $_SESSION['sucursal2'].'<hr>';
-echo $_SESSION['sucursal3'].'<hr>';
-echo $_SESSION['sucursal4'].'<hr>';
-echo $_SESSION['sucursal5'].'<hr>';
+session_start();
 
 ?>
+<html>
+<body>
+<?php
+
+for ($i=1; $i <= 5 ; $i++) { 
+    echo "Ant: "."$"."h$i"." Actual: $"."S$i -";
+
+    echo "<hr ><label>". $_SESSION['token_temp_entrada']."</label><hr >";
+ }
+
+?>
+</body>
+</html>

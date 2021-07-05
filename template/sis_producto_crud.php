@@ -35,6 +35,12 @@
 	@$laboratorio = "";
 	@$proveedor = "";
 
+	$existencia1= 0;
+	$existencia2= 0;
+	$existencia3= 0;
+	$existencia4= 0;
+	$existencia5= 0;
+
 
 	@$codigo = 0;
 	
@@ -45,14 +51,15 @@
 		$consulta = "SELECT prod_codigo codigo, prod_codigo_barra barra, prod_nombre nombre, prod_descripcion descripcion,
                         prod_existencia existencia, prod_unidad unidad, prod_costo_compra costo_compra, prod_costo_agregado flete,
                         prod_costo_total costo_total, prod_precio precio,prod_cod_laboratorio laboratorio, prod_cod_proveedor proveedor,
-                        prod_fecha fecha
+                        prod_fecha fecha, prod_existencia1 existencia1, prod_existencia2 existencia2,
+						prod_existencia3 existencia3, prod_existencia4 existencia4, prod_existencia5 existencia5
                     FROM prod_producto
                     where prod_codigo =".$codigo;
 		$parametros = array();
 		$arreglo_datos = $objeto_datos->get_datos($consulta,$parametros);
 
 		$consulta_equi = "SELECT equi_codigo codigo, equi_nombre nombre, equi_codigo_producto codigo_producto, 
-							equi_cantidad cantidad, equi_costo costo, equi_costo_extra costo_extra, equi_precio precio,
+							equi_cantidad cantidad, equi_costo costo, equi_costo_extra costo_extra, equi_costo_total costo_total, equi_precio precio,
 							 equi_fecha fecha
 							FROM equi_equivalencia
 							where equi_codigo_producto = :codigo
@@ -75,6 +82,27 @@
             @$precio = $item['precio'];
             @$laboratorio = $item['laboratorio'];
             @$proveedor = $item['proveedor']; 
+
+			if(SS1 == "si")
+			{
+				$existencia1 =  $item['existencia1']; 
+			}
+			if(SS2 == "si")
+			{
+				$existencia2  = $item['existencia2']; 
+			}
+			if(SS3 == "si")
+			{
+				$existencia3 = $item['existencia3']; 
+			}
+			if(SS4 == "si")
+			{
+				$existencia4 = $item['existencia4']; 
+			}
+			if(SS5 == "si")
+			{
+				$existencia5 = $item['existencia5']; 
+			}
 		}
 
 	}
@@ -185,8 +213,33 @@
             ":usuario" => $_SESSION['nombre_usuario'],
             ":cod_usuario" => $_SESSION['usua_codigo']);
 
+			
+			//actualiza precios
+			$consulta_equi = "SELECT equi_codigo codigo, equi_cantidad cantidad
+							FROM equi_equivalencia
+							where equi_codigo_producto = :codigo; ";
+		$parametros_equi = array(":codigo"=>$codigo);							 
+
+		$arreglo_equivalencias = $objeto_datos->get_datos($consulta_equi, $parametros_equi);
+
+		foreach ($arreglo_equivalencias as $equi) {
+			$consulta_e = "UPDATE equi_equivalencia
+						SET 
+						equi_costo= ".$equi['cantidad'] * $costo_compra .",
+					    equi_costo_extra= ".$equi['cantidad'] * $flete .",
+					    equi_costo_total=".$equi['cantidad'] * $costo_total ."
+						WHERE equi_codigo=".$equi['codigo']."; ";
+			$objeto_datos->insert_datos_2($consulta_e, array());
+
+		}
+
+			//actualiza precios
+			
+
+			//actualiza producto
             $objeto_datos->insert_historial($parametros_historial);
 			$arreglo_datos = $objeto_datos->insert_datos($consulta, $parametros, $form_donde_regresar);
+			//actualiza producto
 			return;
 		}
 		//editar
@@ -350,11 +403,24 @@ var campos = ["nombre", "barra"];
 														<th></th>
 														<th>Equivalencia</th>
 														<th>Unidades</th>
+														<th>Costo</th>
+														<th>Flete</th>
+														<th>Costo Total</th>
 														<th>Precio</th>
 														<th>Editar</th>
 													</tr>
 												</thead>
 												<tbody>
+												<tr>
+														<td></td>
+														<td><?php echo $unidad; ?></td>
+														<td>1</td>
+														<td><?php echo "$".$costo_compra; ?></td>
+														<td><?php echo "$".$flete; ?></td>
+														<td><?php echo "$".$costo_total; ?></td>
+														<td><?php echo "$".$precio; ?></td>
+														<td></td>
+												</tr>
 														<?php
 															foreach ($arreglo_equivalencias as $item_equi) {
 																?>
@@ -368,6 +434,15 @@ var campos = ["nombre", "barra"];
 																</td>
 																<td>
 																	<?php echo $item_equi["cantidad"]."  ".$unidad. ""; ?>
+																</td>
+																<td>
+																	<?php echo "$".$item_equi["costo"]; ?>
+																</td>
+																<td>
+																	<?php echo "$".$item_equi["costo_extra"]; ?>
+																</td>
+																<td>
+																	<?php echo "$".$item_equi["costo_total"]; ?>
 																</td>
 																<td>
 																	<?php echo "$".$item_equi["precio"]; ?>
@@ -390,18 +465,129 @@ var campos = ["nombre", "barra"];
 										<table class="table table-bordered">
 										<thead>
 											<tr>
-												<th>#</th>
 												<th>Sucursal - Agencia</th>
 												<th>Existencias</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td></td>
-												<td>Total</td>
-												<td>Jobs</td>
-											</tr>
 											
+											<?php
+												if(SS1 =="si" )
+												{
+													?>
+													<tr>
+													<td>
+													<?php
+														echo SS1_n;
+													?>
+													</td>
+													<td>
+													<?php
+													
+														echo $existencia1 ;
+													?>
+												</td>
+											</tr>
+													<?php
+												}
+											?>
+<?php
+												if(SS2 =="si" )
+												{
+													?>
+													<tr>
+													<td>
+													<?php
+														echo SS2_n;
+													?>
+													</td>
+													<td>
+													<?php
+														echo $existencia2 ;
+													?>
+												</td>
+											</tr>
+													<?php
+												}
+											?>
+<?php
+												if(SS3 =="si" )
+												{
+													?>
+													<tr>
+													<td>
+													<?php
+														echo SS3_n;
+													?>
+													</td>
+													<td>
+													<?php
+														echo $existencia3 ;
+													?>
+												</td>
+											</tr>
+													<?php
+												}
+											?>
+<?php
+												if(SS4 =="si" )
+												{
+													?>
+													<tr>
+													<td>
+													<?php
+														echo SS4_n;
+													?>
+													</td>
+													<td>
+													<?php
+														echo $existencia4 ;
+													?>
+												</td>
+											</tr>
+													<?php
+												}
+											?>
+											<?php
+												if(SS5 =="si" )
+												{
+													?>
+													<tr>
+													<td>
+													<?php
+														echo SS5_n;
+													?>
+													</td>
+													<td>
+													<?php
+														echo $existencia5 ;
+													?>
+												</td>
+											</tr>
+													<?php
+												}
+											?>
+
+											<tr>
+												<td>Total</td>
+												<td>
+												<?php
+													
+													echo $existencia1 + $existencia2 +$existencia3+$existencia4+$existencia5;
+												?>
+												
+												</td>
+											</tr>
+											<tr>
+											<td>
+											<a href="<?php echo "actualizar_existencia.php?codigo_producto=$codigo"; ?>" 
+											target="_self" rel="noopener noreferrer">
+											<button  type="button" class="btn btn-primary"><i class="fa fa-warning"></i>
+												&nbsp;&nbsp; &nbsp; Modificar  Existencias &nbsp;&nbsp;</button>
+											</a> 
+											</td>
+											<td></td>
+											</tr>
 										</tbody>
 									</table>
 										</div>    

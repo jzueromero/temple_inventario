@@ -10,6 +10,7 @@ class db_funciones extends Conexion_pdo
     }
 
     public $empresa = 'MiTiendita - SV';
+
     public $ruta = 'http://localhost:8007/temple_inventario/';
 
     public function get_datos($consulta, $parametros)
@@ -102,7 +103,9 @@ class db_funciones extends Conexion_pdo
         $nombre = trim($usuario);
         $fecha = new DateTime();
 
-        return $codigo."-.-".$nombre."-.-".$fecha->format("d-m-Y H:i:s");
+        $cod = random_int(0,999);
+
+        return $codigo."-.-$cod - ".$nombre."-.-".$fecha->format("d-m-Y H:i:s");
     }
 
     public function get_zona_horaria()
@@ -112,5 +115,18 @@ class db_funciones extends Conexion_pdo
 
 
 }
+
+    @define('SS1', $_SESSION['sucursal1']);
+    @define('SS2', $_SESSION['sucursal2']);
+    @define('SS3', $_SESSION['sucursal3']);
+    @define('SS4', $_SESSION['sucursal4']);
+    @define('SS5', $_SESSION['sucursal5']);
+
+    @define('SS1_n', $_SESSION['sucursal1_nombre']);
+    @define('SS2_n', $_SESSION['sucursal2_nombre']);
+    @define('SS3_n', $_SESSION['sucursal3_nombre']);
+    @define('SS4_n', $_SESSION['sucursal4_nombre']);
+    @define('SS5_n', $_SESSION['sucursal5_nombre']);
+
 
 ?>

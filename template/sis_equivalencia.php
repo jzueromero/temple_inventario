@@ -89,6 +89,53 @@ if(!empty($fgenerales->mipost('accion')))
 	
 			@$historial_descripcion = "c:$codigo, n: $nombre, c: $costo, cx: $costo_extra, ct: $costo_total, p: $precio, cntdad: $cantidad";
 
+			if($_POST['actualizar_c'] == 1)
+			{
+				$costo_u = $costo / $cantidad;
+				$costo_extra_u = $costo_extra / $cantidad;
+				$costo_total_u = $costo_total / $cantidad;
+
+				//actualiza precios
+				$consulta_p_e = "UPDATE prod_producto
+									SET  prod_costo_compra=:prod_costo_compra, 
+									prod_costo_agregado=:prod_costo_agregado, 
+									prod_costo_total=:prod_costo_total
+								WHERE prod_codigo=:prod_codigo;";
+				$parametros_p_e = array(":prod_costo_compra"=>$costo_u,
+										":prod_costo_agregado"=>$costo_extra_u,
+										":prod_costo_total"=>$costo_total_u,
+										":prod_codigo"=>$codigo_producto,
+									);	
+				$objeto_datos->insert_datos_2($consulta_p_e,$parametros_p_e);
+				
+
+
+				   $consulta_equi = "SELECT equi_codigo codigo, equi_cantidad cantidad
+				FROM equi_equivalencia
+				where equi_codigo_producto = :codigo; ";
+				$parametros_equi = array(":codigo"=>$codigo_producto);							 
+
+				$arreglo_equivalencias = $objeto_datos->get_datos($consulta_equi, $parametros_equi);
+
+
+
+				foreach ($arreglo_equivalencias as $equi) {
+					if($equi['codigo'] != $codigo)
+					{
+				$consulta_e = "UPDATE equi_equivalencia
+						SET 
+						equi_costo= ". $equi['cantidad'] * $costo_u .",
+						equi_costo_extra= ".$equi['cantidad'] * $costo_extra_u .",
+						equi_costo_total=".$equi['cantidad'] * $costo_total_u ."
+						WHERE equi_codigo=".$equi['codigo']."; ";
+				$objeto_datos->insert_datos_2($consulta_e, array());
+				}
+			}
+				//actualiza precios
+			}
+
+
+
 			//guardar
 		@$accion = $fgenerales->mipost('accion');
 
@@ -117,6 +164,7 @@ if(!empty($fgenerales->mipost('accion')))
 						":cod_usuario" => $_SESSION['usua_codigo']);
 				$objeto_datos->insert_historial($parametros_historial);
 
+				///Guarda la equivalencia nueva					
 				$arreglo_datos = $objeto_datos->insert_datos($consulta, $parametros, $form_donde_regresar.$codigo_producto);
 				echo $consulta;
 				//return;
@@ -127,7 +175,7 @@ if(!empty($fgenerales->mipost('accion')))
 			$consulta = "UPDATE equi_equivalencia
 						SET equi_nombre=:equi_nombre,
 						 equi_cantidad=:equi_cantidad, 
-						equi_costo=:equi_costo, equi_costo_extra=:equi_costo, 
+						equi_costo=:equi_costo, equi_costo_extra=:equi_costo_extra, 
 						equi_costo_total=:equi_costo_total, equi_precio=:equi_precio, equi_fecha=CURRENT_TIMESTAMP
 						WHERE 
 						equi_codigo=:equi_codigo
@@ -265,6 +313,11 @@ require 'nav_plantilla/menu_left.php';
 									<div class="row">
 									<?php
 										@$fgenerales->caja_texto('precio', 'precio', 'precio', '3', 'text','1','1',$precio);
+										$lista_estados = array(
+											array("v"=>"0", "t"=>"No actualizar Costo"),
+											array("v"=>"1", "t"=>"Actualizar Costo")
+										);
+										$fgenerales->lista_valores('actualizar_c','Modificar Costo', '4', $lista_estados, "0");
 									?>
 									</div>
 									<div class="form-row">

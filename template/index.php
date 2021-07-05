@@ -66,8 +66,14 @@
 					$_SESSION['sucursal4'] = "no";
 					$_SESSION['sucursal5'] = "no";
 
+					$_SESSION['sucursal1_nombre'] = "no";
+					$_SESSION['sucursal2_nombre'] = "no";
+					$_SESSION['sucursal3_nombre'] = "no";
+					$_SESSION['sucursal4_nombre'] = "no";
+					$_SESSION['sucursal5_nombre'] = "no";
+
 				//$mostar_error = "Usuario es $usuario y contraseña $contra no coinciden.";
-				@$consulta_sucursal = "select sucu_sucursal_codigo codigo
+				@$consulta_sucursal = "select sucu_sucursal_codigo codigo,  ss.sucu_nombre  nombre
 				from sucu_usuario su 
 				inner join sucu_sucursal ss  on ss.sucu_codigo = sucu_sucursal_codigo 
 				where  sucu_usuario_codigo = :codigo_usuario
@@ -81,26 +87,31 @@
 					if($sucursal['codigo'] == 1)
 					{
 						$_SESSION['sucursal1'] = "si";
+						$_SESSION['sucursal1_nombre'] =  $sucursal['nombre']; 
 					}
 
 					if($sucursal['codigo'] == 2)
 					{
 						$_SESSION['sucursal2'] = "si";
+						$_SESSION['sucursal2_nombre'] =  $sucursal['nombre']; 
 					}
 
 					if($sucursal['codigo'] == 3)
 					{
 						$_SESSION['sucursal3'] = "si";
+						$_SESSION['sucursal3_nombre'] =  $sucursal['nombre']; 
 					}
 
 					if($sucursal['codigo'] == 4)
 					{
 						$_SESSION['sucursal4'] = "si";
+						$_SESSION['sucursal4_nombre'] =  $sucursal['nombre']; 
 					}
 
 					if($sucursal['codigo'] == 5)
 					{
 						$_SESSION['sucursal5'] = "si";
+						$_SESSION['sucursal5_nombre'] =  $sucursal['nombre']; 
 					}
 
 				}

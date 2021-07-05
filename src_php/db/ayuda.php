@@ -154,7 +154,10 @@ foreach ($cadena as $key => $value) {
     
 }
 
-
+echo '<hr>';
+foreach ($cadena as $key => $value) {
+    echo "echo @$".$value. "; <br>";
+}
 //echo '@$'.$valor. ' = $_POST["'.$valor.'"];';
 //= $item['usua_codigo']; 
 
