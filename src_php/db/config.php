@@ -34,7 +34,7 @@ define('ZONE_TIME', "America/El_Salvador");
 */
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'temple_inventario_02');
+define('DB_NAME', 'temple_inventario_03');
 define('DB_USUARIO', 'root');
 define('DB_PASS', 'rootmysql123');
 define('DB_CHARSET', 'utf8mb4');
