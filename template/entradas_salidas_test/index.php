@@ -1,15 +1,20 @@
 <?php 
   session_start();
+  require_once '../../src_php/db/db_funciones.php';
+  
+  require_once '../../src_php/db/funciones_generales.php';
 
-  unset($_SESSION['consulta']);
+  $db_es = new db_funciones();
+  $busca_es = new funciones_generales(); 
 
+ 
  ?>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>Tabla dinamica</title>
+	<title>Ingresos y Salidas de Producto</title>
 	<link rel="stylesheet" type="text/css" href="librerias/bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="librerias/alertifyjs/css/alertify.css">
 	<link rel="stylesheet" type="text/css" href="librerias/alertifyjs/css/themes/default.css">
@@ -24,8 +29,98 @@
 <body>
 
 	<div class="container">
+
+  <div class="row">
+   
+    <div class="form-group col-sm-2  col-md-2">
+      <label for="sel1">Sucursal:</label>
+        <select class="form-control" id="sel1">
+        <?php
+            if(SS1 =="si" )
+            {
+              ?>
+              <option>
+              <?php
+                echo SS1_n;
+              ?>
+              </option>
+              <?php
+            }
+          ?>
+          <?php
+            if(SS2 =="si" )
+            {
+              ?>
+              <option>
+              <?php
+                echo SS2_n;
+              ?>
+              </option>
+              <?php
+            }
+          ?>
+          <?php
+            if(SS3 =="si" )
+            {
+              ?>
+              <option>
+              <?php
+                echo SS3_n;
+              ?>
+              </option>
+              <?php
+            }
+          ?>
+          <?php
+            if(SS4 =="si" )
+            {
+              ?>
+              <option>
+              <?php
+                echo SS4_n;
+              ?>
+              </option>
+              <?php
+            }
+          ?>
+          <?php
+            if(SS5 =="si" )
+            {
+              ?>
+              <option>
+              <?php
+                echo SS5_n;
+              ?>
+              </option>
+              <?php
+            }
+          ?>
+          
+
+        </select>
+    </div> 
+  
+
+  <div class="form-group col-sm-2 col-md-2">
+      <label for="sel_tipo_transaccion">Tipo de Transacción:</label>
+        <select class="form-control" id="sel_tipo_transaccion" >
+          <option data-valor="sin" >--Seleccione</option>
+          <option data-valor="0">Entrada</option>
+          <option data-valor="1">Salida</option>
+        </select>
+    </div> 
+
+    
+<!-- LISTA DE CONCEPTOS -->
+<div class="form-group col-sm-2 col-md-2" id="listaConceptos"></div> 
+<!-- LISTA DE  -->
+
+    </div>
     <div id="buscador"></div>
 		<div id="tabla"></div>
+
+
+
 	</div>
 
   <!-- Modal buscador producto -->
@@ -46,7 +141,8 @@
       <span class="input-group-btn">
         <button class="btn btn-default glyphicon glyphicon-search" type="button"></button>
       </span>
-      <input type="text" class="form-control" id="txt_buscar" placeholder="Buscar por codigo, nombre, descripcion, proveedor">
+      <input type="text" class="form-control" id="txt_buscar"
+       placeholder="Buscar por codigo, nombre, descripcion, proveedor">
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
         </div>
@@ -55,9 +151,6 @@
        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn_buscar">
-        Agregar
-        </button>
        
       </div>
     </div>
@@ -130,7 +223,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#tabla').load('componentes/tabla.php');
-    $('#buscador').load('componentes/buscador.php');
     $('#productos_encontrados').load('componentes/buscador_productos.php?palabra=');
 	});
 </script>
@@ -169,3 +261,11 @@
         
     });
   </script>
+  <script type="text/javascript">
+     $(document).ready(function(){
+        $('#sel_tipo_transaccion').on("change",function(){
+          var tipo = $("#sel_tipo_transaccion option:selected").attr('data-valor');
+          $('#listaConceptos').load('componentes/lista_conceptos.php?tipo='+tipo);
+        });
+    });
+    </script>
