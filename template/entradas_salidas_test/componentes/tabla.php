@@ -7,23 +7,19 @@
  ?>
 <div class="row">
 	<div class="col-sm-12">
-	<h2>Tabla dinamica facultad autodidacta</h2>
+	<h2>Ingresos y Salidas de Producto</h2>
 		<table class="table table-hover table-condensed table-bordered">
 		<caption>
-			<button class="btn btn-primary" data-toggle="modal" data-target="#modalNuevo">
-				Agregar nuevo 
-				<span class="glyphicon glyphicon-plus"></span>
-			</button>
-			<button class="btn btn-success" data-toggle="modal" data-target="#modalProducto">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#modalProducto">
 				Agregar Producto 
 				<span class="glyphicon glyphicon-plus"></span>
 			</button>
 		</caption>
 			<tr>
+				<td>Codigo</td>
 				<td>Nombre</td>
-				<td>Apellido</td>
-				<td>Email</td>
-				<td>Telefono</td>
+				<td>Unidad</td>
+				<td>Cantidad</td>
 				<td>Editar</td>
 				<td>Eliminar</td>
 			</tr>

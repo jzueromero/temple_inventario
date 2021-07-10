@@ -92,3 +92,21 @@ function eliminarDatos(id){
 			}
 		});
 }
+
+function CalcularValor(valor)
+{
+	var codigo_producto = $("#sel_equi"+valor+" option:selected").attr('data-producto');
+	var cantidad_equi =  $("#sel_equi"+valor+" option:selected").attr('data-cantidad');
+	var cantidad_digitada = $('#txt_cantidad'+valor).val();
+	$('#div'+valor).text('Numero de unidades: '+ (parseInt(cantidad_equi) * parseInt(cantidad_digitada)) );
+
+}
+
+function CalcularValor2(valor)
+{
+	var codigo_producto = $("#sel_equi"+valor+" option:selected").attr('data-producto');
+	var cantidad_equi =  $("#sel_equi"+valor+" option:selected").attr('data-cantidad');
+	var cantidad_digitada = $('#txt_cantidad'+valor).val();
+	$('#div'+valor).text('Numero de unidades: '+ (parseInt(cantidad_equi) * parseInt(cantidad_digitada)) );
+
+}

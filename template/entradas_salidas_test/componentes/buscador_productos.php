@@ -1,6 +1,16 @@
 <?php
-  require_once "../php/conexion.php";
-  $conexion= conexion();
+
+session_start();
+
+  require_once '../../../src_php/db/db_funciones.php';
+  
+  require_once '../../../src_php/db/funciones_generales.php';
+
+  $db_buscador = new db_funciones();
+  $busca_general = new funciones_generales(); 
+
+ 
+
 
  // echo $conexion."<hr>";
 
@@ -14,21 +24,24 @@
   }
 
 
-  $consulta = "select pp.prod_codigo, pp.prod_codigo_barra, 
+  $consulta_buscador = "select pp.prod_codigo, pp.prod_codigo_barra, 
                 pp.prod_nombre
                 from prod_producto pp
                 left join prov_proveedor pv on pv.prov_codigo = pp.prod_cod_proveedor 
                 left join labo_laboratorio ll on ll.labo_codigo = pp.prod_cod_laboratorio 
                 where 
-                pp.prod_codigo_barra like '%$palabra%'
+                pp.prod_codigo_barra like '%".$palabra."%'
                 or
-                pp.prod_nombre like '%$palabra%'
+                pp.prod_nombre like '%".$palabra."%'
                 or 
-                pv.prov_nombre like '%$palabra%'
+                pv.prov_nombre like '%".$palabra."%'
                 or 
-                ll.labo_nombre like '%$palabra%'";
+                ll.labo_nombre like '%".$palabra."%'
+                order by pp.prod_nombre
+                ";
 
-         
+  $parametros = array();
+  $arreglo_buscador = $db_buscador->get_datos($consulta_buscador, $parametros);       
 
 ?>
 <div class="row">
@@ -44,23 +57,76 @@
               <td>Eliminar</td> -->
             </thead>
         <?php
-            $resultado=mysqli_query($conexion,$consulta);
-            while($ver2=mysqli_fetch_row($resultado)){ 
+            
+           foreach ($arreglo_buscador as $pr) {
+            
               ?>
               <tr>
-                <td><?php echo $ver2[0]; ?></td>
-                <td><?php echo $ver2[1]; ?></td>
-                <td><?php echo $ver2[2]; ?></td>
                 <td>
-                  <button class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#modalEdicion" onclick="agregaform('<?php //echo $datos ?>')">
-                    
+                <input type="hidden" name="producto<?php echo $pr['prod_codigo']; ?>"
+                  id="producto<?php echo $pr['prod_codigo']; ?>" value="<?php echo $pr['prod_codigo']; ?>"  />
+                <?php echo $pr['prod_codigo_barra']; ?>
+              </td>
+                <td><?php echo $pr['prod_nombre']; ?></td>
+                
+
+                <td>
+
+                <?php
+                  $consulta_equi = "select 0 codigo, IF(pp.prod_unidad IS NULL or pp.prod_unidad = '', 
+                                    'Unidad', pp.prod_unidad) as unidad, 1 cantidad, pp.prod_precio precio
+                                    from prod_producto pp 
+                                    where pp.prod_codigo = ".$pr['prod_codigo']."
+                                    union all 
+                                    select ee.equi_codigo codigo, ee.equi_nombre unidad, ee.equi_cantidad cantidad, ee.equi_precio precio
+                                    from equi_equivalencia ee 
+                                    inner join prod_producto pp2 on pp2.prod_codigo = ee.equi_codigo_producto 
+                                    where 
+                                    ee.equi_codigo_producto  = ".$pr['prod_codigo'];
+                  
+                  $arreglo_equi = $db_buscador->get_datos($consulta_equi, array()); 
+                  ?>
+                  <select
+                  class="form-control"
+                  onchange="<?php echo "CalcularValor('".$pr['prod_codigo']."')"; ?>" name="sel_equi<?php echo $pr['prod_codigo']; ?>" id="sel_equi<?php echo $pr['prod_codigo']; ?>" >
+                  <?php
+                  foreach ($arreglo_equi as $equi) {
+                    ?>
+                        <option
+                        data-producto="<?php echo $pr['prod_codigo']; ?>"
+                        data-equi="<?php echo $equi['codigo']; ?>"
+                         data-precio="<?php echo $equi['precio']; ?>"
+                          data-unidad="<?php echo $equi['unidad']; ?>"
+                           data-cantidad="<?php echo $equi['cantidad']; ?>" >
+                          <?php echo $equi['unidad']; ?>
+                        </option>
+                    <?php
+                  }
+                ?>
+                  </select>
+
                   </button>
                 </td>
                 <td>
-                  <button class="btn btn-danger glyphicon glyphicon-remove" 
-                  onclick="preguntarSiNo('<?php echo $ver2[0]; ?>')">
+                <input type="text" class="form-control"
+                  value="1" onkeyup="CalcularValor2(<?php echo $pr['prod_codigo']; ?>)"
+                    name="txt_cantidad<?php echo $pr['prod_codigo']; ?>"
+                    id="txt_cantidad<?php echo $pr['prod_codigo']; ?>"
+                   placeholder="descr1" required="">
+                   <div id="<?php echo 'div'.$pr['prod_codigo']; ?>" ></div>
+                </td>
+                <!-- <td>
+                <input type="text" class="form-control"  readonly="" value="1"
+                name="txt_total<?php //echo $pr['prod_codigo']; ?>"
+                    id="txt_total<?php //echo $pr['prod_codigo']; ?>"
+                   placeholder="descr1" required="">
+                </td> -->
+                <td>
+                <button class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#modalEdicion" onclick="agregaform('<?php //echo $datos ?>')">
                     
-                  </button>
+                    <button class="btn btn-danger glyphicon glyphicon-remove" 
+                    onclick="preguntarSiNo('<?php echo $pr[0]; ?>')">
+                    </button>
                 </td>
               </tr>
               <?php
@@ -71,3 +137,5 @@
           </table>
         </div>
       </div>
+
+
