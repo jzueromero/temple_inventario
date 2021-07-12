@@ -14,14 +14,20 @@ session_start();
 $tipo = '';
 
 if (isset($_GET['tipo']) && !empty($_GET['tipo'])) {
-    $tipo = $_GET['tipo'];
+    $tipo = $_GET['tipo'] == "entrada" ? 0 : 1;
 } else {
     $tipo = -1;
 }
 
-$consulta_conceptos = "select * from conc_concepto where conc_tipo = $tipo order by conc_nombre; ";
+$consulta_conceptos = "SELECT 0 conc_codigo, '--Seleccione' conc_nombre, 'sin concepto' conc_tipo, 0 conc_estado
+                        UNION ALL
+                        SELECT conc_codigo, conc_nombre, conc_tipo, conc_estado
+                        FROM conc_concepto
+                        WHERE conc_tipo =".$tipo ;
 
 $arreglo_concepto = $db_concepto->get_datos($consulta_conceptos, array());
+
+
 
 ?>
 
@@ -30,7 +36,7 @@ $arreglo_concepto = $db_concepto->get_datos($consulta_conceptos, array());
     <?php
     foreach ($arreglo_concepto as $concepto) {
     ?>
-        <option data-producto="<?php echo $concepto['conc_codigo']; ?>" >
+        <option data-valor="<?php echo $concepto['conc_codigo']; ?>" >
             <?php echo $concepto['conc_nombre']; ?>
         </option>
     <?php

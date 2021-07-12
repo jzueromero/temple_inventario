@@ -7,7 +7,40 @@
   $db_es = new db_funciones();
   $busca_es = new funciones_generales(); 
 
+  $fecha = date('d-m-Y');
  
+  /*
+    $_SESSION['token_temp_entrada'] = $fdb->generar_token_transaccion($item['usua_codigo'], $item['usua_nombre'].' '.$item['usua_apellido']);
+    $_SESSION['token_temp_salida'] = $fdb->generar_token_transaccion($item['usua_codigo'], $item['usua_nombre'].' '.$item['usua_apellido']);
+  
+  */
+  @$token = $_SESSION['token_temp_entrada'];
+
+  $db_token = new db_funciones();
+  $general_token = new funciones_generales(); 
+
+  $consulta_token = "select 
+                IF(tt.tran_codigo IS NULL or tt.tran_codigo = '', 
+                            '0', tt.tran_codigo) as codigo
+              from tran_transaccion tt
+              where tt.tran_codigo_temporal  = '".$token ."'";
+
+  $codigo_tran = $db_token->get_dato_escalar($consulta_token, array());
+
+  if(trim($codigo_tran) == "")
+  {
+    $sql_crear_tran = "INSERT INTO tran_transaccion
+                    ( tran_codigo_temporal, tran_sucursal_codigo, tran_tipo, tran_estado, 
+                    tran_codigo_concepto, tran_nombre_concepto, tran_referencia, tran_comentario, tran_usuario, tran_fecha)
+                    VALUES(:token, 0,0,  'TEMPORAL', 0,'sin', 0, '',  ". $_SESSION['usua_codigo'] .", CURRENT_TIMESTAMP);
+                    ";
+                    $parametros_token = array(":token" => $token,);
+    
+    $crear = $db_token->insert_datos_2($sql_crear_tran, $parametros_token);                    
+    $codigo_tran = $db_token->get_dato_escalar($consulta_token,array());
+  }
+  
+  
  ?>
 
 <!DOCTYPE html>
@@ -31,15 +64,22 @@
 	<div class="container">
 
   <div class="row">
-   
+  <div class="form-group col-sm-1 col-md-1" >
+<label >#:</label>
+  <input type="text" name="txt_codigo_tran" id="txt_codigo_tran"
+   class="form-control input-lg" readonly="" value="<?php echo $codigo_tran; ?>" >
+</div> 
     <div class="form-group col-sm-2  col-md-2">
       <label for="sel1">Sucursal:</label>
-        <select class="form-control" id="sel1">
+        <select class="form-control" id="sel_sucursal">
+        <option data-valor="0" >
+          --Seleccione
+        </option>
         <?php
             if(SS1 =="si" )
             {
               ?>
-              <option>
+              <option data-valor="1">
               <?php
                 echo SS1_n;
               ?>
@@ -51,7 +91,7 @@
             if(SS2 =="si" )
             {
               ?>
-              <option>
+              <option data-valor="2">
               <?php
                 echo SS2_n;
               ?>
@@ -63,7 +103,7 @@
             if(SS3 =="si" )
             {
               ?>
-              <option>
+              <option data-valor="3">
               <?php
                 echo SS3_n;
               ?>
@@ -75,7 +115,7 @@
             if(SS4 =="si" )
             {
               ?>
-              <option>
+              <option data-valor="4">
               <?php
                 echo SS4_n;
               ?>
@@ -87,7 +127,7 @@
             if(SS5 =="si" )
             {
               ?>
-              <option>
+              <option data-valor="5">
               <?php
                 echo SS5_n;
               ?>
@@ -99,14 +139,14 @@
 
         </select>
     </div> 
-  
+ 
 
   <div class="form-group col-sm-2 col-md-2">
-      <label for="sel_tipo_transaccion">Tipo de Transacción:</label>
+      <label >Tipo de Transacción:</label>
         <select class="form-control" id="sel_tipo_transaccion" >
           <option data-valor="sin" >--Seleccione</option>
-          <option data-valor="0">Entrada</option>
-          <option data-valor="1">Salida</option>
+          <option data-valor="entrada">Entrada</option>
+          <option data-valor="salida">Salida</option>
         </select>
     </div> 
 
@@ -114,7 +154,36 @@
 <!-- LISTA DE CONCEPTOS -->
 <div class="form-group col-sm-2 col-md-2" id="listaConceptos"></div> 
 <!-- LISTA DE  -->
+<!-- COMENTARIO OPCIONAL -->
+<div class="form-group col-sm-3 col-md-3" >
+<label >Comentario:</label>
+  <input type="text" name="txt_comentario" id="txt_comentario"
+   class="form-control input-sm">
+</div> 
+<!-- COMENTARIO OPCIONAL -->
+<!-- FECHA DE PROCESO -->
+<div class="form-group col-sm-2 col-md-2" >
+<label >Fecha:</label>
+  <input type="text" name="txt_fecha" id="txt_fecha"
+   class="form-control input-lg" readonly="" value="<?php echo $fecha; ?>" >
+</div> 
+<!-- FECHA DE PROCESO -->
 
+    </div>
+    <div class="row">
+    <button class="btn btn-success" id="btn_procesar" >
+				Procesar Transaccion
+				<span class=""></span>
+			</button>
+
+			<button class="btn btn-default" >
+				Regresar 
+				<span class=""></span>
+			</button>
+			<button class="btn btn-danger" >
+				Borrar Transaccion 
+				<span class=""></span>
+			</button>
     </div>
     <div id="buscador"></div>
 		<div id="tabla"></div>
@@ -265,7 +334,64 @@
      $(document).ready(function(){
         $('#sel_tipo_transaccion').on("change",function(){
           var tipo = $("#sel_tipo_transaccion option:selected").attr('data-valor');
-          $('#listaConceptos').load('componentes/lista_conceptos.php?tipo='+tipo);
+          $('#listaConceptos').load('componentes/lista_conceptos.php?tipo='+ tipo);
         });
     });
     </script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#btn_procesar').click(function(){
+          var sucursal = $("#sel_sucursal option:selected").attr('data-valor');
+          var tipo = $("#sel_tipo_transaccion option:selected").attr('data-valor');
+          var concepto = $("#sel_concepto option:selected").attr('data-valor');
+
+          var ejecutar = true;
+          if(parseInt(sucursal) == 0)
+          {
+            alertify.error("Debe elegir una sucursal");
+            ejecutar = false;
+            return;
+          }
+          if(tipo == "sin")
+          {
+            alertify.error("Debe elegir un tipo Transaccion");
+            ejecutar = false;
+            return;
+          }
+          if(parseInt(concepto) == 0)
+          {
+            alertify.error("Debe elegir un concepto");
+            ejecutar = false;
+            return;
+          }
+
+
+          if(ejecutar == true)
+          {
+            alert('paso');
+          }
+
+        });
+    });
+</script>
+
+<script type="text/javascript">
+        
+      function NuevoProducto(codigo){
+
+            var transaccion_codigo=$('#txt_codigo_tran').val(); 
+            var producto_codigo=$('#'+codigo).val();
+            var producto_costo = $('#txt_costo_'+codigo).val();
+
+            var unidad_codigo =  $("#sel_equi"+codigo+" option:selected").attr('data-equi');
+            var unidad =  $("#sel_equi"+codigo+" option:selected").attr('data-unidad');
+            var unidad_precio =  $("#sel_equi"+codigo+" option:selected").attr('data-precio');
+            var unidad_cantidad=  $("#sel_equi"+codigo+" option:selected").attr('data-cantidad');
+
+            var tran_cantidad =$('#txt_cantidad'+codigo).val(); 
+          
+            CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad);
+          }
+        
+</script>

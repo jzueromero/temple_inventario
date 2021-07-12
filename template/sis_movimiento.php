@@ -33,17 +33,12 @@ $hasta = $_GET['hasta'];
 
 
 
-$consulta = "SELECT tran_codigo codigo, tran_tipo tipo, tran_estado estado,
-                 tran_codigo_concepto concepto,tran_nombre_concepto nombre_concepto,
-                 tran_codigo_cliente cod_cliente, tran_nombre_cliente nombre_cliente,
-                 tran_codigo_proveedor cod_proveedor, tran_nombre_proveedor nombre_proveedor,
-                 tran_actualizar_costo actualiza_costo,tran_referencia refencia,
-                 tran_cantidad_articulo cantidad_articulo, tran_recibido recibido,
-                 tran_cambio cambio, tran_total total, tran_usuario_inicia usuario_inia,
-                 tran_fecha fecha_inicia, tran_usuario_fin usuario_fin, tran_fecha_fin fecha_fin
+$consulta = "SELECT  tran_codigo codigo, tran_codigo_temporal temporal, tran_sucursal_codigo sucursal_codigo, 
+			tran_tipo tipo, tran_estado, tran_codigo_concepto, tran_nombre_concepto concepto, 
+			tran_referencia, tran_comentario, tran_usuario, tran_fecha
             FROM tran_transaccion
             where 
-            (tran_nombre_cliente like '%".$q."%' or tran_nombre_proveedor  like '%".$q."%' or tran_nombre_concepto like '%".$q."%')
+            ( tran_nombre_concepto like '%".$q."%')
             and
             DATE(tran_fecha) >= '".$desde."' and DATE(tran_fecha) <= '".$hasta."'
             order by tran_codigo;";
@@ -136,10 +131,9 @@ require 'nav_plantilla/menu_left.php';
 											<tr>
 												<th>#</th>
                                                 <th>Tipo</th>
-												<th>Origen/Destino</th>
+												<th>Sucursal</th>
 												<th>Concepto</th>
                                                 <th>Estado</th>
-                                                <th>Total</th>
                                                 <th>Opciones</th>
 											</tr>
 										</thead>
@@ -161,16 +155,36 @@ require 'nav_plantilla/menu_left.php';
 														</td>
                                                         <td>
 															<?php 
-                                                            $persona = $item["tipo"] == 0 ? "Cliente: ".$item["nombre_cliente"] :  "Proveedor: ".$item["nombre_proveedor"];
-                                                            echo  $persona; ?>
+                                                            $sucu = $item["sucursal_codigo"];
+															if($sucu == 2 )
+															{
+																echo SS2_n;
+															}
+															if($sucu == 3 )
+															{
+																echo SS3_n;
+															}
+															if($sucu == 4 )
+															{
+																echo SS4_n;
+															}
+															if($sucu == 5 )
+															{
+																echo SS5_n;
+															}
+															else
+															{
+																echo SS1_n;
+															}
+															?>
 														</td>
                                                         <td>
-															<?php echo $item["nombre_concepto"]; ?>
+															<?php echo $item["concepto"]; ?>
 														</td>
                                                         <td>
 															<?php
                                                             $estado = "";
-                                                            switch ($item["estado"]) {
+                                                            switch ($item["tran_estado"]) {
                                                                 case '1':
                                                                     $estado = "Procesado";
                                                                     break;
@@ -178,14 +192,12 @@ require 'nav_plantilla/menu_left.php';
                                                                     $estado = "Anulado";
                                                                     break;
                                                                 default:
-                                                                    $estado = "<h4><span class='label label-warning'>Borrador</span></h4>";
+                                                                    $estado = "<h4><span class='label label-warning'>Temporal</span></h4>";
                                                                     break;
                                                             }
                                                             echo $estado; ?>
 														</td>
-                                                        <td>
-															<?php echo "$ ".$item["total"]; ?>
-														</td>
+                                                        
                                                         <td>
 														<a href='<?php echo $nombre_form; ?>_crud.php?codigo=<?php echo $item["codigo"]; ?>'><i class="lnr lnr-cog"></i> <span>&nbsp;&nbsp;Configuración&nbsp;&nbsp;</span></a>
 														</td>

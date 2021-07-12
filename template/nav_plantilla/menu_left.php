@@ -108,13 +108,9 @@ else
                          "clase" => "lnr lnr-users",
                          "titulo" => "Historial Movimientos de Producto"),
 
-                      array( "archivo" => "sis_entrada.php",
+                      array( "archivo" => "home.php",
                      "clase" => "lnr lnr-cog",
-                     "titulo" => "Nueva Entrada Producto"),
-
-                        array( "archivo" => "sis_salida_producto.php?codigo_tran=0",
-                         "clase" => "lnr lnr-cog",
-                         "titulo" => "Nueva Salida Producto")
+                     "titulo" => "Nueva Transaccion Producto"),
 
                                                     
                      )

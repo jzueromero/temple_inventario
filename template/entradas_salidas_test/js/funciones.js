@@ -110,3 +110,30 @@ function CalcularValor2(valor)
 	$('#div'+valor).text('Numero de unidades: '+ (parseInt(cantidad_equi) * parseInt(cantidad_digitada)) );
 
 }
+
+function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad)
+{
+	cadena="transaccion_codigo=" + transaccion_codigo + 
+			"&producto_codigo=" + producto_codigo +
+			"&producto_costo=" + producto_costo +
+			"&unidad_codigo=" + unidad_codigo+
+			"&unidad=" + unidad +
+			"&unidad_precio=" + unidad_precio +
+			"&unidad_cantidad=" + unidad_cantidad +
+			"&tran_cantidad=" + tran_cantidad ;
+
+	$.ajax({
+	type:"POST",
+	url:"php/agregarDetalleTran.php",
+	data:cadena,
+	success:function(r){
+		if(r==1){
+			$('#tabla').load('componentes/tabla.php');
+			$('#buscador').load('componentes/buscador.php');
+			alertify.success("agregado con exito :)");
+		}else{
+			alertify.error("Fallo el servidor :(");
+		}
+	}
+	});
+}

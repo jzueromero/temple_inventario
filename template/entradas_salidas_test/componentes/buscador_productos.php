@@ -25,7 +25,7 @@ session_start();
 
 
   $consulta_buscador = "select pp.prod_codigo, pp.prod_codigo_barra, 
-                pp.prod_nombre
+                pp.prod_nombre, pp.prod_costo_total costo
                 from prod_producto pp
                 left join prov_proveedor pv on pv.prov_codigo = pp.prod_cod_proveedor 
                 left join labo_laboratorio ll on ll.labo_codigo = pp.prod_cod_laboratorio 
@@ -65,6 +65,8 @@ session_start();
                 <td>
                 <input type="hidden" name="producto<?php echo $pr['prod_codigo']; ?>"
                   id="producto<?php echo $pr['prod_codigo']; ?>" value="<?php echo $pr['prod_codigo']; ?>"  />
+                  <input type="hidden" name="txt_costo_<?php echo $pr['prod_codigo']; ?>"
+                  id="txt_costo_<?php echo $pr['prod_codigo']; ?>" value="<?php echo $pr['costo']; ?>"  />
                 <?php echo $pr['prod_codigo_barra']; ?>
               </td>
                 <td><?php echo $pr['prod_nombre']; ?></td>
@@ -122,20 +124,32 @@ session_start();
                    placeholder="descr1" required="">
                 </td> -->
                 <td>
-                <button class="btn btn-warning glyphicon glyphicon-pencil" data-toggle="modal" data-target="#modalEdicion" onclick="agregaform('<?php //echo $datos ?>')">
+
+                <button class="btn btn-info glyphicon glyphicon-plus" 
+                onclick="alert('El directorio actual no puede acceder a la transaccion.')">
                     
-                    <button class="btn btn-danger glyphicon glyphicon-remove" 
-                    onclick="preguntarSiNo('<?php echo $pr[0]; ?>')">
-                    </button>
+                  <!-- COMENTAR COMENTAR -->
+                  <button class="btn btn-info glyphicon glyphicon-plus" 
+                onclick="NuevoProducto('<?php echo $pr['prod_codigo']; ?>')">
+                  <!-- COMENTAR COMENTAR -->
+
+                <!-- BOTONES PARA AGREGAR PRODUCTO AGREGAR PRODUCTO -->
+                <!-- <button class="btn btn-info glyphicon glyphicon-plus" data-toggle="modal" 
+                data-target="#modalEdicion" onclick="agregaform('<?php //echo $datos ?>')">
+                     -->
+                    <!-- <button class="btn btn-danger glyphicon glyphicon-remove" 
+                    onclick="preguntarSiNo('<?php //echo $pr[0]; ?>')">
+                    </button> -->
                 </td>
               </tr>
               <?php
-            
       }
       ?>
             
           </table>
         </div>
       </div>
+
+     
 
 

@@ -14,6 +14,8 @@
 				Agregar Producto 
 				<span class="glyphicon glyphicon-plus"></span>
 			</button>
+
+		
 		</caption>
 			<tr>
 				<td>Codigo</td>
