@@ -77,14 +77,14 @@ function preguntarSiNo(id){
 function eliminarDatos(id){
 
 	cadena="id=" + id;
-
+	var transaccion_codigo=$('#txt_codigo_tran').val(); 
 		$.ajax({
 			type:"POST",
 			url:"php/eliminarDatos.php",
 			data:cadena,
 			success:function(r){
 				if(r==1){
-					$('#tabla').load('componentes/tabla.php');
+					$('#tabla').load('componentes/tabla.php?codigo_tran='+transaccion_codigo);
 					alertify.success("Eliminado con exito!");
 				}else{
 					alertify.error("Fallo el servidor :(");
@@ -111,7 +111,7 @@ function CalcularValor2(valor)
 
 }
 
-function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad)
+function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad,codigo_barra,nombre_producto)
 {
 	cadena="transaccion_codigo=" + transaccion_codigo + 
 			"&producto_codigo=" + producto_codigo +
@@ -120,15 +120,18 @@ function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_c
 			"&unidad=" + unidad +
 			"&unidad_precio=" + unidad_precio +
 			"&unidad_cantidad=" + unidad_cantidad +
-			"&tran_cantidad=" + tran_cantidad ;
+			"&tran_cantidad=" + tran_cantidad +
+			"&tran_codigo_barra="+ codigo_barra +
+			"&nombre_producto=" +nombre_producto ;
 
 	$.ajax({
 	type:"POST",
 	url:"php/agregarDetalleTran.php",
 	data:cadena,
 	success:function(r){
+		//alert(r);
 		if(r==1){
-			$('#tabla').load('componentes/tabla.php');
+			$('#tabla').load('componentes/tabla.php?codigo_tran='+transaccion_codigo);
 			$('#buscador').load('componentes/buscador.php');
 			alertify.success("agregado con exito :)");
 		}else{

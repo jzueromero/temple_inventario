@@ -14,7 +14,7 @@ session_start();
 $tipo = '';
 
 if (isset($_GET['tipo']) && !empty($_GET['tipo'])) {
-    $tipo = $_GET['tipo'] == "entrada" ? 0 : 1;
+    $tipo = $_GET['tipo'] == "entrada" ? 1 : 0;
 } else {
     $tipo = -1;
 }

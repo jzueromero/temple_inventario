@@ -185,7 +185,7 @@
 				<span class=""></span>
 			</button>
     </div>
-    <div id="buscador"></div>
+    <!-- <div id="buscador"></div> -->
 		<div id="tabla"></div>
 
 
@@ -225,8 +225,6 @@
     </div>
   </div>
 </div>
-
-
 
 	<!-- Modal para registros nuevos -->
 
@@ -291,7 +289,9 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('#tabla').load('componentes/tabla.php');
+    var transaccion_codigo=$('#txt_codigo_tran').val();
+
+		$('#tabla').load('componentes/tabla.php?codigo_tran='+transaccion_codigo);
     $('#productos_encontrados').load('componentes/buscador_productos.php?palabra=');
 	});
 </script>
@@ -381,7 +381,7 @@
       function NuevoProducto(codigo){
 
             var transaccion_codigo=$('#txt_codigo_tran').val(); 
-            var producto_codigo=$('#'+codigo).val();
+            var producto_codigo=  $("#sel_equi"+codigo+" option:selected").attr('data-producto');
             var producto_costo = $('#txt_costo_'+codigo).val();
 
             var unidad_codigo =  $("#sel_equi"+codigo+" option:selected").attr('data-equi');
@@ -390,8 +390,12 @@
             var unidad_cantidad=  $("#sel_equi"+codigo+" option:selected").attr('data-cantidad');
 
             var tran_cantidad =$('#txt_cantidad'+codigo).val(); 
+
+            var codigo_barra =  $("#sel_equi"+codigo+" option:selected").attr('data-barra');
+            var nombre_producto =  $("#sel_equi"+codigo+" option:selected").attr('data-nombre');
+            //alert(codigo_barra +' - '+ nombre_producto);
           
-            CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad);
+            CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad,codigo_barra,nombre_producto);
           }
         
 </script>

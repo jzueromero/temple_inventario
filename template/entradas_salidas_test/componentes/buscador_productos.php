@@ -67,6 +67,10 @@ session_start();
                   id="producto<?php echo $pr['prod_codigo']; ?>" value="<?php echo $pr['prod_codigo']; ?>"  />
                   <input type="hidden" name="txt_costo_<?php echo $pr['prod_codigo']; ?>"
                   id="txt_costo_<?php echo $pr['prod_codigo']; ?>" value="<?php echo $pr['costo']; ?>"  />
+                  <input type="hidden" name="txt_barra_<?php echo $pr['prod_codigo']; ?>"
+                  id="txt_barra_<?php echo $pr['prod_codigo']; ?>" value="<?php echo $pr['prod_codigo_barra']; ?>"  />
+                  <input type="hidden" name="txt_nombre_<?php echo $pr['prod_codigo']; ?>"
+                  id="txt_nombre_<?php echo $pr['prod_codigo']; ?>" value="<?php echo $pr['prod_nombre']; ?>"  />
                 <?php echo $pr['prod_codigo_barra']; ?>
               </td>
                 <td><?php echo $pr['prod_nombre']; ?></td>
@@ -99,7 +103,11 @@ session_start();
                         data-equi="<?php echo $equi['codigo']; ?>"
                          data-precio="<?php echo $equi['precio']; ?>"
                           data-unidad="<?php echo $equi['unidad']; ?>"
-                           data-cantidad="<?php echo $equi['cantidad']; ?>" >
+                           data-cantidad="<?php echo $equi['cantidad']; ?>"
+                           data-barra="<?php echo $pr['prod_codigo_barra']; ?>"
+                           data-nombre="<?php echo $pr['prod_nombre']; ?>"
+                           >
+                           
                           <?php echo $equi['unidad']; ?>
                         </option>
                     <?php
@@ -124,10 +132,7 @@ session_start();
                    placeholder="descr1" required="">
                 </td> -->
                 <td>
-
-                <button class="btn btn-info glyphicon glyphicon-plus" 
-                onclick="alert('El directorio actual no puede acceder a la transaccion.')">
-                    
+    
                   <!-- COMENTAR COMENTAR -->
                   <button class="btn btn-info glyphicon glyphicon-plus" 
                 onclick="NuevoProducto('<?php echo $pr['prod_codigo']; ?>')">
