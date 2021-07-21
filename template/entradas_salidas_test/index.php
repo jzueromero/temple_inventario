@@ -1,7 +1,6 @@
 <?php 
   session_start();
   require_once '../../src_php/db/db_funciones.php';
-  
   require_once '../../src_php/db/funciones_generales.php';
 
   $db_es = new db_funciones();
@@ -23,7 +22,9 @@
                 IF(tt.tran_codigo IS NULL or tt.tran_codigo = '', 
                             '0', tt.tran_codigo) as codigo
               from tran_transaccion tt
-              where tt.tran_codigo_temporal  = '".$token ."'";
+              where tt.tran_codigo_temporal  = '".$token ."'
+              and 
+              tran_estado != 'PROCESADO'";
 
   $codigo_tran = $db_token->get_dato_escalar($consulta_token, array());
 
@@ -343,8 +344,14 @@
     $(document).ready(function(){
         $('#btn_procesar').click(function(){
           var sucursal = $("#sel_sucursal option:selected").attr('data-valor');
+          var sucursal_nombre = $( "#sel_sucursal option:selected" ).text();
+
           var tipo = $("#sel_tipo_transaccion option:selected").attr('data-valor');
+
           var concepto = $("#sel_concepto option:selected").attr('data-valor');
+          var concepto_nombre = $( "#sel_concepto option:selected" ).text();
+
+          var comentario =$('#txt_comentario').val(); 
 
           var ejecutar = true;
           if(parseInt(sucursal) == 0)
@@ -365,11 +372,12 @@
             ejecutar = false;
             return;
           }
-
-
           if(ejecutar == true)
           {
-            alert('paso');
+            //alert('paso');
+            var transaccion_codigo=$('#txt_codigo_tran').val(); 
+            //alert(transaccion_codigo);
+            verificar_productos(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario);
           }
 
         });

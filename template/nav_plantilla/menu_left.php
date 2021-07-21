@@ -9,10 +9,6 @@ if($_SESSION['es_cajero'] == 1)
              "archivo" => "home.php",
              "clase" => "lnr lnr-home",
              "titulo" => "Principal"), 
-
-            
-
-
              array( "sub"=>0,
              "archivo" => "sis_cliente.php",
              "clase" => "lnr lnr-file-empty",
@@ -34,7 +30,7 @@ if($_SESSION['es_cajero'] == 1)
                          "titulo" => "Historial Movimientos de Producto"),
 
 
-                        array( "archivo" => "sis_salida_producto.php?codigo_tran=0",
+                        array( "archivo" => "./entradas_salidas_test/index.php?codigo_tran=0",
                          "clase" => "lnr lnr-cog",
                          "titulo" => "Nueva Salida Producto")
 
@@ -108,7 +104,7 @@ else
                          "clase" => "lnr lnr-users",
                          "titulo" => "Historial Movimientos de Producto"),
 
-                      array( "archivo" => "home.php",
+                         array( "archivo" => "./entradas_salidas_test/index.php?codigo_tran=0",
                      "clase" => "lnr lnr-cog",
                      "titulo" => "Nueva Transaccion Producto"),
 

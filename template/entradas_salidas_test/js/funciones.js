@@ -140,3 +140,49 @@ function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_c
 	}
 	});
 }
+
+function verificar_productos(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario)
+{
+	cadena="transaccion_codigo=" + transaccion_codigo;
+
+	$.ajax({
+	type:"POST",
+	url:"php/tran_numero_productos.php",
+	data:cadena,
+	success:function(r){
+		//alert(r);
+		if(r>0){
+			procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario);
+		}else{
+			alertify.error("No se puede procesar sin productos");
+		}
+	}
+	});
+}
+
+function procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario)
+{
+	cadena="transaccion_codigo=" + transaccion_codigo +
+		"&tipo="+tipo+
+		"&sucursal="+sucursal+
+		"&sucursal_nombre="+sucursal_nombre+
+		"&concepto="+concepto+
+		"&concepto_nombre="+concepto_nombre+
+		"&comentario="+comentario;
+
+	$.ajax({
+	type:"POST",
+	url:"php/procesar_transaccion.php",
+	data:cadena,
+	success:function(r){
+		alert(r);
+		if(r>0){
+			$('#tabla').load('componentes/tabla.php?codigo_tran='+transaccion_codigo);
+			$('#buscador').load('componentes/buscador.php');
+			alertify.success("Transacción Procesada con Exito");
+		}else{
+			alertify.error("No se puede procesar sin productos");
+		}
+	}
+	});
+}

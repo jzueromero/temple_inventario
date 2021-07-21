@@ -3,12 +3,12 @@
 
 session_start();
 
-  require_once '../../../src_php/db/db_funciones.php';
-  
-  require_once '../../../src_php/db/funciones_generales.php';
+require_once '../../../src_php/db/db_funciones.php';
 
-  $db_concepto = new db_funciones();
-  $concepto_general = new funciones_generales(); 
+require_once '../../../src_php/db/funciones_generales.php';
+
+$db_concepto = new db_funciones();
+$concepto_general = new funciones_generales();
 
 
 $tipo = '';
@@ -23,7 +23,7 @@ $consulta_conceptos = "SELECT 0 conc_codigo, '--Seleccione' conc_nombre, 'sin co
                         UNION ALL
                         SELECT conc_codigo, conc_nombre, conc_tipo, conc_estado
                         FROM conc_concepto
-                        WHERE conc_tipo =".$tipo ;
+                        WHERE conc_tipo =" . $tipo;
 
 $arreglo_concepto = $db_concepto->get_datos($consulta_conceptos, array());
 
@@ -36,9 +36,9 @@ $arreglo_concepto = $db_concepto->get_datos($consulta_conceptos, array());
     <?php
     foreach ($arreglo_concepto as $concepto) {
     ?>
-        <option data-valor="<?php echo $concepto['conc_codigo']; ?>" >
-            <?php echo $concepto['conc_nombre']; ?>
-        </option>
+    <option data-valor="<?php echo $concepto['conc_codigo']; ?>">
+        <?php echo $concepto['conc_nombre']; ?>
+    </option>
     <?php
     }
     ?>
