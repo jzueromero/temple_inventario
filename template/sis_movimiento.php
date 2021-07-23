@@ -24,13 +24,19 @@ if(!isset($_GET['q']) and !isset($_GET['desde']) and !isset($_GET['hasta']))
     $desde  = $fecha_hoy->format('Y-m-d');
     $hasta = $desde;
 
-    header("location:$nombre_form.php?desde=".$desde."&hasta=".$hasta."&q=$q");
+    header("location:$nombre_form.php?desde=".$desde."&hasta=".$hasta ."&s=0" . "&q=$q");
 }
 
 $q = $_GET['q'];
 $desde = $_GET['desde'];
 $hasta = $_GET['hasta'];
 
+$sucursal = trim($_GET['s']);
+
+if($sucursal == 0 || $sucursal =="")
+{
+    $sucursal = "tran_sucursal_codigo";
+}
 
 
 $consulta = "SELECT  tran_codigo codigo, tran_codigo_temporal temporal, tran_sucursal_codigo sucursal_codigo, 
@@ -38,6 +44,8 @@ $consulta = "SELECT  tran_codigo codigo, tran_codigo_temporal temporal, tran_suc
 			tran_referencia, tran_comentario, tran_usuario, tran_fecha
             FROM tran_transaccion
             where 
+			tran_sucursal_codigo = $sucursal
+			and
             ( tran_nombre_concepto like '%".$q."%')
             and
             DATE(tran_fecha) >= '".$desde."' and DATE(tran_fecha) <= '".$hasta."'
@@ -93,6 +101,72 @@ require 'nav_plantilla/menu_left.php';
 									<div class="col-md-12">
 									<div class=" row">
                                     <form action="sis_movimiento.php" method="get">
+									<div class="form-group col-sm-2  col-md-2">
+                                            <label for="sel1">Sucursal:</label>
+                                            <select class="form-control" id="s" name="s">
+                                                <option value="0">
+                                                    --Seleccione
+                                                </option>
+                                                <?php
+                                                if (SS1 == "si") {
+                                                ?>
+                                                    <option value="1">
+                                                        <?php
+                                                        echo SS1_n;
+                                                        ?>
+                                                    </option>
+                                                <?php
+                                                }
+                                                ?>
+                                                <?php
+                                                if (SS2 == "si") {
+                                                ?>
+                                                    <option value="2">
+                                                        <?php
+                                                        echo SS2_n;
+                                                        ?>
+                                                    </option>
+                                                <?php
+                                                }
+                                                ?>
+                                                <?php
+                                                if (SS3 == "si") {
+                                                ?>
+                                                    <option value="3">
+                                                        <?php
+                                                        echo SS3_n;
+                                                        ?>
+                                                    </option>
+                                                <?php
+                                                }
+                                                ?>
+                                                <?php
+                                                if (SS4 == "si") {
+                                                ?>
+                                                    <option value="4">
+                                                        <?php
+                                                        echo SS4_n;
+                                                        ?>
+                                                    </option>
+                                                <?php
+                                                }
+                                                ?>
+                                                <?php
+                                                if (SS5 == "si") {
+                                                ?>
+                                                    <option value="5">
+                                                        <?php
+                                                        echo SS5_n;
+                                                        ?>
+                                                    </option>
+                                                <?php
+                                                }
+                                                ?>
+
+
+                                            </select>
+                                        </div>
+
 										<div class="col-md-2">
                                         <div class="form-group">
                                             <label for="desde">desde</label>
@@ -109,7 +183,7 @@ require 'nav_plantilla/menu_left.php';
                                         <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="busqueda">Busqueda</label>
-                                            <input type="text" class="form-control" value="<?php echo $q; ?>" name="q" id="q" placeholder="Nombre cliente, proveedor, concepto">
+                                            <input type="text" class="form-control" value="<?php echo $q; ?>" name="q" id="q" placeholder="concepto">
                                         </div>
                                         </div>
                                         <div class="col-md-2">
@@ -185,11 +259,11 @@ require 'nav_plantilla/menu_left.php';
 															<?php
                                                             $estado = "";
                                                             switch ($item["tran_estado"]) {
-                                                                case '1':
-                                                                    $estado = "Procesado";
+                                                                case 'PROCESADO':
+                                                                    $estado = "<h4><span class='label label-success'>PROCESADO</span></h4>";
                                                                     break;
-                                                                case '2':
-                                                                    $estado = "Anulado";
+                                                                case 'ANULADO':
+                                                                    $estado = "<h4><span class='label label-danger'>ANULADO</span></h4>";
                                                                     break;
                                                                 default:
                                                                     $estado = "<h4><span class='label label-warning'>Temporal</span></h4>";
@@ -199,7 +273,7 @@ require 'nav_plantilla/menu_left.php';
 														</td>
                                                         
                                                         <td>
-														<a href='<?php echo $nombre_form; ?>_crud.php?codigo=<?php echo $item["codigo"]; ?>'><i class="lnr lnr-cog"></i> <span>&nbsp;&nbsp;Configuración&nbsp;&nbsp;</span></a>
+														<a href='<?php echo $nombre_form; ?>_crud.php?codigo=<?php echo $item["codigo"]."&desde=".$desde."&hasta=".$hasta ."&s=0" . "&q=$q" ?>'><i class="lnr lnr-cog"></i> <span>&nbsp;&nbsp;Configuración&nbsp;&nbsp;</span></a>
 														</td>
 													</tr>
 

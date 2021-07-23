@@ -175,8 +175,10 @@ function procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,c
 	url:"php/procesar_transaccion.php",
 	data:cadena,
 	success:function(r){
-		alert(r);
+		//alert(r);
 		if(r>0){
+			window.location.href = '../../template/sis_movimiento.php'
+			return;
 			$('#tabla').load('componentes/tabla.php?codigo_tran='+transaccion_codigo);
 			$('#buscador').load('componentes/buscador.php');
 			alertify.success("Transacción Procesada con Exito");

@@ -74,11 +74,11 @@ if($flujo > 0)
             descontar_vencimiento($deta['trand_producto_codigo'], $sucursal, $total_uniades);
         }
 
-        $cumulo = $cumulo."<hr> ** ". $sql_kardex. "<hr>**". $sql_producto." <hr>** ".$sql_detalle." <hr> <hr>**";
+        //$cumulo = $cumulo."<hr> ** ". $sql_kardex. "<hr>**". $sql_producto." <hr>** ".$sql_detalle." <hr> <hr>**";
     }
 }
 
-function descontar_vencimiento($producto,$sucursal,$unidades)
+function descontar_vencimiento($producto,$sucursal,$cantidad)
 {
     $sql_lotes = "select venc_codigo, venc_producto_codigo, venc_cantidad_restante,  venc_fecha_vencimiento, venc_sucursal
                 from venc_vencimiento 
@@ -88,20 +88,34 @@ function descontar_vencimiento($producto,$sucursal,$unidades)
                 venc_cantidad_restante  > 0
                 and
                 venc_sucursal = $sucursal
-                order by venc_fecha_vencimiento asc "; 
-$cnx_lote = conexion();       
+                order by venc_fecha_vencimiento asc ";
+    $cnx_lote = conexion();
 
-$r_lote = mysqli_query($cnx_lote, $sql_lotes);
-    while ($lote = mysqli_fetch_assoc($r_lote)){
-        $unidades = $unidades - $lote['venc_cantidad_restante'];
-        $descontar = 
+    $unidades = $cantidad;
 
-        $sql_restantes = "UPDATE venc_vencimiento
-        SET venc_cantidad_restante= venc_cantidad_restante - $cantidad 
-        WHERE venc_codigo=".$lote['venc_codigo'];
+    $r_lote = mysqli_query($cnx_lote, $sql_lotes);
+    while ($lote = mysqli_fetch_assoc($r_lote)) {
+        if ($unidades > 0) {
+            if ($unidades > $lote['venc_cantidad_restante']) {
+                $unidades_restantes = $unidades - $lote['venc_cantidad_restante'];
+                $descontar = $unidades - $unidades_restantes;
 
+                $sql_restantes = "UPDATE venc_vencimiento
+                    SET venc_cantidad_restante= venc_cantidad_restante - $descontar 
+                    WHERE venc_codigo=" . $lote['venc_codigo'];
+                $rven = mysqli_query($cnx_lote, $sql_restantes);
+
+                $unidades = $unidades_restantes;
+            } else {
+                $sql_restantes = "UPDATE venc_vencimiento
+                    SET venc_cantidad_restante= venc_cantidad_restante - $unidades 
+                    WHERE venc_codigo=" . $lote['venc_codigo'];
+                $rven = mysqli_query($cnx_lote, $sql_restantes);
+
+                $unidades = 0;
+            }
+        }
     }
-
 }
 
 

@@ -93,6 +93,11 @@ else
          "clase" => "lnr lnr-home",
          "titulo" => "Gestión Agencias - Sucursales"),
 
+         array( "sub"=>0,
+         "archivo" => "sis_kardex.php",
+         "clase" => "lnr lnr-file-empty",
+         "titulo" => "KARDEX"),
+
          array( "sub"=>1,
          "archivo" => "platilla.php",
          "clase" => "lnr lnr-store",
