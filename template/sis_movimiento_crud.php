@@ -23,9 +23,14 @@ $sucursal = trim($_GET['s']);
 @$nombre_comercio = '';
 require '../src_php/db/db_funciones.php';
 
-$tran = "SELECT tran_codigo, tran_codigo_temporal, tran_sucursal_codigo, tran_tipo, tran_estado, tran_codigo_concepto, 
-                trim(tran_nombre_concepto), tran_referencia, tran_comentario, tran_usuario, tran_fecha,tran_usuario_anula, tran_fecha_anula 
-                FROM tran_transaccion
+$tran = "SELECT tran_codigo, tran_codigo_temporal, tran_sucursal_codigo, ss.sucu_nombre, tran_tipo, tran_estado, tran_codigo_concepto, 
+        trim(tran_nombre_concepto) tran_nombre_concepto, tran_referencia, tran_comentario, tran_usuario, tran_fecha,tran_usuario_anula, tran_fecha_anula,
+        concat( uu.usua_nombre,' ', uu.usua_apellido) usuario,
+        (select concat(uu.usua_nombre,' ', uu.usua_apellido,' ',tran_fecha_anula)
+        from usua_usuario uu2 where uu2.usua_codigo = tran_usuario_anula)  as anulo
+        FROM tran_transaccion
+        inner join sucu_sucursal ss  on ss.sucu_codigo = tran_sucursal_codigo 
+        inner join usua_usuario uu  on uu.usua_codigo  = tran_usuario 
                 WHERE tran_codigo= $codigo;";
 
 @$tran_detalle = "SELECT trad_codigo, trand_tran_codigo, trand_producto_codigo, trad_producto_codigo_barra,
@@ -38,6 +43,32 @@ $objeto_datos = new db_funciones();
 
 $r_tran = $objeto_datos->get_datos($tran, array());
 $r_deta = $objeto_datos->get_datos($tran_detalle, array());
+
+@$tcodigo = 0;
+@$tsucursal_codigo = 0;
+@$sucursal = "";
+@$ttipo_codigo = 0;
+@$ttipo ="";
+@$tconcepto = "";
+@$tcomentario = "";
+@$tusuario = "";
+@$tfecha = "";
+@$testado = "";
+@$tanulado="";
+
+foreach ($r_tran as $item) {
+    @$tcodigo = $item['tran_codigo'];
+    @$tsucursal_codigo = $item['tran_sucursal_codigo'];
+    @$sucursal = $item['sucu_nombre'];
+    @$ttipo_codigo = $item['tran_tipo'];
+    @$ttipo = @$ttipo_codigo == 0 ? "SALIDA" : "ENTRADA";
+    @$tconcepto = trim($item['tran_nombre_concepto']);
+    @$tcomentario = trim($item['tran_comentario']);
+    @$tusuario = $item['usuario'];
+    @$tfecha = $item['tran_fecha'];
+    @$testado = $item['tran_estado'];
+    @$tanulado = trim($item['anulo']);
+}
 
 
 ?>
@@ -102,19 +133,19 @@ $r_deta = $objeto_datos->get_datos($tran_detalle, array());
                                                         <div class="col-md-4">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon1">Código</span>
-                                                                <label class="form-control" aria-describedby="basic-addon1">Código</label>
+                                                                <label class="form-control" aria-describedby="basic-addon1"><?php echo $tcodigo; ?></label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon2">Sucursal</span>
-                                                                <label class="form-control" aria-describedby="basic-addon2">Sucursal</label>
+                                                                <label class="form-control" aria-describedby="basic-addon2"><?php echo $sucursal; ?></label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon2">Tipo</span>
-                                                                <label class="form-control" aria-describedby="basic-addon2">Tipo</label>
+                                                                <label class="form-control" aria-describedby="basic-addon2"><?php echo $ttipo; ?></label>
 
                                                             </div>
                                                         </div>
@@ -124,13 +155,13 @@ $r_deta = $objeto_datos->get_datos($tran_detalle, array());
                                                         <div class="col-md-4">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon2">Concepto</span>
-                                                                <label class="form-control" aria-describedby="basic-addon2">Concepto</label>
+                                                                <label class="form-control" aria-describedby="basic-addon2"><?php echo $tconcepto; ?></label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon2">Comentario</span>
-                                                                <label class="form-control" aria-describedby="basic-addon2">Comentario</label>
+                                                                <label class="form-control" aria-describedby="basic-addon2"><?php echo $tcomentario; ?></label>
 
                                                             </div>
                                                         </div>
@@ -138,7 +169,7 @@ $r_deta = $objeto_datos->get_datos($tran_detalle, array());
                                                         <div class="col-md-4">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon2">usuario</span>
-                                                                <label class="form-control" aria-describedby="basic-addon2">usuario</label>
+                                                                <label class="form-control" aria-describedby="basic-addon2"><?php echo $tusuario; ?></label>
 
                                                             </div>
                                                         </div>
@@ -148,22 +179,22 @@ $r_deta = $objeto_datos->get_datos($tran_detalle, array());
                                                     <div class="row">
                                                         <div class="col-md-4">
                                                             <div class="input-group">
-                                                                <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                                                                <label class="form-control" aria-describedby="basic-addon2">Fecha</label>
+                                                                <span class="input-group-addon" id="basic-addon2">Fecha</span>
+                                                                <label class="form-control" aria-describedby="basic-addon2"><?php echo $tfecha; ?></label>
 
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon2">Estado</span>
-                                                                <label class="form-control" aria-describedby="basic-addon2">Estado</label>
+                                                                <label class="form-control" aria-describedby="basic-addon2"><?php echo $testado; ?></label>
 
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon2">Anulado</span>
-                                                                <label class="form-control" aria-describedby="basic-addon2">Anulado</label>
+                                                                <label class="form-control" aria-describedby="basic-addon2"><?php echo $tanulado; ?></label>
 
                                                             </div>
 
@@ -294,14 +325,39 @@ $r_deta = $objeto_datos->get_datos($tran_detalle, array());
 
 	$.ajax({
 	type:"POST",
-	url:"verificar_estado",
+	url:"./entradas_salidas_test/php/verificar_estado.php",
 	data:cadena,
 	success:function(r){
-		//alert(r);
 		if(r>0){
-			procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario);
+			anular_transaccion(codigo);
 		}else{
-			alertify.error("No se puede procesar sin productos");
+			alert("Esta transaccion ya fue anulada");
+		}
+	}
+	});
+}
+</script>
+
+<script>
+    function anular(codigo)
+{
+    sucursal = $('#hdd_susursal').val();
+            desde = $('#hdd_desde').val();
+            hasta = $('#hdd_hasta').val();
+            query = $('#hdd_query').val();
+
+            
+	cadena="codigo=" + codigo;
+
+	$.ajax({
+	type:"POST",
+	url:"./entradas_salidas_test/php/anular_transaccion.php",
+	data:cadena,
+	success:function(r){
+		if(r>0){
+            window.location.href = 'sis_movimiento.php?s=' + sucursal + '&desde=' + desde + '&hasta=' + hasta + '&q=' + query;
+		}else{
+            alert("No puede anularse.");
 		}
 	}
 	});
