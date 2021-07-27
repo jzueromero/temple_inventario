@@ -230,19 +230,20 @@ require 'nav_plantilla/menu_left.php';
                                                         <td>
 															<?php 
                                                             $sucu = $item["sucursal_codigo"];
+
 															if($sucu == 2 )
 															{
 																echo SS2_n;
 															}
-															if($sucu == 3 )
+															else if($sucu == 3 )
 															{
 																echo SS3_n;
 															}
-															if($sucu == 4 )
+															else if($sucu == 4 )
 															{
 																echo SS4_n;
 															}
-															if($sucu == 5 )
+															else if($sucu == 5 )
 															{
 																echo SS5_n;
 															}

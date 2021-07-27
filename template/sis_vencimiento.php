@@ -25,7 +25,7 @@ if(isset($_GET['q']) and $_GET['q'] != '' )
     $consulta = "select vv.venc_codigo codigo, vv.venc_lote lote,
                     vv.venc_cantidad cantidad, vv.venc_cantidad_restante restante, 
                     venc_fecha_vencimiento vence,
-                    pp.prod_codigo, pp.prod_nombre, ll.labo_nombre, pp2.prov_nombre ,
+                    pp.prod_codigo_barra barra, pp.prod_codigo, pp.prod_nombre, ll.labo_nombre, pp2.prov_nombre ,
                     
                     datediff(venc_fecha_vencimiento, curdate() ) restan,
                     date_add(curdate(), interval 15 day) calculo
@@ -48,7 +48,7 @@ if(isset($_GET['q']) and $_GET['q'] != '' )
                 $consulta = "select vv.venc_codigo codigo, vv.venc_lote lote,
                 vv.venc_cantidad cantidad, vv.venc_cantidad_restante restante, 
                 venc_fecha_vencimiento vence,
-                pp.prod_codigo, pp.prod_nombre, ll.labo_nombre, pp2.prov_nombre ,
+                pp.prod_codigo_barra barra, pp.prod_codigo, pp.prod_nombre, ll.labo_nombre, pp2.prov_nombre ,
                 
                 datediff(venc_fecha_vencimiento, curdate() ) restan,
                 date_add(curdate(), interval 15 day) calculo
@@ -128,6 +128,8 @@ require 'nav_plantilla/menu_left.php';
 										<thead>
 											<tr>
 												<th>#</th>
+												<th>Código</th>
+												<th>Producto</th>
 												<th>Lote</th>
 												<th>Cantidad Lote</th>
 												<th>Cantidad Restante</th>
@@ -147,7 +149,12 @@ require 'nav_plantilla/menu_left.php';
 														<td>
 															<?php echo $item["codigo"]; ?>
 														</td>
-
+														<td>
+															<?php echo $item["barra"]; ?>
+														</td>
+														<td>
+															<?php echo $item["prod_nombre"]; ?>
+														</td>
 														<td>
 															<?php echo $item["lote"]; ?>
 														</td>
@@ -186,7 +193,7 @@ require 'nav_plantilla/menu_left.php';
 															<?php echo $item["sucu_nombre"]; ?>
 														</td>
                                                         <td>
-														<a href='<?php echo $nombre_form; ?>_crud.php?codigo=<?php echo $item["codigo"]; ?>'><i class="lnr lnr-cog"></i> <span>&nbsp;&nbsp;Configuración&nbsp;&nbsp;</span></a>
+														<a href='sis_lote.php?lote=<?php echo $item["codigo"]."&codigo_producto=".$item["prod_codigo"]; ?>'><i class="lnr lnr-cog"></i> <span>&nbsp;&nbsp;Configuración&nbsp;&nbsp;</span></a>
 														</td>
 													</tr>
 

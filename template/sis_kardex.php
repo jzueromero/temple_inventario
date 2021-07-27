@@ -51,7 +51,7 @@ if($sucursal == 0 || $sucursal =="")
                     or prod_descripcion like '%" . $q . "%')
                     and
                     DATE(kard_fecha) >= '" . $desde . "' and DATE(kard_fecha) <= '" . $hasta . "'
-                order by prod_nombre, prod_codigo_barra;";            
+                order by kard_codigo;";            
 
 
 $parametros = array();
@@ -240,13 +240,13 @@ $arreglo_datos = $objeto_datos->get_datos($consulta, $parametros);
                                                         if ($sucu == 2) {
                                                             echo SS2_n;
                                                         }
-                                                        if ($sucu == 3) {
+                                                        else if ($sucu == 3) {
                                                             echo SS3_n;
                                                         }
-                                                        if ($sucu == 4) {
+                                                        else if ($sucu == 4) {
                                                             echo SS4_n;
                                                         }
-                                                        if ($sucu == 5) {
+                                                        else if ($sucu == 5) {
                                                             echo SS5_n;
                                                         } else {
                                                             echo SS1_n;

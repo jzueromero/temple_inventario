@@ -177,7 +177,7 @@
 				<span class=""></span>
 			</button>
 
-			<button class="btn btn-default" >
+			<button class="btn btn-default" id="btn_regresar" >
 				Regresar 
 				<span class=""></span>
 			</button>
@@ -406,4 +406,14 @@
             CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad,codigo_barra,nombre_producto);
           }
         
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#btn_regresar').click(function(){
+          window.location.href = '../../template/sis_movimiento.php'
+			return;
+        });
+
+    });
 </script>

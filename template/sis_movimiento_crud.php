@@ -206,7 +206,16 @@ foreach ($r_tran as $item) {
                                                         <div class="col-md-4">
                                                             <button type="button" class="btn btn-default" id="btn_regresar">
                                                                 << Regresar</button>
+                                                                <?php 
+                                                                if($testado != "ANULADO")
+                                                                {
+                                                                    ?>
                                                                     <button type="button" class="btn btn-danger" id="btn_anular">Anular</button>
+
+                                                                    <?php
+                                                                }
+                                                                
+                                                                ?>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -328,7 +337,7 @@ foreach ($r_tran as $item) {
 	url:"./entradas_salidas_test/php/verificar_estado.php",
 	data:cadena,
 	success:function(r){
-		if(r>0){
+		if(r>=1){
 			anular_transaccion(codigo);
 		}else{
 			alert("Esta transaccion ya fue anulada");
