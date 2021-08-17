@@ -28,6 +28,7 @@ $objeto_datos = new db_funciones();
 @$form_valido = true;
 @$accion = '';
 @$codigo = '';
+@$venta_caja = 0;
 $fgenerales = new funciones_generales();
 /*
 JAVASCRIPT validacion
@@ -85,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             @$usuario = $item['usua_usuario'];
             @$estado = $item['usua_status'];
             @$cajero = $item['usua_cajero'];
+            @$venta_caja = $item['usua_sucu_venta'];
             @$usuario_actual = $item['usua_usuario'];
             $descripcion_form = $descripcion_form . "<h4 ><spam class='text-primary'>Si desea conservar la misma contraseña,</spam><spam class='text-primary'>
 														&nbsp;deje en blanco las cajas de contraseña</spam></h4>";                                                        
@@ -101,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         @$usuario = $_POST["usuario"];
         @$estado = $_POST["estado"];
         @$cajero = $_POST['cajero'];
+        @$venta_caja = $_POST['venta_sucu'];
         @$contra = $_POST["contra"];
         @$contra2 = $_POST["contra2"];
         @$usuario_actual = $_POST["usuario_actual"];
@@ -136,13 +139,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 } else {
 
                     $consulta = "INSERT INTO usua_usuario
-					(usua_nombre, usua_apellido, usua_usuario, usua_contra, usua_status, usua_cajero usua_fecha)
-					VALUES(:usua_nombre, :usua_apellido, :usua_usuario, :usua_contra, :usua_status, :usua_cajero, CURRENT_TIMESTAMP);";
+					(usua_nombre, usua_apellido, usua_usuario, usua_contra, usua_status, usua_cajero, usua_sucu_venta, usua_fecha)
+					VALUES(:usua_nombre, :usua_apellido, :usua_usuario, :usua_contra, :usua_status, :usua_cajero, :usua_sucu_venta, CURRENT_TIMESTAMP);";
                     $parametros = array(":usua_nombre" => $nombre,
                         ":usua_apellido" => $apellido,
                         ":usua_usuario" => $usuario,
                         ":usua_contra" => sha1($contra),
                         ":usua_status" => $estado,
+                        ":usua_sucu_venta" => $venta_caja,
                         ":usua_cajero" => $cajero,
                     );
 
@@ -175,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                      {
                         $consulta = "UPDATE usua_usuario
 									SET usua_nombre=:usua_nombre, usua_apellido=:usua_apellido, usua_usuario=:usua_usuario, usua_contra=:usua_contra,
-									usua_status=:usua_status, usua_cajero=:usua_cajero, usua_fecha=CURRENT_TIMESTAMP
+									usua_status=:usua_status, usua_cajero=:usua_cajero,usua_sucu_venta=:usua_sucu_venta, usua_fecha=CURRENT_TIMESTAMP
 									WHERE usua_codigo=:codigo;";
                         $parametros = array(":usua_nombre" => $nombre,
                             ":usua_apellido" => $apellido,
@@ -183,6 +187,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             ":usua_contra" => sha1($contra),
                             ":usua_status" => $estado,
                             ":usua_cajero" => $cajero,
+                        ":usua_sucu_venta" => $venta_caja,
+
                             ":codigo" => $codigo,
                         );
                         $objeto_datos = new db_funciones();
@@ -198,13 +204,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 else {
                     $consulta = "UPDATE usua_usuario
 									SET usua_nombre=:usua_nombre, usua_apellido=:usua_apellido, usua_usuario=:usua_usuario,
-									usua_status=:usua_status, usua_cajero=:usua_cajero, usua_fecha=CURRENT_TIMESTAMP
+									usua_status=:usua_status, usua_cajero=:usua_cajero,usua_sucu_venta=:usua_sucu_venta, usua_fecha=CURRENT_TIMESTAMP
 									WHERE usua_codigo=:codigo;";
                     $parametros = array(":usua_nombre" => $nombre,
                         ":usua_apellido" => $apellido,
                         ":usua_usuario" => $usuario,
                         ":usua_status" => $estado,
                         ":usua_cajero" => $cajero,
+                        ":usua_sucu_venta" => $venta_caja,
+
                         ":codigo" => $codigo,
                     );
                     $objeto_datos = new db_funciones();
@@ -352,7 +360,64 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 												array("v"=>"1", "t"=>"Cajero")
 											);
 											$fgenerales->lista_valores('cajero','Es Cajero', '4', $lista_tipos, $cajero);
+                                           
+                                            $selecionado = " selected='selected' ";
+                                            $cajas = array('','','','','','');
+
+                                            switch ($venta_caja) {
+                                                case 1:
+                                                    $cajas[1] = $selecionado;
+                                                    break;
+                                                case 2:
+                                                    $cajas[2] = $selecionado;
+                                                    break;
+                                                case 3:
+                                                    $cajas[3] = $selecionado;
+                                                    break;
+                                                case 4:
+                                                    $cajas[4] = $selecionado;
+                                                    break;
+                                                case 5:
+                                                    $cajas[5] = $selecionado;
+                                                    break;
+                                                default:
+                                                    $cajas[0] = $selecionado;
+                                                    break;
+                                            }
 										?>
+                                    <div class="form-group col-sm-4  col-md-4">
+                                            <label for="sel1">Sucursal en que realiza Ventas:</label>
+                                            <select class="form-control" id="venta_sucu" name="venta_sucu">
+                                                <option value="0" <?php echo $cajas[0]; ?>>
+                                                    --Seleccione
+                                                </option>
+                                                    <option value="1" <?php echo $cajas[1]; ?> >
+                                                        <?php
+                                                        echo "#1: ".SS1_n;
+                                                        ?>
+                                                    </option>
+                                                    <option value="2" <?php echo $cajas[2]; ?>>
+                                                        <?php
+                                                        echo "#2: ".SS2_n;
+                                                        ?>
+                                                    </option>
+                                                    <option value="3" <?php echo $cajas[3]; ?>>
+                                                        <?php
+                                                        echo "#3: ".SS3_n;
+                                                        ?>
+                                                    </option>
+                                                    <option value="4" <?php echo $cajas[4]; ?>>
+                                                        <?php
+                                                        echo "#4: ".SS4_n;
+                                                        ?>
+                                                    </option>
+                                                    <option value="5" <?php echo $cajas[5]; ?>>
+                                                        <?php
+                                                        echo "#5: ".SS5_n;
+                                                        ?>
+                                                    </option>
+                                            </select>
+                                        </div>
 
 									</div>
 									<div class="row">

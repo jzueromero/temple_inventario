@@ -19,18 +19,17 @@ $hasta = $_GET['hasta'];
 
 $sucursal = trim($_GET['s']);
 
-
 @$nombre_comercio = '';
 require '../src_php/db/db_funciones.php';
 
-$tran = "SELECT tran_codigo, tran_codigo_temporal, tran_sucursal_codigo, ss.sucu_nombre, tran_tipo, tran_estado, tran_codigo_concepto, 
+$tran = "SELECT tran_codigo, tran_codigo_temporal, tran_sucursal_codigo, ss.sucu_nombre, tran_tipo, tran_estado, tran_codigo_concepto,
         trim(tran_nombre_concepto) tran_nombre_concepto, tran_referencia, tran_comentario, tran_usuario, tran_fecha,tran_usuario_anula, tran_fecha_anula,
         concat( uu.usua_nombre,' ', uu.usua_apellido) usuario,
         (select concat(uu.usua_nombre,' ', uu.usua_apellido,' ',tran_fecha_anula)
         from usua_usuario uu2 where uu2.usua_codigo = tran_usuario_anula)  as anulo
         FROM tran_transaccion
-        inner join sucu_sucursal ss  on ss.sucu_codigo = tran_sucursal_codigo 
-        inner join usua_usuario uu  on uu.usua_codigo  = tran_usuario 
+        inner join sucu_sucursal ss  on ss.sucu_codigo = tran_sucursal_codigo
+        inner join usua_usuario uu  on uu.usua_codigo  = tran_usuario
                 WHERE tran_codigo= $codigo;";
 
 @$tran_detalle = "SELECT trad_codigo, trand_tran_codigo, trand_producto_codigo, trad_producto_codigo_barra,
@@ -48,13 +47,13 @@ $r_deta = $objeto_datos->get_datos($tran_detalle, array());
 @$tsucursal_codigo = 0;
 @$sucursal = "";
 @$ttipo_codigo = 0;
-@$ttipo ="";
+@$ttipo = "";
 @$tconcepto = "";
 @$tcomentario = "";
 @$tusuario = "";
 @$tfecha = "";
 @$testado = "";
-@$tanulado="";
+@$tanulado = "";
 
 foreach ($r_tran as $item) {
     @$tcodigo = $item['tran_codigo'];
@@ -70,7 +69,6 @@ foreach ($r_tran as $item) {
     @$tanulado = trim($item['anulo']);
 }
 
-
 ?>
 
 <!doctype html>
@@ -79,8 +77,8 @@ foreach ($r_tran as $item) {
 <head>
     <title><?php echo $titulo_form; ?></title>
     <?php
-    require 'nav_plantilla/nav_css.php';
-    ?>
+require 'nav_plantilla/nav_css.php';
+?>
 
 
 </head>
@@ -91,14 +89,14 @@ foreach ($r_tran as $item) {
         <!-- NAVBAR -->
         <nav class="navbar navbar-default navbar-fixed-top">
             <?php
-            require 'nav_plantilla/nav_top.php';
-            ?>
+require 'nav_plantilla/nav_top.php';
+?>
         </nav>
         <div class="clearfix"></div>-->
         <!-- LEFT SIDEBAR -->
         <?php
-        require 'nav_plantilla/menu_left.php';
-        ?>
+require 'nav_plantilla/menu_left.php';
+?>
         <!-- END LEFT SIDEBAR -->
         <!-- MAIN -->
         <div class="main">
@@ -161,8 +159,7 @@ foreach ($r_tran as $item) {
                                                         <div class="col-md-4">
                                                             <div class="input-group">
                                                                 <span class="input-group-addon" id="basic-addon2">Comentario</span>
-                                                                <label class="form-control" aria-describedby="basic-addon2"><?php echo $tcomentario; ?></label>
-
+                                                                <input type="text" id="txt_comentario" name="txt_comentario" class="form-control" aria-describedby="basic-addon2" value="<?php echo trim($tcomentario); ?>"  />
                                                             </div>
                                                         </div>
 
@@ -206,16 +203,15 @@ foreach ($r_tran as $item) {
                                                         <div class="col-md-4">
                                                             <button type="button" class="btn btn-default" id="btn_regresar">
                                                                 << Regresar</button>
-                                                                <?php 
-                                                                if($testado != "ANULADO")
-                                                                {
-                                                                    ?>
+                                                                <?php
+if ($testado != "ANULADO") {
+    ?>
                                                                     <button type="button" class="btn btn-danger" id="btn_anular">Anular</button>
 
                                                                     <?php
-                                                                }
-                                                                
-                                                                ?>
+}
+
+?>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -233,8 +229,8 @@ foreach ($r_tran as $item) {
                                                             </thead>
                                                             <tbody>
                                                                 <?php
-                                                                foreach ($r_deta as $item) {
-                                                                ?>
+foreach ($r_deta as $item) {
+    ?>
                                                                     <tr>
                                                                         <td>
                                                                             <?php echo $item["trad_producto_codigo_barra"]; ?>
@@ -257,8 +253,8 @@ foreach ($r_tran as $item) {
 
                                                                     </tr>
                                                                 <?php
-                                                                }
-                                                                ?>
+}
+?>
 
                                                             </tbody>
                                                         </table>
@@ -286,15 +282,15 @@ foreach ($r_tran as $item) {
     <div class="clearfix"></div>
     <footer>
         <?php
-        require 'nav_plantilla/nav_footer.php';
-        ?>
+require 'nav_plantilla/nav_footer.php';
+?>
     </footer>
     </div>
     <!-- END WRAPPER -->
     <!-- Javascript -->
     <?php
-    require 'nav_plantilla/nav_js.php';
-    ?>
+require 'nav_plantilla/nav_js.php';
+?>
 
 </body>
 
@@ -328,35 +324,58 @@ foreach ($r_tran as $item) {
 
 
 <script>
-    function anular(codigo)
+    function anularno(codigo)
 {
-	cadena="codigo=" + codigo;
+    var comentario = $.trim( $("#txt_comentario").val());
 
-	$.ajax({
-	type:"POST",
-	url:"./entradas_salidas_test/php/verificar_estado.php",
-	data:cadena,
-	success:function(r){
-		if(r>=1){
-			anular_transaccion(codigo);
-		}else{
-			alert("Esta transaccion ya fue anulada");
-		}
-	}
-	});
+alert(comentario.length);
+return;
+    if( comentario.length == 0)
+    {
+        alert('Es obligatorio un comentario.');
+    }
+    else
+    {
+        cadena="codigo=" + codigo;
+
+        $.ajax({
+        type:"POST",
+        url:"./entradas_salidas_test/php/verificar_estado.php",
+        data:cadena,
+        success:function(r){
+            if(r>=1){
+                anular_transaccion(codigo);
+            }else{
+                alert("Esta transaccion ya fue anulada");
+            }
+        }
+        });
+    }
+
+
+
 }
 </script>
 
 <script>
     function anular(codigo)
 {
+    var comentario = $.trim( $("#txt_comentario").val());
+
+    if( comentario.length < 3)
+    {
+        alert('Para anular, Es obligatorio un comentario.');
+        $('#txt_comentario').focus();
+    }
+    else
+    {
+
     sucursal = $('#hdd_susursal').val();
             desde = $('#hdd_desde').val();
             hasta = $('#hdd_hasta').val();
             query = $('#hdd_query').val();
 
-            
-	cadena="codigo=" + codigo;
+	cadena="codigo=" + codigo + "&comentario="+comentario;
 
 	$.ajax({
 	type:"POST",
@@ -370,5 +389,6 @@ foreach ($r_tran as $item) {
 		}
 	}
 	});
+}
 }
 </script>

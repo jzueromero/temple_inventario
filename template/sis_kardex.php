@@ -193,8 +193,6 @@ $arreglo_datos = $objeto_datos->get_datos($consulta, $parametros);
                                                 <br>
                                                 <button type="submit" class="btn btn-primary btn-block">Buscar</button>
                                             </div>
-
-
                                         </div>
 
                                         <div class="col-md-2">
@@ -232,6 +230,15 @@ $arreglo_datos = $objeto_datos->get_datos($consulta, $parametros);
                                                         <?php
 
                                                         $tipo = $item["kard_tipo"] == "SALIDA" ? "<h5><span class='label label-danger'>S A L I D A</span></h5>" : "<h5><span class='label label-success'>E N T R A D A</span></h5>";
+                                                        if($item["kard_tipo"] == "SALIDA")
+                                                        {
+                                                            $clase = "text-danger";
+                                                        }
+                                                        else
+                                                        {
+                                                            $clase = "text-success";
+
+                                                        }
                                                         echo  $tipo; ?>
                                                     </td>
                                                     <td>
@@ -275,7 +282,7 @@ $arreglo_datos = $objeto_datos->get_datos($consulta, $parametros);
                                                         <?php echo $item["kard_cantidad"]; ?>
                                                     </td>
                                                     <td>
-                                                        <?php echo $item["total"]; ?>
+                                                        <?php echo "<p class='$clase'>".$item["total"]."</p>"; ?>
                                                     </td>
                                                     
                                                 </tr>

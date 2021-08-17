@@ -113,13 +113,24 @@ require 'nav_plantilla/menu_left.php';
 								<div class="panel-body no-padding">
 									<div class="col-md-12">
 									<div class="row">
-										<div class="col-md-8"></div>
+										<div class="col-md-6 text-left">
+                                        <div class="form-group text-left">
+                                        <form action="sis_vencimiento.php" method="get">
+                                        <div class="col-md-9 text-left">
+                                        <input class="form-control" type="text" name="q" id="q">
+                                        </div>
+                                        <div class="col-md-3 text-left">
+                                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" type="button" value="Buscar"></span>
+                                        </div>
+                                            
+                                        </form>
+                                            
+                                        </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                        </div>
 										<div class="col-md-4 text-right">
-										<a href='<?php echo $nombre_form; ?>_crud.php?codigo=0'>
-										<p>
-										<button type="button" class="btn btn-default">Crear <?php echo $modelo; ?></button>
-										</p>
-										</a>
+										
 										</div>
 
 									</div>

@@ -227,7 +227,35 @@
   </div>
 </div>
 
-	<!-- Modal para registros nuevos -->
+	<!-- Modal para existencias en sucursales -->
+	<!-- Modal para existencias en sucursales -->
+
+  <div class="modal fade" id="modalExistencias" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">::Existencias::</h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+           <div class="col-lg-6">
+          </div><!-- /.col-lg-6 -->
+        </div>
+        <div class="row">
+         <div id="productos_existencias" class="pre-scrollable"></div>
+       </div>
+      </div>
+      <div class="modal-footer">
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+	<!-- Modal para existencias en sucursales -->
+	<!-- Modal para existencias en sucursales -->
 
 
 <div class="modal fade" id="modalNuevo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -307,8 +335,6 @@
             agregardatos(nombre,apellido,email,telefono);
         });
 
-
-
         $('#actualizadatos').click(function(){
           actualizaDatos();
         });
@@ -316,13 +342,34 @@
     });
 </script>
 <script type="text/javascript">
-  
+    function VerificaExistencia(codigo){
+   
+    $('#productos_existencias').load('componentes/existencias_sucursales.php?codigo_producto='+codigo);
+
+    }
+
+    function CalcularExistencia(posicion)
+    {
+      var ecantidad = $("#sel_existencia"+posicion +"  option:selected").attr('data-cantidad');
+
+      if(ecantidad == 1)
+      {
+        var existencia_original = $('#existencia'+posicion).val();
+        $('#txt_existencia'+posicion).val(existencia_original); 
+      }
+      else
+      {
+        var existencia_original = $('#existencia'+posicion).val();
+        var numero_existencia = parseInt( existencia_original /  ecantidad);
+        $('#txt_existencia'+posicion).val(numero_existencia); 
+      }
+
+    }
 </script>
 
 <script type="text/javascript">
     $(document).ready(function(){
-     
-     
+          
       $( "#txt_buscar" ).keyup(function() {
           var busqueda = $.trim( $("#txt_buscar").val());
          $('#productos_encontrados').load('componentes/buscador_productos.php?palabra='+busqueda);
@@ -331,6 +378,8 @@
         
     });
   </script>
+
+
   <script type="text/javascript">
      $(document).ready(function(){
         $('#sel_tipo_transaccion').on("change",function(){

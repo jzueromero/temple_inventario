@@ -7,10 +7,10 @@ if(!isset($_SESSION['usua_codigo']))
 require '../src_php/db/db_funciones.php';
 $objeto_datos = new db_funciones();
 
-$modelo = 'Unidades';
+$modelo = 'Movimientos de Producto';
 $nombre_form = "sis_movimiento";
-$titulo_form = "Modulo unidades";
-$descripcion_form = 'Configuracion de unidades para las equivalencias.';
+$titulo_form = "Modulo Movimiento de producto";
+$descripcion_form = 'Configuracion transacciones, entras y salidas de producto.';
 $nombre_negocio = $objeto_datos->empresa;
 
 @$q = "";
@@ -49,9 +49,10 @@ $consulta = "SELECT  tran_codigo codigo, tran_codigo_temporal temporal, tran_suc
             ( tran_nombre_concepto like '%".$q."%')
             and
             DATE(tran_fecha) >= '".$desde."' and DATE(tran_fecha) <= '".$hasta."'
+            and 
+            trim(tran_estado) != 'TEMPORAL' 
             order by tran_codigo;";
-
-
+            
 $parametros = array();
 $arreglo_datos = $objeto_datos->get_datos($consulta, $parametros);
 
@@ -180,7 +181,7 @@ require 'nav_plantilla/menu_left.php';
                                             <input type="date" class="form-control" value="<?php echo $hasta; ?>" name="hasta" id="hasta" placeholder="hasta">
                                         </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="busqueda">Busqueda</label>
                                             <input type="text" class="form-control" value="<?php echo $q; ?>" name="q" id="q" placeholder="concepto">
@@ -190,12 +191,17 @@ require 'nav_plantilla/menu_left.php';
                                         <div class="form-group">
                                         <br>
                                         <button type="submit" class="btn btn-primary btn-block">Buscar</button>
+                                        
                                         </div>
 
 
                                         </div>
 
                                         <div class="col-md-2">
+                                        <br >
+                                        <a href="./entradas_salidas_test/index.php?codigo_tran=0"> 
+                                            <button type="button" class="btn btn-info btn-block">NUEVA TRANSACCION</button>
+                                        </a>
                                         </div>
 									</div>
                                     </form>

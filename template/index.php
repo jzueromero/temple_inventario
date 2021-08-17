@@ -30,7 +30,7 @@
 		else
 		{
 			@$consulta = "SELECT usua_codigo, usua_nombre, usua_apellido, usua_usuario,
-						 usua_contra, usua_status, usua_cajero, usua_fecha
+						 usua_contra, usua_status, usua_cajero, usua_fecha, usua_sucu_venta
 						  FROM usua_usuario 
 						  where usua_usuario  =  :usuario and usua_contra  = :contra and usua_status = 1 
 						  ;";
@@ -56,9 +56,11 @@
 				{
 					$_SESSION['usua_codigo'] = $item['usua_codigo']; 
 					$_SESSION['es_cajero'] = $item['usua_cajero']; 
+					$_SESSION['venta_sucursal'] = $item['usua_sucu_venta']; 
 					$_SESSION['nombre_usuario'] = $item['usua_nombre'].' '.$item['usua_apellido']; 
 					$_SESSION['token_temp_entrada'] = $fdb->generar_token_transaccion($item['usua_codigo'], $item['usua_nombre'].' '.$item['usua_apellido']);
 					$_SESSION['token_temp_salida'] = $fdb->generar_token_transaccion($item['usua_codigo'], $item['usua_nombre'].' '.$item['usua_apellido']);
+					$_SESSION['token_temp_venta'] = $fdb->generar_token_transaccion($item['usua_codigo'], $item['usua_nombre'].' '.$item['usua_apellido']);
 				}
 					$_SESSION['sucursal1'] = "no";
 					$_SESSION['sucursal2'] = "no";
