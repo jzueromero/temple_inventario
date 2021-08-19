@@ -112,27 +112,48 @@ function CalcularValor123(valor)
 
 function CalcularValor2(valor)
 {
+	validarCualquierNumero();
 	var codigo_producto = $("#sel_equi"+valor+" option:selected").attr('data-producto');
 	var cantidad_equi =  $("#sel_equi"+valor+" option:selected").attr('data-cantidad');
 	var precio =  $("#sel_equi"+valor+" option:selected").attr('data-precio');
 
-	var cantidad_digitada = $('#txt_cantidad'+valor).val();
+	var cantidad_digitada =  $('#txt_cantidad'+valor).val() ;
 	var numero_unidades = (parseInt(cantidad_equi) * parseInt(cantidad_digitada));
-	if(isNaN(numero_unidades))
+	
+	if(isNaN( parseInt(numero_unidades)))
 	{
 		numero_unidades = 'DIGITE UN NUMERO VALIDO';
 	}
-
-	$('#div'+valor).text('Numero de unidades: '+ numero_unidades.toFixed(2) );
-
-	var total = ((parseInt(cantidad_equi) * parseInt(cantidad_digitada)) * precio) ;
-	if(isNaN(total) )
+	if(isNaN(parseInt(cantidad_digitada)) )
 	{
-		total = 0;
+		$('#txt_cantidad'+valor).val('');
+		cantidad_equi = 0;
+		numero_unidades = 0;
+		cantidad_digitada = 0;
 	}
-	$('#sub'+valor).text('$'+ total.toFixed(2));
+
+	$('#div'+valor).text('Numero de unidades: '+ parseInt(numero_unidades) );
+	var total = ( parseInt(cantidad_digitada) * precio) ;
+	
+	$('#sub'+valor).val( parseFloat( total).toFixed(2));
 
 
+}
+
+function validarCualquierNumero(){
+	$(".numeric").numeric();
+	$(".integer").numeric(false, function() { alert("Integers only"); this.value = ""; this.focus(); });
+	$(".positive").numeric({ negative: false }, function() { alert("No negative values"); this.value = ""; this.focus(); });
+	$(".positive-integer").numeric({ decimal: false, negative: false }, function() { alert("Positive integers only"); this.value = ""; this.focus(); });
+	$(".decimal-2-places").numeric({ decimalPlaces: 2 });
+	$(".decimal-3-places").numeric({ decimalPlaces: 3 });
+	$("#remove").click(
+		function(e)
+		{
+			e.preventDefault();
+			$(".numeric,.integer,.positive,.positive-integer,.decimal-2-places").removeNumeric();
+		}
+		);
 }
 
 function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad,codigo_barra,nombre_producto)

@@ -13,18 +13,18 @@
     $_SESSION['token_temp_salida'] = $fdb->generar_token_transaccion($item['usua_codigo'], $item['usua_nombre'].' '.$item['usua_apellido']);
   
   */
-  @$token = $_SESSION['token_temp_entrada'];
+  @$token = $_SESSION['token_temp_venta'];
 
   $db_token = new db_funciones();
   $general_token = new funciones_generales(); 
 
   $consulta_token = "select 
-                IF(tt.tran_codigo IS NULL or tt.tran_codigo = '', 
-                            '0', tt.tran_codigo) as codigo
-              from tran_transaccion tt
-              where tt.tran_codigo_temporal  = '".$token ."'
-              and 
-              tran_estado != 'PROCESADO'";
+                    IF(vv.vent_codigo  IS NULL or vv.vent_codigo = '', 
+                                '0', vv.vent_codigo) as codigo
+                  from vent_venta vv 
+                  where vv.vent_codigo_temporal  = '".$token ."'
+                  and 
+                  vent_estado != 'PROCESADO'";
 
   $codigo_tran = $db_token->get_dato_escalar($consulta_token, array());
 
@@ -59,6 +59,7 @@
 	<script src="librerias/bootstrap/js/bootstrap.js"></script>
 	<script src="librerias/alertifyjs/alertify.js"></script>
   <script src="librerias/select2/js/select2.js"></script>
+  <script src="librerias/jquery.numeric.js"></script>
   <style>
     .modal-dialog {
       width: 90%;
@@ -457,12 +458,19 @@
             var unidad_cantidad=  $("#sel_equi"+codigo+" option:selected").attr('data-cantidad');
 
             var tran_cantidad =$('#txt_cantidad'+codigo).val(); 
+            var tran_total =$('#sub'+codigo).val(); 
 
             var codigo_barra =  $("#sel_equi"+codigo+" option:selected").attr('data-barra');
             var nombre_producto =  $("#sel_equi"+codigo+" option:selected").attr('data-nombre');
+
+            if( parseInt(tran_cantidad) < 0 ||  parseFloat(tran_total) < 0 || parseInt(tran_cantidad) == 0 ||  parseFloat(tran_total) == 0 || tran_cantidad.trim() === "" ||  tran_total.trim() === "" )
+            {
+		        	alertify.error("Digite una cantidad correcta");
+              return;
+            }
             //alert(codigo_barra +' - '+ nombre_producto);
           
-            CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad,codigo_barra,nombre_producto);
+            // CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad,codigo_barra,nombre_producto);
           }
         
 </script>

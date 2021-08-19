@@ -96,7 +96,7 @@ $consulta_equi = "select 0 codigo, IF(pp.prod_unidad IS NULL or pp.prod_unidad =
     ?>
                   <select
                   class="form-control"
-                  onchange="<?php echo "CalcularValor('" . $pr['prod_codigo'] . "')"; ?>" name="sel_equi<?php echo $pr['prod_codigo']; ?>" id="sel_equi<?php echo $pr['prod_codigo']; ?>" >
+                  onchange="<?php echo "CalcularValor2('" . $pr['prod_codigo'] . "')"; ?>" name="sel_equi<?php echo $pr['prod_codigo']; ?>" id="sel_equi<?php echo $pr['prod_codigo']; ?>" >
                   <?php
 foreach ($arreglo_equi as $equi) {
         ?>
@@ -120,15 +120,19 @@ foreach ($arreglo_equi as $equi) {
                   </button>
                 </td>
                 <td>
-                <input type="text" class="form-control"
-                  value="1" onkeyup="CalcularValor2(<?php echo $pr['prod_codigo']; ?>)"
+                <input type="text" class="form-control positive-integer"
+                  value="" onkeyup="CalcularValor2(<?php echo $pr['prod_codigo']; ?>)"
                     name="txt_cantidad<?php echo $pr['prod_codigo']; ?>"
                     id="txt_cantidad<?php echo $pr['prod_codigo']; ?>"
                    placeholder="Cantidad " required="">
                    <div id="<?php echo 'div' . $pr['prod_codigo']; ?>" ></div>
                 </td>
                 <td>
-                   <div id="<?php echo 'sub' . $pr['prod_codigo']; ?>" ></div>
+                   <div  ></div>
+                   <div class="input-group">
+  <span class="input-group-addon">$</span>
+  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" readonly="" id="<?php echo 'sub' . $pr['prod_codigo']; ?>">
+</div>
                 </td>
                 <td>
 

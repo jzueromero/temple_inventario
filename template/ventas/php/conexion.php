@@ -5,7 +5,7 @@
 			$servidor="localhost";
 			$usuario="root";
 			$password="rootmysql123";
-			$bd="temple_inventario_05";
+			$bd="temple_inventario_06";
 
 			$conexion=mysqli_connect($servidor,$usuario,$password,$bd);
 
