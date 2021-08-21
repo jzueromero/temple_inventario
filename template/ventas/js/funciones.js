@@ -77,14 +77,14 @@ function preguntarSiNo(id){
 function eliminarDatos(id){
 
 	cadena="id=" + id;
-	var transaccion_codigo=$('#txt_codigo_tran').val(); 
+	var transaccion_codigo=$('#txt_codigo_venta').val(); 
 		$.ajax({
 			type:"POST",
 			url:"php/eliminarDatos.php",
 			data:cadena,
 			success:function(r){
 				if(r==1){
-					$('#tabla').load('componentes/tabla.php?codigo_tran='+transaccion_codigo);
+					$('#tabla').load('componentes/tabla.php?codigo_venta='+transaccion_codigo);
 					alertify.success("Eliminado con exito!");
 				}else{
 					alertify.error("Fallo el servidor :(");
@@ -140,6 +140,25 @@ function CalcularValor2(valor)
 
 }
 
+function calcular_cambio()
+{
+	validarCualquierNumero();
+	var efectivo =  parseFloat($('#efectivo').val()) ;
+
+	if(efectivo <= 0 )
+	{
+		$('#cambio').val('0.00') ;
+	}
+	else if (efectivo > 0 )
+	{
+		var total_venta = parseFloat( $('#total_venta').val() ) ;
+	
+		var cambio =  efectivo - total_venta;
+		$('#cambio').val(cambio) ;
+	}
+	
+}
+
 function validarCualquierNumero(){
 	$(".numeric").numeric();
 	$(".integer").numeric(false, function() { alert("Integers only"); this.value = ""; this.focus(); });
@@ -156,7 +175,7 @@ function validarCualquierNumero(){
 		);
 }
 
-function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad,codigo_barra,nombre_producto)
+function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_codigo,unidad,unidad_precio,unidad_cantidad,tran_cantidad,codigo_barra,nombre_producto,tran_total)
 {
 	cadena="transaccion_codigo=" + transaccion_codigo + 
 			"&producto_codigo=" + producto_codigo +
@@ -167,7 +186,8 @@ function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_c
 			"&unidad_cantidad=" + unidad_cantidad +
 			"&tran_cantidad=" + tran_cantidad +
 			"&tran_codigo_barra="+ codigo_barra +
-			"&nombre_producto=" +nombre_producto ;
+			"&nombre_producto=" +nombre_producto+
+			"&total="+tran_total ;
 
 	$.ajax({
 	type:"POST",
@@ -176,7 +196,7 @@ function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_c
 	success:function(r){
 		//alert(r);
 		if(r==1){
-			$('#tabla').load('componentes/tabla.php?codigo_tran='+transaccion_codigo);
+			$('#tabla').load('componentes/tabla.php?codigo_venta='+transaccion_codigo);
 			$('#buscador').load('componentes/buscador.php');
 			alertify.success("agregado con exito :)");
 		}else{
@@ -224,7 +244,7 @@ function procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,c
 		if(r>0){
 			window.location.href = '../../template/sis_movimiento.php'
 			return;
-			$('#tabla').load('componentes/tabla.php?codigo_tran='+transaccion_codigo);
+			$('#tabla').load('componentes/tabla.php?codigo_venta='+transaccion_codigo);
 			$('#buscador').load('componentes/buscador.php');
 			alertify.success("Transacción Procesada con Exito");
 		}else{
