@@ -154,7 +154,7 @@ function calcular_cambio()
 		var total_venta = parseFloat( $('#total_venta').val() ) ;
 	
 		var cambio =  efectivo - total_venta;
-		$('#cambio').val(cambio) ;
+		$('#cambio').val(parseFloat(cambio).toFixed(2)) ;
 	}
 	
 }
