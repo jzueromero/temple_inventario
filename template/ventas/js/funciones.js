@@ -77,7 +77,7 @@ function preguntarSiNo(id){
 function eliminarDatos(id){
 
 	cadena="id=" + id;
-	var transaccion_codigo=$('#txt_codigo_venta').val(); 
+	var transaccion_codigo=$('#txt_codigo_tran').val(); 
 		$.ajax({
 			type:"POST",
 			url:"php/eliminarDatos.php",

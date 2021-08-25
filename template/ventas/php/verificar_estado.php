@@ -13,13 +13,6 @@
         $estado = $row['estado'];
     }
 
-    if(trim($estado) == "ANULADO")
-    {
-        echo "0";
-    }
-    else
-    {
-        echo $codigo;
-    }
+    echo trim($estado);
 
 ?>

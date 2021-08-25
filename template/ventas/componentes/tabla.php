@@ -32,7 +32,7 @@ while($ver=mysqli_fetch_assoc($result)){
 
 <td>
 	<button class='btn btn-danger glyphicon glyphicon-remove' 
-	onclick=\"preguntarSiNo('<?php echo ".$ver['codigo'] ."')\">
+	onclick=\"preguntarSiNo('".$ver['codigo'] ."')\">
 		
 	</button>
 </td>

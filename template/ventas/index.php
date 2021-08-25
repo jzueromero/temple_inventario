@@ -150,7 +150,7 @@ if (trim($codigo_tran) == "") {
         Regresar
         <span class=""></span>
       </button>
-      <button class="btn btn-danger">
+      <button class="btn btn-danger" id="btn_borrar_productos">
         Borrar Productos
         <span class=""></span>
       </button>
