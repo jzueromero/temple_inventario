@@ -7,7 +7,7 @@
 
     $estado ="0";
 
-    $sql = "select trim(tt.tran_estado) estado from tran_transaccion tt where tt.tran_codigo  = '" . $codigo . "'";
+    $sql = "select trim(vv.vent_estado) estado from vent_venta vv where vv.vent_codigo  = '" . $codigo . "'";
     $result = mysqli_query($conexion, $sql);
     if ($row =  mysqli_fetch_assoc($result)) {
         $estado = $row['estado'];

@@ -208,7 +208,7 @@ function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_c
 
 function verificar_productos(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario)
 {
-	cadena="transaccion_codigo=" + transaccion_codigo;
+	cadena="venta_codigo=" + transaccion_codigo;
 
 	$.ajax({
 	type:"POST",

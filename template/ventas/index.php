@@ -25,7 +25,9 @@ $consulta_token = "select
                   from vent_venta vv 
                   where vv.vent_codigo_temporal  = '" . $token . "'
                   and 
-                  vent_estado != 'PROCESADO'";
+                  vent_estado != 'PROCESADO'
+                  AND vent_estado != 'COMANDA' 
+                  AND vent_estado != 'ANULADO' ";
 
 $codigo_tran = $db_token->get_dato_escalar($consulta_token, array());
 
@@ -107,6 +109,7 @@ if (trim($codigo_tran) == "") {
       <div class="form-group col-sm-2  col-md-2">
         <label for="sel1">Sucursal:</label>
         <input type="text" name="txt_codigo_tran" id="txt_codigo_tran" class="form-control input-lg" readonly="" value="<?php echo $sucursal_venta; ?>">
+        <input type="hidden" id="hdd_sucursal" value="<?php echo $_SESSION['venta_sucursal']; ?>" />
       </div>
 
 
@@ -345,20 +348,10 @@ if (trim($codigo_tran) == "") {
   });
 </script>
 
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('#sel_tipo_transaccion').on("change", function() {
-      var tipo = $("#sel_tipo_transaccion option:selected").attr('data-valor');
-      $('#listaConceptos').load('componentes/lista_conceptos.php?tipo=' + tipo);
-    });
-  });
-</script>
-
 <script type="text/javascript">
   $(document).ready(function() {
     $('#btn_procesar').click(function() {
-      var sucursal = $("#sel_sucursal option:selected").attr('data-valor');
+      var sucursal = $("#hdd_sucursal").val();
       var sucursal_nombre = $("#sel_sucursal option:selected").text();
 
       var tipo = $("#sel_tipo_transaccion option:selected").attr('data-valor');
@@ -370,20 +363,11 @@ if (trim($codigo_tran) == "") {
 
       var ejecutar = true;
       if (parseInt(sucursal) == 0) {
-        alertify.error("Debe elegir una sucursal");
+        alertify.error("ADMINISTRADOR: No tiene sucursal de venta asignado");
         ejecutar = false;
         return;
       }
-      if (tipo == "sin") {
-        alertify.error("Debe elegir un tipo Transaccion");
-        ejecutar = false;
-        return;
-      }
-      if (parseInt(concepto) == 0) {
-        alertify.error("Debe elegir un concepto");
-        ejecutar = false;
-        return;
-      }
+
       if (ejecutar == true) {
         //alert('paso');
         var transaccion_codigo = $('#txt_codigo_tran').val();
@@ -426,7 +410,7 @@ if (trim($codigo_tran) == "") {
 <script type="text/javascript">
   $(document).ready(function() {
     $('#btn_regresar').click(function() {
-      window.location.href = '../../template/sis_movimiento.php'
+      window.location.href = '../../template/sis_venta.php'
       return;
     });
 

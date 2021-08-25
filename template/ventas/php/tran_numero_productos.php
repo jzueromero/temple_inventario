@@ -2,10 +2,10 @@
 <?php
 require_once "conexion.php";
 $conexion = conexion();
-$id = $_POST['transaccion_codigo'];
+$id = $_POST['venta_codigo'];
 $numero_productos = 0;
 
-$sql = "select count(trad_codigo) numero from trad_detalle td where td.trand_tran_codigo = '" . $id . "'";
+$sql = "select count(vd.ventd_codigo) numero from ventd_detalle vd where vd.ventd_vent_codigo = '" . $id . "'";
 $result = mysqli_query($conexion, $sql);
 if ($row =  mysqli_fetch_assoc($result)) {
     $numero_productos = $row['numero'];

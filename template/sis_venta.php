@@ -17,7 +17,7 @@ $nombre_negocio = $objeto_datos->empresa;
 @$desde = "";
 @$hasta = "";
 $tipo = "";
-
+@$total = 0.00;
 if(!isset($_GET['q']) and !isset($_GET['desde']) and !isset($_GET['hasta']))
 {
     $q = "";
@@ -157,7 +157,8 @@ require 'nav_plantilla/menu_left.php';
 										<thead>
 											<tr>
 												<th>Fecha</th>
-                                                <th>Numero</th>
+                                                <th>Venta</th>
+                                                <th>Comanda</th>
 												<th>Estado</th>
                                                 <th>Total</th>
                                                 <th>Opciones</th>
@@ -177,12 +178,16 @@ require 'nav_plantilla/menu_left.php';
 															<?php  echo $item["vent_correlativo"]; ?>
                                                             
 														</td>
+														<td>
+															<?php  echo $item["vent_comanda"]; ?>
+                                                            
+														</td>
                                                         <td>
 															<?php  echo $item["vent_estado"]; ?>
                                                             
 														</td>
                                                         <td>
-															<?php  echo "$ ".$item["vent_total"] * 1.00; ?>
+															<?php  echo "$ ".number_format((float)$item["vent_total"], 2, '.', '') ; ?>
                                                             
 														</td>
                                                         
@@ -191,8 +196,19 @@ require 'nav_plantilla/menu_left.php';
 														</td>
 													</tr>
 													<?php
+													if(($item["vent_estado"]) == "PROCESADO")
+													{
+														$total = $total + number_format((float)$item["vent_total"], 2, '.', '');
+													}
+													
                                                         }
                                                         ?>
+														<tr>
+															<td colspan="4"></td>
+															<td colspan="1">Total $<?php echo $total; ?></td>
+															<td colspan="1"></td>
+
+														</tr>
 										</tbody>
 									</table>
 									</div>

@@ -11,20 +11,10 @@ $conexion = conexion();
 @$concepto_nombre = $_POST["concepto_nombre"]; 
 @$comentario = $_POST["comentario"]; 
 
+
+$tipo = "SALIDA";
 @$tipo_tran = 0;
 @$operacion = " - " ;
-if($tipo == "salida")
-{
-@$tipo_tran = 0;
-@$operacion = " - " ;
-
-}
-if($tipo == "entrada")
-{
-@$tipo_tran = 1;
-@$operacion = " + " ;
-
-}
 
 $flujo = 0;
 
