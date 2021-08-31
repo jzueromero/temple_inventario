@@ -3,17 +3,18 @@
 require_once "conexion.php";
 $conexion = conexion();
 
-@$
- = $_POST["transaccion_codigo"];
-@$tipo = $_POST["tipo"];
-@$sucursal = $_POST["sucursal"];
-@$sucursal_nombre = $_POST["sucursal_nombre"];
-@$concepto = $_POST["concepto"];
+@$codigo_venta = $_POST["codigo_venta"];
+@$tipo = "SALIDA";
+@$sucursal = $_SESSION['venta_sucursal'];
+@$sucursal_nombre = nombre_sucursal($sucursal);
+
 @$concepto_nombre = $_POST["concepto_nombre"]; 
 @$comentario = $_POST["comentario"]; 
 
+$serie = '';
+$correlativo = 0;
 
-$tipo = "SALIDA";
+
 @$tipo_tran = 0;
 @$operacion = " - " ;
 
@@ -50,7 +51,7 @@ if($flujo > 0)
         (kard_tipo, kard_concepto, kard_fecha, kard_sucursal_codigo,
          kard_producto_codigo, kard_producto_nombre, kard_unidad_codigo,
           kard_unidad, kard_cantidad_unidades, kard_cantidad)
-        VALUES('".strtoupper(trim($tipo))."', '".trim($concepto_nombre)."', CURRENT_TIMESTAMP, $sucursal, '".$deta['trand_producto_codigo']."', '".trim($deta['trad_producto_nombre'])."', ".$deta['trand_unidad_codigo'].", '".trim($deta['trand_unidad'])."', ".$deta['trand_unidad_cantidad'] .", ".$deta['trand_cantidad'].");";
+        VALUES('".$tipo."', '".trim($concepto_nombre)."', CURRENT_TIMESTAMP, $sucursal, '".$deta['trand_producto_codigo']."', '".trim($deta['trad_producto_nombre'])."', ".$deta['trand_unidad_codigo'].", '".trim($deta['trand_unidad'])."', ".$deta['trand_unidad_cantidad'] .", ".$deta['trand_cantidad'].");";
 
         $total_uniades = $deta['trand_unidad_cantidad'] * $deta['trand_cantidad'];
         $sql_producto = "UPDATE prod_producto
@@ -109,6 +110,33 @@ function descontar_vencimiento($producto,$sucursal,$cantidad)
     }
 }
 
+function nombre_sucursal($codigo_sucursal)
+{
+    $s = ' - ';
+
+    switch ($codigo_sucursal) {
+        case 1:
+            $s = SS1_n;
+            break;
+        case 2:
+            $s = SS2_n;
+            break;
+        case 3:
+            $s = SS3_n;
+            break;
+        case 4:
+            $s = SS4_n;
+            break;
+        case 5:
+            $s = SS5_n;
+            break;
+        
+        default:
+            $s = '-';
+            break;
+    }
+    return $s;
+}
 
 echo $flujo;
 
