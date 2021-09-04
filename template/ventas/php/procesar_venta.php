@@ -3,13 +3,25 @@
 require_once "conexion.php";
 $conexion = conexion();
 
+@$ttipo_codigo = 0;
+@$ttipo ="";
+@$tconcepto = "";
+@$tcomentario = "";
+@$tusuario = "";
+@$tfecha = "";
+//@$testado = $_POST['estado'];
+@$tanulado="";
+$comanda = 0; 
+
 @$codigo_venta = $_POST["codigo_venta"];
 @$tipo = "SALIDA";
-@$sucursal = $_SESSION['venta_sucursal'];
-@$sucursal_nombre = nombre_sucursal($sucursal);
 
 @$concepto_nombre = $_POST["concepto_nombre"]; 
 @$comentario = $_POST["comentario"]; 
+
+@$total = $_POST["total"]; 
+@$efectivo = $_POST["efectivo"]; 
+@$cambio = $_POST["cambio"];
 
 $serie = '';
 $correlativo = 0;
@@ -20,52 +32,115 @@ $correlativo = 0;
 
 $flujo = 0;
 
-$sql_maestro = "SELECT *FROM tran_transaccion WHERE tran_codigo = '" . $transaccion_codigo . "'";
-$sql_detalle = "select * from trad_detalle td where td.trand_tran_codigo = " . $transaccion_codigo . ";";
+
+///     actualiza encabezado
+$venta_update_sql="/*
+        parametros obtenidos
+        * */
+        SET @comentario = '".trim($comentario)."';
+        SET @usuario_codigo = ".$_SESSION['usua_codigo'].";
+
+        SET  @venta_codigo := ".@$codigo_venta.";
+        SET @total := ". $total."; set @efectivo := ". $efectivo."; set @cambio := ".$cambio.";
+
+        SET @caja_numero := (select vent_sucursal_codigo from vent_venta where vent_codigo = @venta_codigo);
+        /*
+        parametros obtenidos
+        * */
+        SET @correlativo := (select ifnull(talo_correlativo,0) + 1  from talo_talonario tt where talo_sucursal_codigo = @caja_numero);
+        SET @comanda := (select ifnull(talo_comanda,0) from talo_talonario tt where talo_sucursal_codigo = @caja_numero);
+
+        SET @serie := (select ifnull(talo_serie,'-')  from talo_talonario tt where talo_sucursal_codigo = @caja_numero);
+
+
+        update talo_talonario 
+        set
+        talo_correlativo = @correlativo
+        where talo_sucursal_codigo = @caja_numero
+
+        update vent_venta 
+        set
+        vent_estado = 'PROCESADO',
+        vent_serie  = @serie,
+        vent_correlativo = @correlativo,
+        vent_comentario = @comentario,
+        vent_total = @total, vent_efectivo = @efectivo, vent_cambio  = @cambio,
+        vent_usuario_venta = @usuario_codigo,
+        vent_fecha_venta = CURRENT_TIMESTAMP
+        where vent_codigo  = @venta_codigo;	";
+
+
+    $flujo=mysqli_query($conexion,$venta_update_sql);
+///     actualiza encabezado
+///
+$sql_maestro = "SELECT vv.vent_codigo , vent_codigo_temporal, vent_sucursal_codigo, ss.sucu_nombre,  vent_estado,
+                vv.vent_comanda comanda, vv.vent_correlativo correlativo,  
+                '' tran_nombre_concepto, vent_referencia, vent_comentario, vent_usuario, vent_fecha, vent_usuario_anula, vent_fecha_anula,
+                concat( uu.usua_nombre,' ', uu.usua_apellido) usuario,
+                (select concat(uu.usua_nombre,' ', uu.usua_apellido,' ', vent_fecha_anula)
+                from usua_usuario uu2 where uu2.usua_codigo = vent_usuario_anula)  as anulo
+                FROM vent_venta vv 
+                inner join sucu_sucursal ss  on ss.sucu_codigo = vent_sucursal_codigo 
+                inner join usua_usuario uu  on uu.usua_codigo  = vent_usuario 
+                        WHERE vent_codigo= " . $codigo_venta ;
+
+$sql_detalle = "select * from ventd_detalle vd where vd.ventd_vent_codigo =" . $codigo_venta . ";";
 
 $r_maestro = mysqli_query($conexion, $sql_maestro);
 $r_detalle = mysqli_query($conexion, $sql_detalle);
 
 $arreglo_maestro = mysqli_fetch_assoc($r_maestro);
+///
+while ($item =  mysqli_fetch_assoc($r_maestro)) {
+    @$vent_codigo = $item['vent_codigo'];
+    @$vent_sucursal_codigo = $item['vent_sucursal_codigo'];
+    @$sucu_nombre = $item['sucu_nombre'];
+    $comanda = $item['comanda'];
+    $correlativo = $item['correlativo'] ;
 
-///     actualiza encabezado
-$sql="UPDATE tran_transaccion
-SET 
-tran_sucursal_codigo='$sucursal', 
-tran_tipo='$tipo_tran', 
-tran_estado='PROCESADO', 
-tran_codigo_concepto='$concepto',
-tran_nombre_concepto='$concepto_nombre',
-tran_referencia=0, 
-tran_comentario='$comentario', 
-tran_fecha=CURRENT_TIMESTAMP
-WHERE tran_codigo='$transaccion_codigo'";
-$flujo=mysqli_query($conexion,$sql);
-///     actualiza encabezado
+    @$concepto = "POR VENTA: # $correlativo COMANDA: # $comanda ID: # $vent_codigo" ;
+    @$tcomentario = trim($comentario);
+    @$tusuario = $_SESSION['usua_codigo'];
+    @$tfecha = $item['vent_fecha'];
+    @$testado = $item['vent_estado'];
+    @$tanulado = trim($item['anulo']);
+
+}
+
+$kard_tipo = "SALIDA";
+
+@$tipo_tran = 0;
+@$operacion = " - ";
+
 $cumulo = "";
 /// procesar detalle
 if($flujo > 0)
 {
     while ($deta = mysqli_fetch_assoc($r_detalle)){
+        $codigo_producto = $deta['ventd_producto_codigo'];
+        $prod_nombre = trim($deta['ventd_producto_nombre']);
+        $uni_codigo = $deta['ventd_unidad_codigo'];
+        $unidad = strtoupper( trim($deta['ventd_unidad']));
+        $uni_unidades = $deta['ventd_unidad_cantidad'];
+        $cantidad = $deta['ventd_cantidad'];
+
         $sql_kardex = "INSERT INTO kardex
         (kard_tipo, kard_concepto, kard_fecha, kard_sucursal_codigo,
          kard_producto_codigo, kard_producto_nombre, kard_unidad_codigo,
-          kard_unidad, kard_cantidad_unidades, kard_cantidad)
-        VALUES('".$tipo."', '".trim($concepto_nombre)."', CURRENT_TIMESTAMP, $sucursal, '".$deta['trand_producto_codigo']."', '".trim($deta['trad_producto_nombre'])."', ".$deta['trand_unidad_codigo'].", '".trim($deta['trand_unidad'])."', ".$deta['trand_unidad_cantidad'] .", ".$deta['trand_cantidad'].");";
+          kard_unidad, kard_cantidad_unidades, kard_cantidad) 
+        VALUES('".$kard_tipo."', '"."$concepto ', CURRENT_TIMESTAMP, '$vent_sucursal_codigo',
+         ".$codigo_producto.", '".$prod_nombre."', ".$uni_codigo.", '".$unidad."', ". $uni_unidades.", ".$cantidad.");";
+       
+         $total_uniades = $uni_unidades * $cantidad;
+         $sql_producto = "UPDATE prod_producto
+                         SET  prod_existencia".$vent_sucursal_codigo." = prod_existencia".$vent_sucursal_codigo." - ".$total_uniades."
+                         WHERE prod_codigo = '" .$codigo_producto."'";
 
-        $total_uniades = $deta['trand_unidad_cantidad'] * $deta['trand_cantidad'];
-        $sql_producto = "UPDATE prod_producto
-                        SET  prod_existencia".$sucursal."= prod_existencia".$sucursal." ".$operacion.$total_uniades."
-                        WHERE prod_codigo='" .$deta['trand_producto_codigo']."'";
+        $flujo=mysqli_query($conexion,$sql_kardex);
+        $flujo=mysqli_query($conexion,$sql_producto);
 
-        $resu=mysqli_query($conexion,$sql_kardex);
-        $resu2=mysqli_query($conexion,$sql_producto);
-
-        if(trim($tipo) == "salida"){
         
-            descontar_vencimiento($deta['trand_producto_codigo'], $sucursal, $total_uniades);
-        }
-
+            descontar_vencimiento($codigo_producto, $vent_sucursal_codigo, $total_uniades);
         //$cumulo = $cumulo."<hr> ** ". $sql_kardex. "<hr>**". $sql_producto." <hr>** ".$sql_detalle." <hr> <hr>**";
     }
 }
