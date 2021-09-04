@@ -1,0 +1,1692 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: localhost
+-- Tiempo de generación: 04-09-2021 a las 17:56:37
+-- Versión del servidor: 8.0.17
+-- Versión de PHP: 7.3.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `temple_inventario_07`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `acce_acceso`
+--
+
+CREATE TABLE `acce_acceso` (
+  `acce_codigo` int(11) NOT NULL,
+  `acce_usua_codigo` int(11) NOT NULL DEFAULT '0',
+  `acce_form_codigo` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `acce_acceso`
+--
+
+INSERT INTO `acce_acceso` (`acce_codigo`, `acce_usua_codigo`, `acce_form_codigo`) VALUES
+(25, 2, 3),
+(26, 2, 4),
+(31, 1, 1),
+(32, 1, 2),
+(33, 1, 3),
+(34, 1, 4),
+(35, 1, 5),
+(36, 1, 6),
+(37, 1, 7),
+(38, 1, 8),
+(39, 1, 9),
+(40, 1, 10),
+(41, 1, 11),
+(42, 1, 12),
+(43, 1, 13);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clie_cliente`
+--
+
+CREATE TABLE `clie_cliente` (
+  `clie_codigo` int(11) NOT NULL,
+  `clie_nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `clie_direccion` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `clie_pais` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `clie_responsable` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `clie_contacto` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `clie_fecha` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `conc_concepto`
+--
+
+CREATE TABLE `conc_concepto` (
+  `conc_codigo` int(11) NOT NULL,
+  `conc_nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `conc_tipo` smallint(6) DEFAULT '0',
+  `conc_estado` smallint(6) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `conc_concepto`
+--
+
+INSERT INTO `conc_concepto` (`conc_codigo`, `conc_nombre`, `conc_tipo`, `conc_estado`) VALUES
+(1, 'POR COMPRA', 1, 1),
+(2, 'POR VENTA', 0, 1),
+(3, 'POR VENCIMIENTO', 0, 1),
+(4, 'POR BONIFICACION ', 0, 1),
+(5, 'POR DESPERFECTOS DE LLUVIA', 0, 1),
+(6, 'PROMOCION PROVEEDOR', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `equi_equivalencia`
+--
+
+CREATE TABLE `equi_equivalencia` (
+  `equi_codigo` int(11) NOT NULL,
+  `equi_nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `equi_codigo_producto` int(11) DEFAULT '0',
+  `equi_cantidad` int(11) DEFAULT '0',
+  `equi_costo` decimal(10,4) DEFAULT '0.0000',
+  `equi_costo_extra` decimal(10,4) DEFAULT '0.0000',
+  `equi_costo_total` decimal(10,4) DEFAULT '0.0000',
+  `equi_precio` decimal(10,4) DEFAULT NULL,
+  `equi_fecha` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `equi_equivalencia`
+--
+
+INSERT INTO `equi_equivalencia` (`equi_codigo`, `equi_nombre`, `equi_codigo_producto`, `equi_cantidad`, `equi_costo`, `equi_costo_extra`, `equi_costo_total`, `equi_precio`, `equi_fecha`) VALUES
+(3, 'vlister', 97, 10, '8.0000', '2.0000', '10.0000', '12.0000', '2021-07-04 08:46:57'),
+(4, 'caja', 97, 20, '16.0000', '4.0000', '20.0000', '22.0000', '2021-07-04 08:50:26'),
+(6, 'cien', 97, 100, '80.0000', '20.0000', '100.0000', '500.0000', '2021-07-04 08:38:28'),
+(7, 'VLISTER', 213, 10, '1.5000', '0.0000', '1.5000', '2.5000', '2021-07-24 15:09:08'),
+(8, 'CAJA', 213, 30, '0.0000', '0.0000', '0.0000', '7.5000', '2021-07-24 15:10:49');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `form_formulario`
+--
+
+CREATE TABLE `form_formulario` (
+  `form_codigo` int(11) NOT NULL,
+  `form_nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `form_ruta` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `form_acceso` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `form_formulario`
+--
+
+INSERT INTO `form_formulario` (`form_codigo`, `form_nombre`, `form_ruta`, `form_acceso`) VALUES
+(1, 'Unidad', 'sis_unidad.php', 'unidad'),
+(2, 'Unidad Configurar', 'sis_unidad_crud.php', 'unidad_crud'),
+(3, 'Laboratorio', 'sis_laboratorio.php', 'labo'),
+(4, 'Laboratorio Configurar', 'sis_laboratorio_crud.php', 'labo_crud'),
+(5, 'Cliente', 'sis_cliente.php', 'clie'),
+(6, 'Cliente Configurar', 'sis_cliente_crud.php', 'clie_crud'),
+(7, 'Proveedor', 'sis_proveedor.php', 'prov'),
+(8, 'Provedor Configurar', 'sis_proveedor_crud.php', 'prov_crud'),
+(9, 'Producto', 'sis_producto.php', 'prod'),
+(10, 'Producto Configurar', 'sis_producto_crud.php', 'prod_crud'),
+(11, 'Equivalencias y Precios', 'sis_equivalencia.php', 'equi_crud'),
+(12, 'Usuario', 'sis_usuario.php', 'usu'),
+(13, 'Usuario Configurar', 'sis_usuario_crud.php', 'usu_crud');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `hist_historial`
+--
+
+CREATE TABLE `hist_historial` (
+  `hist_codigo` int(11) NOT NULL,
+  `hist_tabla` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `hist_descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `hist_usuario` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `hist_cod_usuario` int(11) DEFAULT '0',
+  `hist_fecha` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `hist_historial`
+--
+
+INSERT INTO `hist_historial` (`hist_codigo`, `hist_tabla`, `hist_descripcion`, `hist_usuario`, `hist_cod_usuario`, `hist_fecha`) VALUES
+(1, 'usuario', 'crea,jefe jefe,jefe,1', 'Josue Romero', 1, '2021-04-03 15:53:54'),
+(2, 'usuario', 'crea,n:tt* a:tt*,u:tt*,1', 'Josue Romero', 1, '2021-04-03 16:00:16'),
+(3, 'usuario', 'elimino,n:tt* a:tt*,u:tt*,1', 'Josue Romero', 1, '2021-04-03 16:03:13'),
+(4, 'usuario', 'elimino,n:tt* a:tt*,u:tt*,1', 'Josue Romero', 1, '2021-04-03 16:03:21'),
+(5, 'usuario', 'modifico,n:zz a:zz,u:zz,1', 'Josue Romero', 1, '2021-04-03 16:03:44'),
+(6, 'usuario', 'elimino,n:zz a:zz,u:zz,1', 'Josue Romero', 1, '2021-04-03 16:05:57'),
+(7, 'unidad', 'crea,n: caja 20', 'admin admin', 31, '2021-04-03 17:41:32'),
+(8, 'unidad', 'modifico,n: caja x 20', 'admin admin', 31, '2021-04-03 17:41:42'),
+(9, 'unidad', 'elimino,n: caja x 20', 'admin admin', 31, '2021-04-03 17:41:47'),
+(10, 'unidad', 'crea,n: Laboratorio MK p:El Salvador', 'admin admin', 31, '2021-04-03 17:59:20'),
+(11, 'laboratorio', 'crea,n: Laboratorios Suiza p:El Salvador', 'admin admin', 31, '2021-04-03 18:02:38'),
+(12, 'laboratorio', 'edita,n: Laboratorios Vijosa p:El Salvador', 'admin admin', 31, '2021-04-03 18:02:59'),
+(13, 'laboratorio', 'edita,n: Laboratorios Vijosa p:El Salvador', 'admin admin', 31, '2021-04-03 18:03:33'),
+(14, 'laboratorio', 'edita,n: Laboratorios Vijosa p:El Salvador', 'admin admin', 31, '2021-04-03 18:04:05'),
+(15, 'laboratorio', 'edita,n: Laboratorios Vijosa. p:El Salvador.', 'admin admin', 31, '2021-04-03 18:04:14'),
+(16, 'laboratorio', 'elimino,n: Laboratorios Vijosa.', 'admin admin', 31, '2021-04-03 18:04:22'),
+(17, 'laboratorio', 'elimina,n: Laboratorios Vijosa. p:El Salvador.', 'admin admin', 31, '2021-04-03 18:05:27'),
+(18, 'laboratorio', 'crea, n: prueba, p:eeuu', 'admin admin', 31, '2021-04-03 18:07:36'),
+(19, 'laboratorio', 'edita,n: prueba edited, p: edited', 'admin admin', 31, '2021-04-03 18:07:49'),
+(20, 'laboratorio', 'elimina, n: prueba edited, p: edited', 'admin admin', 31, '2021-04-03 18:07:54'),
+(21, 'laboratorio', 'crea, c:0, n: Laboratorio Gringo, p:EEUU', 'admin admin', 31, '2021-04-03 18:15:25'),
+(22, 'laboratorio', 'edita,c:5, n: Laboratorio Gringo.., p:EEUU..', 'admin admin', 31, '2021-04-03 18:15:35'),
+(23, 'laboratorio', 'elimina, c:5, n: Laboratorio Gringo.., p:EEUU..', 'admin admin', 31, '2021-04-03 18:15:40'),
+(24, 'proveedor', 'crea, c:0, n: Distribuidora fronteriza, p:Guatemala, d:Frontera nva Guatemala, r:Nombre encargado, c:tel 2550.666', 'admin admin', 31, '2021-04-03 18:54:56'),
+(25, 'proveedor', 'edita,c:2, n: xxDistribuidora fronteriza, p:xxGuatemala, d:xxFrontera nva Guatemala, r:xxNombre encargado, c:xxtel 2550.666', 'admin admin', 31, '2021-04-03 18:58:49'),
+(26, 'proveedor', 'edita,c:2, n: xxDistribuidora fronteriza, p:xxGuatemala, d:xxFrontera nva Guatemala, r:xxNombre encargado, c:xxtel 2550.666', 'admin admin', 31, '2021-04-03 18:59:38'),
+(27, 'proveedor', 'elimina, c:2, n: xxDistribuidora fronteriza, p:xxGuatemala, d:xxFrontera nva Guatemala, r:xxNombre encargado, c:xxtel 2550.666', 'admin admin', 31, '2021-04-03 18:59:43'),
+(28, 'producto', 'crea, c:0, n: segundo producto, d:descricp segundo, b:def, c1:1, c2:0.5, c3:1.5, p:2, e:10, l:0, p:0', 'Josue Romero', 1, '2021-04-04 04:48:43'),
+(29, 'producto', 'crea, c:0, n: segundo producto, d:descricp segundo, b:def, c1:1, c2:0.5, c3:1.5, p:2, e:10, l:0, p:0', 'Josue Romero', 1, '2021-04-04 04:49:02'),
+(30, 'producto', 'edita,c:2, n: segundo producto, d:descricp segundo, b:def, c1:1.00, c2:0.50, c3:1.50, p:2.00, e:10.00, l:3, p:1', 'Josue Romero', 1, '2021-04-04 04:49:17'),
+(31, 'producto', 'edita,c:2, n: segundo producto edit, d:descricp segundo edit, b:def, c1:10, c2:15, c3:150, p:20, e:100, l:0, p:0', 'Josue Romero', 1, '2021-04-04 04:57:29'),
+(32, 'producto', 'edita,c:2, n: segundo producto edit, d:descricp segundo edit, b:def, c1:10, c2:15, c3:150, p:20, e:100, l:0, p:0', 'Josue Romero', 1, '2021-04-04 04:57:59'),
+(33, 'producto', 'edita,c:2, n: segundo producto, d:descricp segundo, b:def, c1:1.00, c2:0.50, c3:1.50, p:2.00, e:10.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 04:58:04'),
+(34, 'producto', 'edita,c:2, n: segundo producto, d:descricp segundo, b:def, c1:1.00, c2:0.50, c3:1.50, p:2.00, e:10.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 04:58:53'),
+(35, 'producto', 'edita,c:2, n: segundo producto, d:descricp segundo, b:def, c1:1.00, c2:0.50, c3:1.50, p:2.00, e:10.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 05:00:22'),
+(36, 'producto', 'edita,c:2, n: segundo producto, d:descricp segundo, b:def, c1:1.00, c2:0.50, c3:1.50, p:2.00, e:10.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 05:02:03'),
+(37, 'producto', 'edita,c:2, n: segundo producto, d:descricp segundo, b:def, c1:1.00, c2:0.50, c3:1.50, p:2.00, e:10.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 05:28:22'),
+(38, 'producto', 'edita,c:2, n: segundo producto, d:descricp segundo, b:def, c1:1.00, c2:0.50, c3:1.50, p:2.00, e:10.00, l:2, p:1', 'Josue Romero', 1, '2021-04-04 05:28:31'),
+(39, 'producto', 'edita,c:2, n: segundo producto, d:descricp segundo, b:def, c1:1, c2:2, c3:3, p:2.00, e:10.00, l:2, p:1', 'Josue Romero', 1, '2021-04-04 05:28:41'),
+(40, 'producto', 'elimina, c:2, n: segundo producto, d:descricp segundo, b:def, c1:1.00, c2:2.00, c3:3.00, p:2.00, e:10.00, l:2, p:1', 'Josue Romero', 1, '2021-04-04 05:30:56'),
+(41, 'producto', 'crea, c:0, n: asd, d:, b:sdf, c1:, c2:, c3:, p:, e:, l:0, p:0', 'Josue Romero', 1, '2021-04-04 05:32:09'),
+(42, 'producto', 'crea, c:0, n: uuuuu, d:, b:uuuuu, c1:0, c2:0, c3:0, p:0, e:0, l:0, p:0', 'Josue Romero', 1, '2021-04-04 05:37:39'),
+(43, 'producto', 'elimina, c:4, n: uuuuu, d:, b:uuuuu, c1:0.00, c2:0.00, c3:0.00, p:0.00, e:0.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 05:37:48'),
+(44, 'producto', 'edita,c:3, n: asd, d:, b:sdf, c1:asdf, c2:asdf, c3:0, p:0.00, e:0.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 06:16:12'),
+(45, 'producto', 'edita,c:3, n: asd, d:, b:sdf, c1:0sdfasdf, c2:asdfasdfasdf, c3:0, p:0.00, e:0.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 06:18:03'),
+(46, 'producto', 'crea, c:0, n: asdfasd, d:, b:asdfasdf, c1:  asd  dsd, c2:0, c3:NaN, p:0, e:0, l:0, p:0', 'Josue Romero', 1, '2021-04-04 06:18:26'),
+(47, 'producto', 'elimina, c:3, n: asd, d:, b:sdf, c1:0.00, c2:0.00, c3:0.00, p:0.00, e:0.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 06:18:39'),
+(48, 'producto', 'elimina, c:5, n: asdfasd, d:, b:asdfasdf, c1:0.00, c2:0.00, c3:0.00, p:0.00, e:0.00, l:0, p:0', 'Josue Romero', 1, '2021-04-04 06:18:44'),
+(49, 'cliente', 'crea, c:0, n: Clientes Varios, p:, d:, r:, c:', 'Josue Romero', 1, '2021-04-04 18:21:54'),
+(50, 'cliente', 'edita,c:1, n: Editado, p:sdlkfjsdkjf, d:sdkfjsdkl, r:skdjfk, c:sdkfjsdk', 'Josue Romero', 1, '2021-04-04 18:22:09'),
+(51, 'cliente', 'elimina, c:1, n: Editado, p:sdlkfjsdkjf, d:sdkfjsdkl, r:skdjfk, c:sdkfjsdk', 'Josue Romero', 1, '2021-04-04 18:22:18'),
+(52, 'Equivalencia', 'crea, c:0, n: asdf, c: 0, cx: 0, ct: 0, p: 0, cntdad: ', 'Josue Romero', 1, '2021-06-30 16:05:29'),
+(53, 'Equivalencia', 'crea, c:0, n: zxcv, c: 2, cx: 2, ct: 0, p: 2, cntdad: 5', 'Josue Romero', 1, '2021-06-30 16:09:52'),
+(54, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.00, c2:0.00, c3:0.00, p:5.40, e:0.00, l:0, p:0', 'Josue Romero', 1, '2021-06-30 16:24:40'),
+(55, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.00, c2:0.00, c3:0.00, p:5.40, e:0.00, l:2, p:1', 'Josue Romero', 1, '2021-06-30 16:24:51'),
+(56, 'Equivalencia', 'crea, c:0, n: qwer, c: 0, cx: 0, ct: 55, p: 44, cntdad: 11', 'Josue Romero', 1, '2021-06-30 16:39:56'),
+(57, 'Equivalencia', 'crea, c:0, n: yuio, c: 22, cx: 33, ct: 55, p: 44, cntdad: 11', 'Josue Romero', 1, '2021-06-30 16:40:33'),
+(58, 'Equivalencia', 'edita,c:1, n: media docena, c: 11, cx: 22, ct: 33, p: 44, cntdad: 6', 'Josue Romero', 1, '2021-06-30 16:45:10'),
+(59, 'Equivalencia', 'elimina, c:2, n: zxcv, c: 2.0000, cx: 2.0000, ct: 0.0000, p: 2.0000, cntdad: 5', 'Josue Romero', 1, '2021-06-30 16:49:02'),
+(60, 'Equivalencia', 'elimina, c:1, n: media docena, c: 11.0000, cx: 11.0000, ct: 33.0000, p: 44.0000, cntdad: 6', 'Josue Romero', 1, '2021-06-30 16:49:07'),
+(61, 'usuario', 'modifico,n:jefe a:jefe,u:jefe,1', 'Josue Romero', 1, '2021-07-01 15:37:53'),
+(62, 'usuario', 'modifico,n:jefe 123 a:jefe,u:jefe,1', 'Josue Romero', 1, '2021-07-01 15:38:00'),
+(63, 'usuario', 'modifico,n:jefe  a:jefe,u:jefe,1', 'Josue Romero', 1, '2021-07-01 15:38:07'),
+(64, 'unidad', 'elimino,n: ', 'Josue Romero', 1, '2021-07-01 17:33:28'),
+(65, 'unidad', 'elimino,n: ', 'Josue Romero', 1, '2021-07-01 17:33:48'),
+(66, 'unidad', 'elimino,n: ', 'Josue Romero', 1, '2021-07-01 17:33:48'),
+(67, 'unidad', 'elimino,n: ', 'Josue Romero', 1, '2021-07-01 17:33:58'),
+(68, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:25:37'),
+(69, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:26:26'),
+(70, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:26:29'),
+(71, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:26:30'),
+(72, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:28:13'),
+(73, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:29:10'),
+(74, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:30:40'),
+(75, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:30:55'),
+(76, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:31:34'),
+(77, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:31:40'),
+(78, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 10:32:26'),
+(79, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-02 14:06:22'),
+(80, 'Equivalencia', 'edita,c:3, n: qwer, c: 1, cx: 2, ct: 3, p: 44.0000, cntdad: 11', 'Josue Romero', 1, '2021-07-02 14:07:04'),
+(81, 'usuario', 'modifico,n:jefe  a:jefe,u:jefe,1', 'Josue Romero', 1, '2021-07-03 10:01:35'),
+(82, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-07-03 10:01:42'),
+(83, 'usuario', 'modifico,n:jefe  a:jefe,u:jefe,1', 'Josue Romero', 1, '2021-07-03 10:02:58'),
+(84, 'usuario', 'modifico,n:jefe  a:jefe,u:jefe,1', 'Josue Romero', 1, '2021-07-03 10:04:05'),
+(85, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-07-03 10:05:05'),
+(86, 'Equivalencia', 'crea, c:0, n: das, c: 0, cx: 0, ct: 0, p: 0, cntdad: 0', 'Josue Romero', 1, '2021-07-03 10:29:29'),
+(87, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.00, c2:0.00, c3:0.00, p:5.40, e:0, l:2, p:1', 'Josue Romero', 1, '2021-07-04 04:06:32'),
+(88, 'Equivalencia', 'edita,c:3, n: vlister, c: 1.0000, cx: 1.0000, ct: 3.0000, p: 44.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 04:06:50'),
+(89, 'Equivalencia', 'edita,c:4, n: yuio, c: 22.0000, cx: 33.0000, ct: 55.0000, p: 44.0000, cntdad: 20', 'Josue Romero', 1, '2021-07-04 04:06:58'),
+(90, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.9, c2:0.1, c3:1, p:5.40, e:0, l:2, p:1', 'Josue Romero', 1, '2021-07-04 07:44:13'),
+(91, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:1.3, c2:0.20, c3:1.5, p:5.40, e:0, l:2, p:1', 'Josue Romero', 1, '2021-07-04 07:45:41'),
+(92, 'Equivalencia', 'edita,c:3, n: vlister, c: 7, cx: 3, ct: 10, p: 44.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:12:43'),
+(93, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.8, c2:0.2, c3:1, p:5.40, e:0, l:2, p:1', 'Josue Romero', 1, '2021-07-04 08:15:06'),
+(94, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.95, c2:0.05, c3:1, p:5.40, e:0, l:2, p:1', 'Josue Romero', 1, '2021-07-04 08:23:12'),
+(95, 'Equivalencia', 'edita,c:3, n: vlister, c: 9.5000, cx: 0.5000, ct: 10.0000, p: 12, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:23:47'),
+(96, 'Equivalencia', 'edita,c:4, n: yuio, c: 19.0000, cx: 1.0000, ct: 20.0000, p: 22, cntdad: 20', 'Josue Romero', 1, '2021-07-04 08:24:00'),
+(97, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.95, c2:0.05, c3:1.00, p:5.40, e:0, l:2, p:1', 'Josue Romero', 1, '2021-07-04 08:27:32'),
+(98, 'Equivalencia', 'edita,c:3, n: vlister, c: 9.3000, cx: 0.7000, ct: 10, p: 12.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:29:03'),
+(99, 'Equivalencia', 'edita,c:3, n: vlister, c: 9.7000, cx: 0.3000, ct: 10, p: 12.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:29:48'),
+(100, 'Equivalencia', 'edita,c:3, n: vlister, c: 9.7000, cx: 0.3, ct: 10, p: 12.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:34:48'),
+(101, 'Equivalencia', 'edita,c:3, n: vlister, c: 9.7000, cx: 0.3, ct: 10, p: 12.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:35:19'),
+(102, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.91, c2:0.09, c3:1, p:5.40, e:0, l:2, p:1', 'Josue Romero', 1, '2021-07-04 08:36:38'),
+(103, 'Equivalencia', 'edita,c:3, n: vlister, c: 9.2, cx: 0.8, ct: 10, p: 12.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:37:08'),
+(104, 'Equivalencia', 'crea, c:0, n: cien, c: 0, cx: 0, ct: 0, p: 500, cntdad: 100', 'Josue Romero', 1, '2021-07-04 08:38:28'),
+(105, 'Equivalencia', 'edita,c:3, n: vlister, c: 9.2000, cx: 9.2000, ct: 10.0000, p: 12.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:38:40'),
+(106, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.90, c2:0.1, c3:1, p:5.40, e:0, l:2, p:1', 'Josue Romero', 1, '2021-07-04 08:42:08'),
+(107, 'Equivalencia', 'edita,c:3, n: vlister, c: 9.2, cx: 0.8, ct: 10, p: 12.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:42:41'),
+(108, 'Equivalencia', 'edita,c:4, n: yuio, c: 18.5, cx: 1.5, ct: 20, p: 22.0000, cntdad: 20', 'Josue Romero', 1, '2021-07-04 08:45:33'),
+(109, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.90, c2:0.1, c3:1, p:5.40, e:0, l:2, p:1', 'Josue Romero', 1, '2021-07-04 08:46:35'),
+(110, 'Equivalencia', 'edita,c:3, n: vlister, c: 8, cx: 2, ct: 10, p: 12.0000, cntdad: 10', 'Josue Romero', 1, '2021-07-04 08:46:57'),
+(111, 'Equivalencia', 'edita,c:4, n: caja, c: 16.0000, cx: 4.0000, ct: 20.0000, p: 22.0000, cntdad: 20', 'Josue Romero', 1, '2021-07-04 08:50:26'),
+(112, 'actualizo exist', 'edita, Ant: 1 Actual:  -Ant:  Actual:  -Ant:  Actual:  -Ant: 4 Actual:  -Ant:  Actual:  - ', 'Josue Romero', 1, '2021-07-04 11:49:47'),
+(113, 'actualizo exist', 'edita, Ant1: 1000 Actual1: 111111111111 -Ant2:  Actual2:  -Ant3:  Actual3:  -Ant4: 40000 Actual4: 444444444 -Ant5:  Actual5:  - ', 'Josue Romero', 1, '2021-07-04 11:51:46'),
+(114, 'actualizo exist', 'edita, Ant1: 2147483647 Actual1: 1111111111 -Ant2:  Actual2:  -Ant3:  Actual3:  -Ant4: 444444444 Actual4: 4444444 -Ant5:  Actual5:  - ', 'Josue Romero', 1, '2021-07-04 11:52:01'),
+(115, 'concepto', 'crea,n: POR BONIFICACION', 'Josue Romero', 1, '2021-07-04 12:22:49'),
+(116, 'concepto', 'crea,n: POR BONIFICACION', 'Josue Romero', 1, '2021-07-04 12:23:03'),
+(117, 'concepto', 'modifico,n: POR BONIFICACION EDITADO', 'Josue Romero', 1, '2021-07-04 12:25:14'),
+(118, 'concepto', 'modifico,n: POR VENCIMIENTO', 'Josue Romero', 1, '2021-07-04 12:25:45'),
+(119, 'concepto', 'modifico,n: POR BONIFICACION EDITADO', 'Josue Romero', 1, '2021-07-04 12:25:53'),
+(120, 'concepto', 'modifico,n: POR BONIFICACION EDITADO', 'Josue Romero', 1, '2021-07-04 12:26:01'),
+(121, 'concepto', 'modifico,n: POR BONIFICACION EDITADO', 'Josue Romero', 1, '2021-07-04 12:26:45'),
+(122, 'concepto', 'modifico,n: POR BONIFICACION EDITADO', 'Josue Romero', 1, '2021-07-04 12:26:52'),
+(123, 'concepto', 'modifico,n: POR BONIFICACION EDITADO', 'Josue Romero', 1, '2021-07-04 12:26:58'),
+(124, 'concepto', 'modifico,n: POR BONIFICACION ', 'Josue Romero', 1, '2021-07-04 12:27:07'),
+(125, 'concepto', 'modifico,n: POR COMPRA', 'Josue Romero', 1, '2021-07-04 13:30:06'),
+(126, 'concepto', 'modifico,n: POR VENCIMIENTO', 'Josue Romero', 1, '2021-07-04 13:30:10'),
+(127, 'concepto', 'modifico,n: POR VENTA', 'Josue Romero', 1, '2021-07-04 13:30:14'),
+(128, 'unidad', 'crea,n: 123', 'Josue Romero', 1, '2021-07-04 14:29:48'),
+(129, 'producto', 'edita,c:97, n: ACETAMINOFEN MK 500 MG X 100 TABLETAS	, d:, b:741000281, c1:0.80, c2:0.20, c3:1.00, p:5.40, e:0, l:0, p:0', 'Josue Romero', 1, '2021-07-04 18:37:37'),
+(130, 'Lote Vencimient', 'crea,l: lote 1, c: 222, cr: 222, f: 2021-07-20, s:  ', 'Josue Romero', 1, '2021-07-20 11:19:41'),
+(131, 'Lote Vencimient', 'crea,l: lote dos, c: , cr: , f: , s:  ', 'Josue Romero', 1, '2021-07-20 11:30:38'),
+(132, 'Lote Vencimient', 'crea,l: lote tres, c: , cr: , f: , s:  ', 'Josue Romero', 1, '2021-07-20 11:31:41'),
+(133, 'Lote Vencimient', 'crea,l: sdafsdf, c: , cr: , f: , s:  ', 'Josue Romero', 1, '2021-07-20 11:38:56'),
+(134, 'Lote Vencimient', 'crea,l: lote cuatro, c: , cr: , f: , s:  ', 'Josue Romero', 1, '2021-07-20 11:40:22'),
+(135, 'Lote Vencimient', 'crea,l: lote cinco, c: , cr: , f: #5 AGENCIA #5 edit five, s:  ', 'Josue Romero', 1, '2021-07-20 11:43:29'),
+(136, 'Lote Vencimient', 'crea,l: lote seis, c: , cr: , f: 4, s:  ', 'Josue Romero', 1, '2021-07-20 11:45:16'),
+(137, 'Lote Vencimient', 'crea,l: lote once, c: 11, cr: 11, f: 2021-07-11, s: 4 ', 'Josue Romero', 1, '2021-07-20 11:48:29'),
+(138, 'unidad', 'elimino,n: ', 'Josue Romero', 1, '2021-07-20 13:02:03'),
+(139, 'lote vencimient', 'elimino,n: lote once', 'Josue Romero', 1, '2021-07-20 13:03:05'),
+(140, 'lote vencimient', 'modifico,l: L-2021-02, c: 15, cr: 15, f: 2021-05-30, s: 5 ', 'Josue Romero', 1, '2021-07-20 13:09:39'),
+(141, 'lote vencimient', 'modifico,l: L-2021-02, c: 15, cr: 15, f: 2021-05-30, s: 5 ', 'Josue Romero', 1, '2021-07-20 13:10:18'),
+(142, 'lote vencimient', 'modifico,l: L-2021-03, c: 20, cr: 20, f: 2021-12-12, s: 5 ', 'Josue Romero', 1, '2021-07-20 13:10:32'),
+(143, 'lote vencimient', 'modifico,l: L-2021-03, c: 20, cr: 20, f: 2021-12-12, s: 5 ', 'Josue Romero', 1, '2021-07-20 13:10:50'),
+(144, 'lote vencimient', 'modifico,l: L-2021-01, c: 10, cr: 10, f: 2021-07-10, s: 5 ', 'Josue Romero', 1, '2021-07-20 13:10:58'),
+(145, 'lote vencimient', 'modifico,l: L-2021-02., c: 16, cr: 16, f: 2021-05-29, s: 2 ', 'Josue Romero', 1, '2021-07-20 13:11:16'),
+(146, 'lote vencimient', 'modifico,l: L-2021-02., c: 16, cr: 16, f: 2021-05-29, s: 5 ', 'Josue Romero', 1, '2021-07-20 13:11:26'),
+(147, 'concepto', 'crea,n: POR DESPERFECTOS DE LLUVIA', 'Josue Romero', 1, '2021-07-24 15:01:38'),
+(148, 'concepto', 'crea,n: PROMOCION PROVEEDOR', 'Josue Romero', 1, '2021-07-24 15:01:54'),
+(149, 'producto', 'crea, c:0, n: DOLOFIN, d:, b:911, c1:0, c2:0, c3:0, p:0, e:0, l:0, p:0', 'Josue Romero', 1, '2021-07-24 15:05:03'),
+(150, 'producto', 'edita,c:213, n: DOLOFIN, d:, b:911, c1:0.15, c2:0, c3:0.15, p:0.25, e:0, l:0, p:0', 'Josue Romero', 1, '2021-07-24 15:06:38'),
+(151, 'Equivalencia', 'crea, c:0, n: VLISTER, c: 0, cx: 0, ct: 0, p: 2.5, cntdad: 10', 'Josue Romero', 1, '2021-07-24 15:09:08'),
+(152, 'producto', 'edita,c:213, n: DOLOFIN, d:, b:911, c1:0.15, c2:0.00, c3:0.15, p:0.25, e:0, l:0, p:0', 'Josue Romero', 1, '2021-07-24 15:09:52'),
+(153, 'Equivalencia', 'crea, c:0, n: CAJA, c: 0, cx: 0, ct: 0, p: 7.5, cntdad: 30', 'Josue Romero', 1, '2021-07-24 15:10:49'),
+(154, 'Lote Vencimient', 'crea,l: LT-DOLO-01, c: 300, cr: 250, f: 2021-07-08, s: 1 ', 'Josue Romero', 1, '2021-07-24 15:17:46'),
+(155, 'Lote Vencimient', 'crea,l: LT-DOLO-02, c: 20, cr: 20, f: 2021-07-25, s: 1 ', 'Josue Romero', 1, '2021-07-24 15:18:30'),
+(156, 'Lote Vencimient', 'crea,l: LT-DOLO-01, c: 25, cr: 25, f: 2021-08-19, s: 1 ', 'Josue Romero', 1, '2021-07-24 15:20:25'),
+(157, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-24 15:34:54'),
+(158, 'Sucursales', 'modifico,n: agencias', 'Josue Romero', 1, '2021-07-24 15:34:58'),
+(159, 'lote vencimient', 'modifico,l: L-2021-02., c: 16, cr: 16, f: 2021-05-29, s: 5 ', 'Josue Romero', 1, '2021-08-03 10:01:32'),
+(160, 'lote vencimient', 'modifico,l: LT-DOLO-01, c: 300, cr: 300, f: 2021-07-08, s: 1 ', 'Josue Romero', 1, '2021-08-04 11:12:45'),
+(161, 'Talonarios', 'modifico,n: agencias', 'Josue Romero', 1, '2021-08-05 15:52:24'),
+(162, 'Talonarios', 'modifico,n: agencias', 'Josue Romero', 1, '2021-08-05 15:54:41'),
+(163, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-05 17:01:18'),
+(164, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-05 17:01:23'),
+(165, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-05 17:01:29'),
+(166, 'usuario', 'crea,n:Juan a:Perez,u:juan,1', 'Josue Romero', 1, '2021-08-05 17:03:57'),
+(167, 'usuario', 'modifico,n:caja1 a:caja1,u:caja1,1', 'Josue Romero', 1, '2021-08-05 17:04:23'),
+(168, 'usuario', 'crea,n:caja2 a:caja2,u:caja2,1', 'Josue Romero', 1, '2021-08-05 17:05:25'),
+(169, 'Talonarios', 'modifico,n: agencias', 'Josue Romero', 1, '2021-08-05 18:45:28'),
+(170, 'Talonarios', 'modifico,n: agencias', 'Josue Romero', 1, '2021-08-05 18:46:47'),
+(171, 'Talonarios', 'modifico,n: agencias', 'Josue Romero', 1, '2021-08-05 18:47:31'),
+(172, 'Talonarios', 'modifico,n: agencias', 'Josue Romero', 1, '2021-08-05 18:48:15'),
+(173, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-20 10:59:36'),
+(174, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-21 10:26:41'),
+(175, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-21 10:43:40'),
+(176, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-21 10:44:42'),
+(177, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-21 10:51:21'),
+(178, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-21 14:44:33'),
+(179, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-21 14:46:40'),
+(180, 'usuario', 'modifico,n:Josue a:Romero,u:admin,1', 'Josue Romero', 1, '2021-08-21 14:46:46'),
+(181, 'usuario', 'modifico,n:caja1 a:caja1,u:caja1,1', 'Josue Romero', 1, '2021-08-21 18:27:23'),
+(182, 'usuario', 'modifico,n:caja1 a:caja1,u:caja1,1', 'Josue Romero', 1, '2021-08-21 18:45:24');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `kardex`
+--
+
+CREATE TABLE `kardex` (
+  `kard_codigo` int(11) NOT NULL,
+  `kard_tipo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `kard_concepto` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `kard_fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `kard_sucursal_codigo` int(11) DEFAULT NULL,
+  `kard_producto_codigo` int(11) DEFAULT '0',
+  `kard_producto_nombre` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `kard_unidad_codigo` int(11) DEFAULT '0',
+  `kard_unidad` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `kard_cantidad_unidades` int(11) DEFAULT '0',
+  `kard_cantidad` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `kardex`
+--
+
+INSERT INTO `kardex` (`kard_codigo`, `kard_tipo`, `kard_concepto`, `kard_fecha`, `kard_sucursal_codigo`, `kard_producto_codigo`, `kard_producto_nombre`, `kard_unidad_codigo`, `kard_unidad`, `kard_cantidad_unidades`, `kard_cantidad`) VALUES
+(190, 'SALIDA', 'POR VENCIMIENTO', '2021-07-21 16:26:41', 2, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 3, 'vlister', 10, 5),
+(191, 'SALIDA', 'POR VENCIMIENTO', '2021-07-21 16:26:41', 2, 87, 'CANESTEN CREMA VAGINAL 1 % X 35 GR', 0, 'Unidad', 1, 1),
+(192, 'SALIDA', 'POR VENCIMIENTO', '2021-07-21 16:30:04', 2, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 10),
+(193, 'ENTRADA', 'POR COMPRA', '2021-07-21 16:30:46', 1, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 15),
+(194, 'SALIDA', 'POR VENCIMIENTO', '2021-07-22 09:34:51', 3, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 4, 'caja', 20, 2),
+(195, 'SALIDA', 'POR VENCIMIENTO', '2021-07-22 09:35:16', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 4, 'caja', 20, 2),
+(196, 'SALIDA', 'POR VENCIMIENTO', '2021-07-22 10:04:55', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 12),
+(197, 'SALIDA', 'POR VENCIMIENTO', '2021-07-22 10:04:55', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 10),
+(198, 'SALIDA', 'POR VENCIMIENTO', '2021-07-22 10:04:55', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 9),
+(199, 'SALIDA', 'POR VENCIMIENTO', '2021-07-22 10:06:22', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 12),
+(200, 'SALIDA', 'POR VENCIMIENTO', '2021-07-22 10:06:22', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 10),
+(201, 'SALIDA', 'POR VENCIMIENTO', '2021-07-22 10:06:22', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 9),
+(202, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:37:32', 3, 60, 'BRONK OFLU HEDERA JARABE X 120ML.', 0, 'Unidad', 1, 1),
+(203, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:37:32', 3, 43, 'CROMATOMBIC FERRO X 5 AMPOLLAS RM', 0, 'Unidad', 1, 1),
+(204, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:37:32', 3, 29, 'DICLOFENACO BK 75 MG. AMPOLLA RM ND', 0, 'Unidad', 1, 1),
+(205, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:37:32', 3, 186, 'DORIVAL 200 MG. X 60 TABLETAS', 0, 'Unidad', 1, 1),
+(206, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:37:56', 3, 62, 'COMPLEJO B FUERTE X10 CC RM', 0, 'Unidad', 1, 1),
+(207, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:37:56', 3, 35, 'DICLOFENACO SODICO GEL CAPS SM X 100 RM', 0, 'Unidad', 1, 1),
+(208, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:37:56', 3, 33, 'FENAKER JARABE X 120 ML', 0, 'Unidad', 1, 1),
+(209, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:37:56', 3, 109, 'LAGRIMAS DE BIOMIXIN X 100 ND', 0, 'Unidad', 1, 1),
+(210, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:38:03', 3, 62, 'COMPLEJO B FUERTE X10 CC RM', 0, 'Unidad', 1, 1),
+(211, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:38:03', 3, 35, 'DICLOFENACO SODICO GEL CAPS SM X 100 RM', 0, 'Unidad', 1, 1),
+(212, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:38:03', 3, 33, 'FENAKER JARABE X 120 ML', 0, 'Unidad', 1, 1),
+(213, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:38:03', 3, 109, 'LAGRIMAS DE BIOMIXIN X 100 ND', 0, 'Unidad', 1, 1),
+(214, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:38:17', 3, 62, 'COMPLEJO B FUERTE X10 CC RM', 0, 'Unidad', 1, 1),
+(215, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:38:17', 3, 35, 'DICLOFENACO SODICO GEL CAPS SM X 100 RM', 0, 'Unidad', 1, 1),
+(216, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:38:17', 3, 33, 'FENAKER JARABE X 120 ML', 0, 'Unidad', 1, 1),
+(217, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:38:17', 3, 109, 'LAGRIMAS DE BIOMIXIN X 100 ND', 0, 'Unidad', 1, 1),
+(218, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:46:07', 4, 173, 'CREMOQUINONA 4% X 30 GR. RM', 0, 'Unidad', 1, 1),
+(219, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:46:07', 4, 19, 'ERITROMICINA ARGUS 500 MG. X 50 TABLETAS', 0, 'Unidad', 1, 1),
+(220, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:46:46', 2, 94, 'CLORFENIRAMINA GAMMA 8 MG X 100 TABLETAS', 0, 'Unidad', 1, 1),
+(221, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:46:46', 2, 86, 'FLUCONAZOL ARGUS 200 MG X 2 CPS RM', 0, 'Unidad', 1, 1),
+(222, 'ENTRADA', 'POR COMPRA', '2021-07-22 16:46:46', 2, 40, 'MUSFLEX COMPUESTO X 50 TABLETAS', 0, 'Unidad', 1, 1),
+(223, '', 'POR ANULACION: # 9 ', '2021-07-24 14:36:29', 0, 173, 'CREMOQUINONA 4% X 30 GR. RM', 0, 'Unidad', 1, 1),
+(224, '', 'POR ANULACION: # 9 ', '2021-07-24 14:36:29', 0, 19, 'ERITROMICINA ARGUS 500 MG. X 50 TABLETAS', 0, 'Unidad', 1, 1),
+(225, 'ENTRADA', 'POR COMPRA', '2021-07-24 14:39:03', 3, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(226, 'ENTRADA', 'POR COMPRA', '2021-07-24 14:39:03', 3, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(227, 'ENTRADA', 'POR COMPRA', '2021-07-24 14:39:03', 3, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(228, '', 'POR ANULACION: # 11 ', '2021-07-24 14:39:31', 0, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(229, '', 'POR ANULACION: # 11 ', '2021-07-24 14:39:31', 0, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(230, '', 'POR ANULACION: # 11 ', '2021-07-24 14:39:31', 0, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(231, '', 'POR ANULACION: # 11 ', '2021-07-24 14:41:08', 0, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(232, '', 'POR ANULACION: # 11 ', '2021-07-24 14:41:08', 0, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(233, '', 'POR ANULACION: # 11 ', '2021-07-24 14:41:08', 0, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(234, '', 'POR ANULACION: # 11 ', '2021-07-24 14:42:00', 0, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(235, '', 'POR ANULACION: # 11 ', '2021-07-24 14:42:00', 0, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(236, '', 'POR ANULACION: # 11 ', '2021-07-24 14:42:00', 0, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(237, 'ENTRADA', 'POR COMPRA', '2021-07-24 15:46:22', 1, 213, 'DOLOFIN', 0, 'TABLETA', 1, 1),
+(238, 'ENTRADA', 'POR COMPRA', '2021-07-24 15:46:22', 1, 213, 'DOLOFIN', 7, 'VLISTER', 10, 2),
+(239, 'ENTRADA', 'POR COMPRA', '2021-07-24 15:46:22', 1, 213, 'DOLOFIN', 8, 'CAJA', 30, 3),
+(240, 'ENTRADA', 'POR ANULACION: # 2 POR VENCIMIENTO', '2021-08-02 16:43:17', 2, 14, 'IRBESARTAN ECOMED 150 MG. X 100 TABLETAS  RM', 0, 'Unidad', 1, 1),
+(241, 'ENTRADA', 'POR ANULACION: # 2 POR VENCIMIENTO', '2021-08-02 16:43:17', 2, 93, 'SELECTAVIT AMPOLLA X 10 ML RM', 0, 'Unidad', 1, 1),
+(242, 'ENTRADA', 'POR ANULACION: # 2 POR VENCIMIENTO', '2021-08-02 16:43:17', 2, 7, 'ZENTEL SUSPENSION X 10 ML. RM', 0, 'Unidad', 1, 1),
+(243, 'ENTRADA', 'POR ANULACION: # 2 POR VENCIMIENTO', '2021-08-02 16:43:17', 2, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 4, 'caja', 20, 3),
+(244, 'ENTRADA', 'POR ANULACION: # 3 POR VENCIMIENTO', '2021-08-02 16:43:34', 2, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 3, 'vlister', 10, 5),
+(245, 'ENTRADA', 'POR ANULACION: # 3 POR VENCIMIENTO', '2021-08-02 16:43:34', 2, 87, 'CANESTEN CREMA VAGINAL 1 % X 35 GR', 0, 'Unidad', 1, 1),
+(246, 'ENTRADA', 'POR ANULACION: # 4 POR VENCIMIENTO', '2021-08-02 16:43:47', 2, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 10),
+(247, 'SALIDA', 'POR ANULACION: # 5 POR COMPRA', '2021-08-02 16:47:33', 1, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 15),
+(248, 'ENTRADA', 'POR ANULACION: # 6 POR VENCIMIENTO', '2021-08-02 16:47:35', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 12),
+(249, 'ENTRADA', 'POR ANULACION: # 6 POR VENCIMIENTO', '2021-08-02 16:47:35', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 10),
+(250, 'ENTRADA', 'POR ANULACION: # 6 POR VENCIMIENTO', '2021-08-02 16:47:35', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 9),
+(251, 'SALIDA', 'POR ANULACION: # 10 POR COMPRA', '2021-08-02 16:49:40', 2, 94, 'CLORFENIRAMINA GAMMA 8 MG X 100 TABLETAS', 0, 'Unidad', 1, 1),
+(252, 'SALIDA', 'POR ANULACION: # 10 POR COMPRA', '2021-08-02 16:49:40', 2, 86, 'FLUCONAZOL ARGUS 200 MG X 2 CPS RM', 0, 'Unidad', 1, 1),
+(253, 'SALIDA', 'POR ANULACION: # 10 POR COMPRA', '2021-08-02 16:49:40', 2, 40, 'MUSFLEX COMPUESTO X 50 TABLETAS', 0, 'Unidad', 1, 1),
+(254, 'SALIDA', 'POR ANULACION: # 12 POR COMPRA', '2021-08-02 16:51:08', 1, 213, 'DOLOFIN', 0, 'TABLETA', 1, 1),
+(255, 'SALIDA', 'POR ANULACION: # 12 POR COMPRA', '2021-08-02 16:51:08', 1, 213, 'DOLOFIN', 7, 'VLISTER', 10, 2),
+(256, 'SALIDA', 'POR ANULACION: # 12 POR COMPRA', '2021-08-02 16:51:08', 1, 213, 'DOLOFIN', 8, 'CAJA', 30, 3),
+(257, 'SALIDA', 'POR ANULACION: # 9 POR COMPRA', '2021-08-02 16:52:23', 4, 173, 'CREMOQUINONA 4% X 30 GR. RM', 0, 'Unidad', 1, 1),
+(258, 'SALIDA', 'POR ANULACION: # 9 POR COMPRA', '2021-08-02 16:52:23', 4, 19, 'ERITROMICINA ARGUS 500 MG. X 50 TABLETAS', 0, 'Unidad', 1, 1),
+(259, 'SALIDA', 'POR ANULACION: # 8 POR COMPRA', '2021-08-02 16:53:36', 3, 62, 'COMPLEJO B FUERTE X10 CC RM', 0, 'Unidad', 1, 1),
+(260, 'SALIDA', 'POR ANULACION: # 8 POR COMPRA', '2021-08-02 16:53:36', 3, 35, 'DICLOFENACO SODICO GEL CAPS SM X 100 RM', 0, 'Unidad', 1, 1),
+(261, 'SALIDA', 'POR ANULACION: # 8 POR COMPRA', '2021-08-02 16:53:36', 3, 33, 'FENAKER JARABE X 120 ML', 0, 'Unidad', 1, 1),
+(262, 'SALIDA', 'POR ANULACION: # 8 POR COMPRA', '2021-08-02 16:53:36', 3, 109, 'LAGRIMAS DE BIOMIXIN X 100 ND', 0, 'Unidad', 1, 1),
+(263, 'SALIDA', 'POR ANULACION: # 7 POR COMPRA', '2021-08-02 16:56:12', 3, 60, 'BRONK OFLU HEDERA JARABE X 120ML.', 0, 'Unidad', 1, 1),
+(264, 'SALIDA', 'POR ANULACION: # 7 POR COMPRA', '2021-08-02 16:56:12', 3, 43, 'CROMATOMBIC FERRO X 5 AMPOLLAS RM', 0, 'Unidad', 1, 1),
+(265, 'SALIDA', 'POR ANULACION: # 7 POR COMPRA', '2021-08-02 16:56:12', 3, 29, 'DICLOFENACO BK 75 MG. AMPOLLA RM ND', 0, 'Unidad', 1, 1),
+(266, 'SALIDA', 'POR ANULACION: # 7 POR COMPRA', '2021-08-02 16:56:12', 3, 186, 'DORIVAL 200 MG. X 60 TABLETAS', 0, 'Unidad', 1, 1),
+(267, 'SALIDA', 'POR ANULACION: # 10 POR COMPRA', '2021-08-02 16:56:23', 2, 94, 'CLORFENIRAMINA GAMMA 8 MG X 100 TABLETAS', 0, 'Unidad', 1, 1),
+(268, 'SALIDA', 'POR ANULACION: # 10 POR COMPRA', '2021-08-02 16:56:23', 2, 86, 'FLUCONAZOL ARGUS 200 MG X 2 CPS RM', 0, 'Unidad', 1, 1),
+(269, 'SALIDA', 'POR ANULACION: # 10 POR COMPRA', '2021-08-02 16:56:23', 2, 40, 'MUSFLEX COMPUESTO X 50 TABLETAS', 0, 'Unidad', 1, 1),
+(270, 'ENTRADA', 'POR ANULACION: # 6 POR VENCIMIENTO', '2021-08-02 16:57:10', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 12),
+(271, 'ENTRADA', 'POR ANULACION: # 6 POR VENCIMIENTO', '2021-08-02 16:57:10', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 10),
+(272, 'ENTRADA', 'POR ANULACION: # 6 POR VENCIMIENTO', '2021-08-02 16:57:10', 5, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 9),
+(273, 'SALIDA', 'POR ANULACION: # 5 POR COMPRA', '2021-08-02 16:57:13', 1, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 15),
+(274, 'ENTRADA', 'POR ANULACION: # 4 POR VENCIMIENTO', '2021-08-02 16:59:01', 2, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 10),
+(275, 'ENTRADA', 'POR ANULACION: # 3 POR VENCIMIENTO', '2021-08-02 16:59:31', 2, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 3, 'vlister', 10, 5),
+(276, 'ENTRADA', 'POR ANULACION: # 3 POR VENCIMIENTO', '2021-08-02 16:59:31', 2, 87, 'CANESTEN CREMA VAGINAL 1 % X 35 GR', 0, 'Unidad', 1, 1),
+(277, 'ENTRADA', 'POR ANULACION: # 2 POR VENCIMIENTO', '2021-08-02 17:25:59', 2, 14, 'IRBESARTAN ECOMED 150 MG. X 100 TABLETAS  RM', 0, 'Unidad', 1, 1),
+(278, 'ENTRADA', 'POR ANULACION: # 2 POR VENCIMIENTO', '2021-08-02 17:25:59', 2, 93, 'SELECTAVIT AMPOLLA X 10 ML RM', 0, 'Unidad', 1, 1),
+(279, 'ENTRADA', 'POR ANULACION: # 2 POR VENCIMIENTO', '2021-08-02 17:25:59', 2, 7, 'ZENTEL SUSPENSION X 10 ML. RM', 0, 'Unidad', 1, 1),
+(280, 'ENTRADA', 'POR ANULACION: # 2 POR VENCIMIENTO', '2021-08-02 17:25:59', 2, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 4, 'caja', 20, 3),
+(281, 'SALIDA', 'POR ANULACION: # 11 POR COMPRA', '2021-08-02 17:27:05', 3, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(282, 'SALIDA', 'POR ANULACION: # 11 POR COMPRA', '2021-08-02 17:27:05', 3, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(283, 'SALIDA', 'POR ANULACION: # 11 POR COMPRA', '2021-08-02 17:27:05', 3, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(284, 'SALIDA', 'POR DESPERFECTOS DE LLUVIA', '2021-08-04 11:22:11', 2, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 1),
+(285, 'SALIDA', 'POR DESPERFECTOS DE LLUVIA', '2021-08-04 11:22:11', 2, 102, 'ACETAMINOFEN MK GOTAS X 30 ML', 0, 'Unidad', 1, 1),
+(286, 'SALIDA', 'POR DESPERFECTOS DE LLUVIA', '2021-08-04 11:22:11', 2, 181, 'ACETAMINOFEN MK JARABE X 60 ML', 0, 'Unidad', 1, 1),
+(287, 'ENTRADA', 'POR ANULACION: # 17 POR DESPERFECTOS DE LLUVIA', '2021-08-04 11:23:42', 2, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'tabletas', 1, 1),
+(288, 'ENTRADA', 'POR ANULACION: # 17 POR DESPERFECTOS DE LLUVIA', '2021-08-04 11:23:42', 2, 102, 'ACETAMINOFEN MK GOTAS X 30 ML', 0, 'Unidad', 1, 1),
+(289, 'ENTRADA', 'POR ANULACION: # 17 POR DESPERFECTOS DE LLUVIA', '2021-08-04 11:23:42', 2, 181, 'ACETAMINOFEN MK JARABE X 60 ML', 0, 'Unidad', 1, 1),
+(290, 'ENTRADA', 'POR COMPRA', '2021-08-20 10:17:02', 2, 181, 'ACETAMINOFEN MK JARABE X 60 ML', 0, 'Unidad', 1, 1),
+(291, 'ENTRADA', 'POR COMPRA', '2021-08-20 10:17:02', 2, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(292, 'ENTRADA', 'POR COMPRA', '2021-08-20 10:17:02', 2, 194, 'ALCANFOR FORSON LIBRA', 0, 'Unidad', 1, 1),
+(293, 'SALIDA', 'POR VENTA', '2021-08-20 10:37:05', 4, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'Unidad', 1, 1),
+(294, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 13:48:52', 1, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 4, 'CAJA', 20, 3),
+(295, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 13:49:34', 1, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 4, 'CAJA', 20, 3),
+(296, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:07', 1, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'TABLETAS', 1, 1),
+(297, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:07', 1, 102, 'ACETAMINOFEN MK GOTAS X 30 ML', 0, 'UNIDAD', 1, 2),
+(298, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:07', 1, 181, 'ACETAMINOFEN MK JARABE X 60 ML', 0, 'UNIDAD', 1, 3),
+(299, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:07', 1, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'UNIDAD', 1, 4),
+(300, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:07', 1, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 4, 'CAJA', 20, 3),
+(301, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:35', 1, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'TABLETAS', 1, 1),
+(302, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:35', 1, 102, 'ACETAMINOFEN MK GOTAS X 30 ML', 0, 'UNIDAD', 1, 2),
+(303, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:35', 1, 181, 'ACETAMINOFEN MK JARABE X 60 ML', 0, 'UNIDAD', 1, 3),
+(304, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:35', 1, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'UNIDAD', 1, 4),
+(305, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:13:36', 1, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 4, 'CAJA', 20, 3),
+(306, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:18:13', 1, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 0, 'TABLETAS', 1, 1),
+(307, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:18:13', 1, 102, 'ACETAMINOFEN MK GOTAS X 30 ML', 0, 'UNIDAD', 1, 2),
+(308, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:18:13', 1, 181, 'ACETAMINOFEN MK JARABE X 60 ML', 0, 'UNIDAD', 1, 3),
+(309, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:18:13', 1, 193, 'AGUA DESTILANDA VHJ X 10 CC. RM ND', 0, 'UNIDAD', 1, 4),
+(310, 'ENTRADA', 'POR ANULACION VENTA: # 0 COMANDA: # 0 ID: # 25 ', '2021-08-27 14:18:13', 1, 97, 'ACETAMINOFEN MK 500 MG X 100 TABLETAS', 4, 'CAJA', 20, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `labo_laboratorio`
+--
+
+CREATE TABLE `labo_laboratorio` (
+  `labo_codigo` int(11) NOT NULL,
+  `labo_nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `labo_pais` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `labo_fecha` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `labo_laboratorio`
+--
+
+INSERT INTO `labo_laboratorio` (`labo_codigo`, `labo_nombre`, `labo_pais`, `labo_fecha`) VALUES
+(2, 'Laboratorio MK', 'El Salvador', '2021-04-03 17:59:20'),
+(3, 'Laboratorios Suiza', 'El Salvador', '2021-04-03 18:02:38');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prod_producto`
+--
+
+CREATE TABLE `prod_producto` (
+  `prod_codigo` int(11) NOT NULL,
+  `prod_codigo_barra` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `prod_nombre` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `prod_descripcion` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `prod_existencia` decimal(10,2) DEFAULT '0.00',
+  `prod_unidad` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `prod_costo_compra` decimal(12,2) DEFAULT '0.00',
+  `prod_costo_agregado` decimal(12,2) DEFAULT '0.00',
+  `prod_costo_total` decimal(12,2) DEFAULT '0.00',
+  `prod_precio` decimal(12,2) DEFAULT '0.00',
+  `prod_cod_laboratorio` int(11) DEFAULT '0',
+  `prod_cod_proveedor` int(11) DEFAULT '0',
+  `prod_fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `prod_existencia1` int(11) DEFAULT '0',
+  `prod_existencia2` int(11) DEFAULT '0',
+  `prod_existencia3` int(11) DEFAULT '0',
+  `prod_existencia4` int(11) DEFAULT '0',
+  `prod_existencia5` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `prod_producto`
+--
+
+INSERT INTO `prod_producto` (`prod_codigo`, `prod_codigo_barra`, `prod_nombre`, `prod_descripcion`, `prod_existencia`, `prod_unidad`, `prod_costo_compra`, `prod_costo_agregado`, `prod_costo_total`, `prod_precio`, `prod_cod_laboratorio`, `prod_cod_proveedor`, `prod_fecha`, `prod_existencia1`, `prod_existencia2`, `prod_existencia3`, `prod_existencia4`, `prod_existencia5`) VALUES
+(1, 'abc', 'primer producto', 'primer descr', '15.00', 'tableta', '1.00', '0.50', '1.50', '2.00', 2, 1, '2021-04-04 04:25:12', 0, 4, 6, -3, -12),
+(6, '741510020', 'ULTRADOCEPLEX MEGA', '', '0.00', '', '0.00', '0.00', '0.00', '9.61', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(7, '745107900', 'ZENTEL SUSPENSION X 10 ML. RM', '', '0.00', '', '0.00', '0.00', '0.00', '4.76', 0, 0, '2021-04-04 06:59:38', 0, 51, 98, -49, -196),
+(8, '750104319', 'ZENTEL 200 MG. X 25 SOBRES X 2 TABLETAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '70.90', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(9, '740101090', 'PASINERVA X 30 CAPSULA', '', '0.00', '', '0.00', '0.00', '0.00', '5.07', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(10, '11418218', 'TABCIN GRIPE Y TOS X 60 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '9.90', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(11, '11418666', 'TABCIN NINOS MASTICABLE X 48 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '5.25', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(12, '11418219', 'TABCIN ADULTO X72 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '10.30', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(13, '741000342', 'IRBESARTAN ECOMED 300 MG. X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '35.20', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(14, '7410003421', 'IRBESARTAN ECOMED 150 MG. X 100 TABLETAS  RM	', '', '0.00', '', '0.00', '0.00', '0.00', '24.20', 0, 0, '2021-04-04 06:59:38', 0, 2, 0, 0, 0),
+(15, '741100215', 'HONGOSIL PLUS SOLUCION X 20 ML', '', '0.00', '', '0.00', '0.00', '0.00', '4.18', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(16, '189017907', 'LOSARTAN POTASICO ARGUS 100 MG X 50 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '19.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(17, '189017907', 'PARACETAMOL  ARGUS 500 MG. X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '3.30', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(18, '1890179071', 'AMLODIPINA ARGUS 5MG X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '17.60', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(19, '1890179072', 'ERITROMICINA ARGUS 500 MG. X 50 TABLETAS', '', '-1.00', '', '0.00', '0.00', '0.00', '9.66', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(20, '741510020', 'MENOPAUSIA VIJOSA N X 90 CAPSULAS	', '', '0.00', '', '0.00', '0.00', '0.00', '12.68', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(21, '750129821', 'DEXA NEUROBION AMPOLLA ND	', '', '0.00', '', '0.00', '0.00', '0.00', '7.16', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(22, '11418030', 'ASPIRINA NINO X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '7.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(23, '11418203', 'CARDIOASPIRINA X 30 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '7.85', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(24, '750112301', 'BEDOYECTA TRI 50000X 5 AMPOLLAS	', '', '0.00', '', '0.00', '0.00', '0.00', '13.67', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(25, '741510020', 'VIROGRIP PM GEL CAPS X 24 SOBRES', '', '0.00', '', '0.00', '0.00', '0.00', '8.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(26, '7414100201', 'VIROGRIP AMPOLLA X 5 ML RM', '', '0.00', '', '0.00', '0.00', '0.00', '1.70', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(27, '890179068', 'AMOXICILINA SM 500 MG X 100 CAPSULAS', '', '0.00', '', '0.00', '0.00', '0.00', '6.60', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(28, '4344', 'BISMUTO COMPUESTO X 100 SOBRES', '', '0.00', '', '0.00', '0.00', '0.00', '15.50', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(29, '71000371', 'DICLOFENACO BK 75 MG. AMPOLLA RM ND', '', '-2.00', '', '0.00', '0.00', '0.00', '0.67', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(30, '765446073', 'NERVO TIAMIN X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '9.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(31, '355687451', 'SAL INGLERSA EL TRIUNFO X 50 SOBRES', '', '0.00', '', '0.00', '0.00', '0.00', '3.30', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(32, '764600121', 'MEBENDAMIN X 25 SOBRES X 6 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '49.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(33, '7415100202', 'FENAKER JARABE X 120 ML	', '', '-1.00', '', '0.00', '0.00', '0.00', '2.23', 0, 0, '2021-04-04 06:59:38', 0, 0, 2, 0, 0),
+(34, '125458745', 'DEXAMETASONA VJH AMPOLLA 4MG X 2 ML', '', '0.00', '', '0.00', '0.00', '0.00', '2.50', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(35, '83381', 'DICLOFENACO SODICO GEL CAPS SM X 100 RM	', '', '-1.00', '', '0.00', '0.00', '0.00', '2.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 2, 0, 0),
+(36, '741000200', 'DICLOSONA AMPOLLA RM', '', '0.00', '', '0.00', '0.00', '0.00', '5.52', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(37, '890179068', 'LORATADINA SM SUSPENSION X 100', '', '0.00', '', '0.00', '0.00', '0.00', '1.50', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(38, '83038', 'TRIMETOPRIN 960 MG. SM X 100 TABLETAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '4.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(39, '741000342', 'TRAMADOL ECOMED 50 MG. X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '19.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(40, '722000200', 'MUSFLEX COMPUESTO X 50 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '20.00', 0, 0, '2021-04-04 06:59:38', 0, -1, 0, 0, 0),
+(41, '189017907', 'AZITROMUICINA ARGUS 500 MG. X 5 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '9.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(42, '769041002', 'BACZOL EXPECTORANTE X 120 ML. ND', '', '0.00', '', '0.00', '0.00', '0.00', '5.70', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(43, '740604800', 'CROMATOMBIC FERRO X 5 AMPOLLAS RM	', '', '-2.00', '', '0.00', '0.00', '0.00', '22.95', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(44, '770724392', 'CUAJO MARSHALL X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '11.20', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(45, '779534500', 'SERTAl COMPUESTO X 3 AMPOLLAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '7.75', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(46, '740103610', 'NOVALGINA  X 100 TABLETAS ND	', '', '0.00', '', '0.00', '0.00', '0.00', '6.55', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(47, '74100235', 'RINOFIN X 100 TABLETAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '25.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(48, '18917906', 'ALOPURINOL SM 300 X 100 TABLETAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '6.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(49, '78544614', 'ZORRITONE X 100 CARAMELO', '', '0.00', '', '0.00', '0.00', '0.00', '2.65', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(50, '742000200', 'MUSFLEX COMPUESTO X 50 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '20.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(51, '791000201', 'SUDAGRIP X 100  CAPSULAS', '', '0.00', '', '0.00', '0.00', '0.00', '11.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(52, '741000540', 'ORANGE VIT C X 15 AMPOLLAS BEBIBLES	', '', '0.00', '', '0.00', '0.00', '0.00', '12.39', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(53, '18901907', 'SALBUTAMOL INHALADOR ARGUS X 200	', '', '0.00', '', '0.00', '0.00', '0.00', '3.23', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(54, '741000342', 'METOCARBAMOL ECOMED 500 MG X100 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '9.68', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(55, '74100640', 'ULTRA APETIT JARABE X 220 ML.	', '', '0.00', '', '0.00', '0.00', '0.00', '8.68', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(56, '74100046', 'GLUTAPLEX CEREBRAL JARABE X 220 ML.	', '', '0.00', '', '0.00', '0.00', '0.00', '5.42', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(57, '741000567', 'SECNI PARA X 500 MG X 4 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '5.08', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(58, '74100054012', 'SECNI PARA X SUSPENSIÃ“N X 30 ML.	', '', '0.00', '', '0.00', '0.00', '0.00', '4.29', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(59, '741005412', 'HEMOTOTAL  JARABE X 220 ML', '', '0.00', '', '0.00', '0.00', '0.00', '7.44', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(60, '741005413', 'BRONK OFLU HEDERA JARABE X 120ML.	', '', '-2.00', '', '0.00', '0.00', '0.00', '5.94', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(61, '751000540', 'DOL JARABE120 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '2.51', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(62, '75104611', 'COMPLEJO B FUERTE X10 CC RM	', '', '-1.00', '', '0.00', '0.00', '0.00', '1.38', 0, 0, '2021-04-04 06:59:38', 0, 0, 2, 0, 0),
+(63, '4389', 'PIOJIN X 12 BURBUJA', '', '0.00', '', '0.00', '0.00', '0.00', '2.25', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(64, '470051106', 'TOMA PARA EMPACHO SALUFRAMA SOBRE', '', '0.00', '', '0.00', '0.00', '0.00', '0.55', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(65, '890179068', 'NEUROTROPAS 25000 SM AMP. JERINGA', '', '0.00', '', '0.00', '0.00', '0.00', '1.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(66, '789611688', 'MICROGYNON X 21 GRAGEAS	', '', '0.00', '', '0.00', '0.00', '0.00', '4.68', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(67, '741000371', 'DOLO ULTRAESTRES X 20 SOB X 4 CAP RM ND', '', '0.00', '', '0.00', '0.00', '0.00', '8.65', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(68, '741000342', 'PREDNISONA ECOMED 5 MG X 100TABLETAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '8.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(69, '711604102', 'IBUPROFENO GAMMA SUSPENSION X 120 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '1.63', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(70, '769041045', 'INTESTINOMICINA AD CAPSULAS ND', '', '0.00', '', '0.00', '0.00', '0.00', '12.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(71, '741002602', 'ANADENT TODO DOLOR X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '15.15', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(72, '740107896', 'SARGENOR FORTE X 10 AMPOLLA BEBIBLES RM	', '', '0.00', '', '0.00', '0.00', '0.00', '19.93', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(73, '769041009', 'ALERFIN 4MG. X 200 TABLETAS ND	', '', '0.00', '', '0.00', '0.00', '0.00', '19.72', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(74, '741000070', 'CLORFENIRAMINA FD 8MG X 25 SOBRES X 4 TAB	', '', '0.00', '', '0.00', '0.00', '0.00', '14.66', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(75, '769041001', 'VERMEX SUSPENSION X 30 ML ND', '', '0.00', '', '0.00', '0.00', '0.00', '2.78', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(76, '711604100', 'CLORANFENICOL GAMMA COLIRIO X 15 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '1.55', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(77, '741006120', 'MAGNESIA CALCINADA SOBRE X 15 GR.	', '', '0.00', '', '0.00', '0.00', '0.00', '1.44', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(78, '741000280', 'TETRACICLINA MK 500 MG X 100 CAPSULAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '7.55', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(79, '741510020', 'ULTRADOCEPLEX AMPOLLA RM	', '', '0.00', '', '0.00', '0.00', '0.00', '3.83', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(80, '189017907', 'NAPPIL 550 MG X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '8.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(81, '741510022', 'NERVIDOCE 25000 AMPOLLAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '2.30', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(82, '7410000371', 'ARTRIBION VITAMINADO AMPOLLAS RM ND	', '', '0.00', '', '0.00', '0.00', '0.00', '2.72', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(83, '1000371', 'FOSKROL DESESTRESANTE X10 AMP.BEB .ND	', '', '0.00', '', '0.00', '0.00', '0.00', '4.45', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(84, '751000201', 'SUDAGRIP CARAMELO X 100', '', '0.00', '', '0.00', '0.00', '0.00', '2.88', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(85, '790179068', 'GENTA + BETA + CLOTRI SM CREMA X 3O GR RMA	', '', '0.00', '', '0.00', '0.00', '0.00', '0.70', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(86, '161000540', 'FLUCONAZOL ARGUS 200 MG X 2 CPS RM', '', '0.00', '', '0.00', '0.00', '0.00', '3.52', 0, 0, '2021-04-04 06:59:38', 0, -1, 0, 0, 0),
+(87, '799110600', 'CANESTEN CREMA VAGINAL 1 % X 35 GR', '', '0.00', '', '0.00', '0.00', '0.00', '9.93', 0, 0, '2021-04-04 06:59:38', 0, 1, 0, 0, 0),
+(88, '733331168', 'YASMIN X 21 COMPRIMIDOS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '13.33', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(89, '751000342', 'LOSARTAN ECOMED 50 MG X 100 TABLETAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '13.20', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(90, '35874954', 'GARGANTINAS X 50 BLISTERS Y 6 CARAMELOS', '', '0.00', '', '0.00', '0.00', '0.00', '16.94', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(91, '750129826', 'NEUROBION X 120 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '35.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(92, '1510021', 'ULTRADOCEPLEX X 12 AMPOLLAS BEBIBLES	', '', '0.00', '', '0.00', '0.00', '0.00', '6.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(93, '79100021', 'SELECTAVIT AMPOLLA X 10 ML RM	', '', '0.00', '', '0.00', '0.00', '0.00', '1.36', 0, 0, '2021-04-04 06:59:38', 0, 2, 0, 0, 0),
+(94, '189874512', 'CLORFENIRAMINA GAMMA 8 MG X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '3.50', 0, 0, '2021-04-04 06:59:38', 0, -1, 0, 0, 0),
+(95, '15100024', 'ULTRADOCEPLEX MEGA MAN X 50 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '3.50', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(96, '75129822', 'ERITROMICINA ARGUS 500 MG. X 50 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '9.68', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '', '0.00', 'tabletas', '0.80', '0.20', '1.00', '5.40', 0, 0, '2021-07-04 18:37:37', 1111111294, 172, -37, 4444444, -35),
+(98, '750240024', 'NIKZON X 40 TABLETAS MASTICABLES', '', '0.00', '', '0.00', '0.00', '0.00', '9.75', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(99, '741690410', 'ARTRIFIN VITAMINADO X 20 SOBRES	', '', '0.00', '', '0.00', '0.00', '0.00', '6.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(100, '750240001', 'NIKZON X 90 TABLETAS MASTICABLES	', '', '0.00', '', '0.00', '0.00', '0.00', '19.05', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(101, '745107900', 'PANADOL INFANTIL X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '6.85', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(102, '74101931', 'ACETAMINOFEN MK GOTAS X 30 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '5.30', 0, 0, '2021-04-04 06:59:38', 6, 0, 0, 0, 0),
+(103, '4001077892', 'AVAMIGRAN X 200 TABLETAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '46.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(104, '75012932', 'DOLO NEUROBION X 120 TABLETAS ND.RM	', '', '0.00', '', '0.00', '0.00', '0.00', '34.50', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(105, '741009363', 'ARTRIBION VITAMINADO X 20 SOBRES RM ND', '', '0.00', '', '0.00', '0.00', '0.00', '20.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(106, '790179068', 'DICLOFENAC SODICO PL AMPOLLA RM', '', '0.00', '', '0.00', '0.00', '0.00', '1.33', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(107, '75013392', 'DAYAMINERAL JARABE X 240 ML', '', '0.00', '', '0.00', '0.00', '0.00', '13.23', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(108, '7410000260', 'NORPURINOL X 30 TAVLETAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '6.92', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(109, '741000371', 'LAGRIMAS DE BIOMIXIN X 100 ND', '', '-1.00', '', '0.00', '0.00', '0.00', '5.50', 0, 0, '2021-04-04 06:59:38', 0, 0, 2, 0, 0),
+(110, '76035131', 'NAZIL OFTENO X 15 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '2.87', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(111, '13354', 'SILDENAFIL SM 100 MG X 4 TABLETAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '3.52', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(112, '741000163', 'HIGAVIT 5 AMPOLLA X 10 CC RM	', '', '0.00', '', '0.00', '0.00', '0.00', '1.38', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(113, '74104611', 'COMPLEJO B FUERTE PAIL AMPOLLA X 10 CC RM	', '', '0.00', '', '0.00', '0.00', '0.00', '1.38', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(114, '741006120', 'ROJAMINA FUERTE 50000 AMPOLLA X 10 CC RM	', '', '0.00', '', '0.00', '0.00', '0.00', '5.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(115, '745207970', 'SINSUENO X 100 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '11.14', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(116, '764600121', 'MEDOX  PRENATAL X 30 GRAGEAS', '', '0.00', '', '0.00', '0.00', '0.00', '11.14', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(117, '5374', 'PEINE FINO GRANDE DOCENA', '', '0.00', '', '0.00', '0.00', '0.00', '0.75', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(118, '569041002', 'CLOTEN UNA X1 CAPSULA', '', '0.00', '', '0.00', '0.00', '0.00', '3.13', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(119, '741000371', 'BIOBENZOLE X 20 SOBRES X TABLETAS ND	', '', '0.00', '', '0.00', '0.00', '0.00', '9.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(120, '741000370', 'FOSKROL ESCOLAR X 15 AMPOLLAS BEBIBLES', '', '0.00', '', '0.00', '0.00', '0.00', '4.60', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(121, '741000540', 'APETTI KID JARABE X 220 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '5.70', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(122, '741100260', 'RABANO YODADO LAINEZ  X 240 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '1.58', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(123, '11418040', 'ALKASELTZER X 60 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '8.65', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(124, '741000540', 'SECNI PARAX 500 MG X 4 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '5.08', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(125, '741005401', 'SECNI PARAX SUSPENSION X 30 ML.	', '', '0.00', '', '0.00', '0.00', '0.00', '4.29', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(126, '741000375', 'TRICALCIO X 10 AMPOLLA BEBIBLES', '', '0.00', '', '0.00', '0.00', '0.00', '4.50', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(127, '12849020', 'KOMILON JARABE X 120 ML.	', '', '0.00', '', '0.00', '0.00', '0.00', '3.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(128, '82940', 'OMEPRAZOL SM 20 MG X 100 CAPSULAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '4.30', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(129, '332220', 'RANITIDINA SM 150 MG X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '1.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(130, '741510022', 'NEURO CAMPOLON ENERGY X 12 AMPOLLAS BEBIBLES', '', '0.00', '', '0.00', '0.00', '0.00', '6.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(131, '71510022', 'FORTIPLEX OMEGA 3 X 50 SOFTGELS	', '', '0.00', '', '0.00', '0.00', '0.00', '8.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(132, '789041001', 'ESPASMOFIN X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '14.39', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(133, '470051102', 'BICARBONATO DE SODIO 500 MG X 100 CAPSULAS	', '', '0.00', '', '0.00', '0.00', '0.00', '9.33', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(134, '758745120', 'BICARBONATO DE SODIO 800 MG. X 100 CAPSULAS', '', '0.00', '', '0.00', '0.00', '0.00', '9.33', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(135, '741510020', 'ULTRADOCEPLEX MEGA WOMAN X 50 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '9.60', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(136, '759041002', 'UROFIN POLVO X 100 SOBRES', '', '0.00', '', '0.00', '0.00', '0.00', '23.85', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(137, '7410000332', 'COLIPAX X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '11.75', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(138, '7501103790', 'BUSCAPINA 10 MG X 24 GRAGEAS', '', '0.00', '', '0.00', '0.00', '0.00', '8.41', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(139, '759041045', 'INTESTINOMICINA AD X 100 CAPSULAS', '', '0.00', '', '0.00', '0.00', '0.00', '11.60', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(140, '745207971', 'NOVOMIT X 250 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '21.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(141, '21418240', 'ALKA D X 60 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '10.75', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(142, '90179068', 'ENALAPRIL SM 20 MH X 100 TABLETAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '2.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(143, '544113940', 'DEPO PROVERA 150 MG AMPOLLAS ND RM', '', '0.00', '', '0.00', '0.00', '0.00', '10.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(144, '74104598', 'NOVULAR AMPOLLA X 1 ML. RM', '', '0.00', '', '0.00', '0.00', '0.00', '3.16', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(145, '10000340', 'FINADOL MUJER 200 MG X 50 SOBRES X TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '7.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(146, '7415100022', 'NOMAGEST AMPOLA X 1 ML.RM', '', '0.00', '', '0.00', '0.00', '0.00', '4.27', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(147, '7401114005', 'REGULADOR GESTEIRA X 120 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '5.62', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(148, '7510000211', 'PERLA X 24 SOBRES ND', '', '0.00', '', '0.00', '0.00', '0.00', '43.50', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(149, '750110463', 'CUERPO AMARILLO AMPOLLA X 2 ML. RM', '', '0.00', '', '0.00', '0.00', '0.00', '4.56', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(150, '741510025', 'VERMAGEST X 2 TABLETAS RM', '', '0.00', '', '0.00', '0.00', '0.00', '8.25', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(151, '764600113', 'UNICIL L. A. 1.2 UNIDADES AMPOLLAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '3.98', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(152, '771000077', 'CIPROFLOXACINA SM 500 MG X 100 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '5.50', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(153, '76100194', 'FENAKLER AMPOLLA X 1 ML RM', '', '0.00', '', '0.00', '0.00', '0.00', '2.04', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(154, '711418206', 'DORIVAL LIQUI GELS X 36 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '10.05', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(155, '750104317', 'VENTOLIN INHALADOR X200 DOSIS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '6.17', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(156, '7555446120', 'OIDOL GOTAS X 15 ML.	', '', '0.00', '', '0.00', '0.00', '0.00', '2.40', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(157, '740110460', 'BETA 2 PAN AMPOLLA RM', '', '0.00', '', '0.00', '0.00', '0.00', '9.12', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(158, '7510000540', 'ORANGE VIT C JARABE X22O ML	', '', '0.00', '', '0.00', '0.00', '0.00', '7.28', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(159, '721000201', 'DRAMANYL X 100 CAPSULAS', '', '0.00', '', '0.00', '0.00', '0.00', '8.72', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(160, '761000371', 'FOSKROL X 15 AMPOLLA BEBIBLES ND', '', '0.00', '', '0.00', '0.00', '0.00', '4.55', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(161, '741000371', 'BIOBENZOLE SUSPENSION X 30 ML. ND', '', '0.00', '', '0.00', '0.00', '0.00', '0.76', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(162, '769041009', 'VERMEX TOTAL 500 MG X 6 TABLETAS ND', '', '0.00', '', '0.00', '0.00', '0.00', '3.99', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(163, '744101310', 'MATRICARIA POLVO X 20	', '', '0.00', '', '0.00', '0.00', '0.00', '2.20', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(164, '76544641', 'SUPER TIAMINA 300 X 100 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '6.25', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(165, '7410000371', 'FOSKROL COMPLEX X 30 TABLETAS ND', '', '0.00', '', '0.00', '0.00', '0.00', '2.55', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(166, '7501799055', 'DOLO NEUROTROPAS SM X 20 SOB X 4 TABS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '7.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(167, '755207970', 'FOSFO B12 X 15 AMPOLLAS BEBIBLES', '', '0.00', '', '0.00', '0.00', '0.00', '13.67', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(168, '744410187', 'SAL ANDREWS X 50 SOBRES', '', '0.00', '', '0.00', '0.00', '0.00', '6.35', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(169, '78904145', 'INTESTINOMINA AD X 100 CAPSULAS ND', '', '0.00', '', '0.00', '0.00', '0.00', '17.81', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(170, '741510022', 'VIROGRIP A.M. TE X 24 SOBRES', '', '0.00', '', '0.00', '0.00', '0.00', '8.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(171, '7415100022', 'VIROGRIP P.M TE X 24SOBRES	', '', '0.00', '', '0.00', '0.00', '0.00', '8.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(172, '741510020', 'FENALER JARABE X 120 M.L', '', '0.00', '', '0.00', '0.00', '0.00', '2.22', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(173, '760219510', 'CREMOQUINONA 4% X 30 GR. RM', '', '-1.00', '', '0.00', '0.00', '0.00', '7.88', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(174, '789041052', 'DESMOXIDO CREMA LATA ND', '', '0.00', '', '0.00', '0.00', '0.00', '0.98', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(175, '750103392', 'PENICILINA UNGÃœENTO LATA LOPEZ X 12 GR. ND', '', '0.00', '', '0.00', '0.00', '0.00', '0.82', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(176, '741510020', 'VIROGRIP AM GEL CAPS X 24 SOBRES	', '', '0.00', '', '0.00', '0.00', '0.00', '8.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(177, '735987429', 'LOSARTAN SM 50 MG. X 50 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '9.60', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(178, '750129821', 'DEXA NEUROBION AMPOLLA ND	', '', '0.00', '', '0.00', '0.00', '0.00', '7.16', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(179, '7415100200', 'VIROGRIP GRIPE Y TOS X 120 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '2.90', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(180, '765446120', 'ZORRITONE JARABE X120 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '2.09', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(181, '74101726', 'ACETAMINOFEN MK JARABE X 60 ML', '', '0.00', '', '0.00', '0.00', '0.00', '2.59', 0, 0, '2021-04-04 06:59:38', 9, 1, 0, 0, 0),
+(182, '74109364', 'DICLOFENAC SODICO PL AMPOLLA RM', '', '0.00', '', '0.00', '0.00', '0.00', '1.33', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(183, '741410020', 'DOLO NERVIDOCE AMPOLLA RM	', '', '0.00', '', '0.00', '0.00', '0.00', '1.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(184, '759041045', 'DOLOFIN RAPIDA ACCION X 100 TABLETAS ND	', '', '0.00', '', '0.00', '0.00', '0.00', '6.65', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(185, '74160020', 'DOLAREN AMPOLLA X 2 ML RN	', '', '0.00', '', '0.00', '0.00', '0.00', '0.65', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(186, '1148205', 'DORIVAL 200 MG. X 60 TABLETAS', '', '-2.00', '', '0.00', '0.00', '0.00', '11.00', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(187, '82938', 'IBUPROFENO SM 600 MG X 100 TABLETAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '4.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(188, '741000280', 'METFORMINA MK 850 MG. X 30 TABLETAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '7.71', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(189, '741000080', 'PARACETAMOL MK 750 MG. X 100 CAPSULAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '22.58', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(190, '741000260', 'SALVADOL X 25 SOBRES X 2 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '4.80', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(191, '741000281', 'METFORMINA MK 1000 MG. X 30 TABLETAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '13.64', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(192, '852019491', 'AZIMEX 500 MG .X 9 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '20.92', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '', '-3.00', '', '0.00', '0.00', '0.00', '1.44', 0, 0, '2021-04-04 06:59:38', 1, 11, 0, -1, 0),
+(194, '741000612', 'ALCANFOR FORSON LIBRA	', '', '0.00', '', '0.00', '0.00', '0.00', '36.00', 0, 0, '2021-04-04 06:59:38', 0, 1, 0, 0, 0),
+(195, '750112510', 'SOLUCION SALINA NORMAL PISA X 250 ML	', '', '0.00', '', '0.00', '0.00', '0.00', '1.43', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(196, '750129821', 'NEUROBION 25000 X 1 AMPOLLA X 3 ML. RM ND	', '', '0.00', '', '0.00', '0.00', '0.00', '7.90', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(197, '741510020', 'ROCEFORT 1 GR. AMPOLLA INTRAMUSCULAR RM', '', '0.00', '', '0.00', '0.00', '0.00', '3.90', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(198, '189017907', 'DICLOFENACO SODICO SM 50 MG X 100 TABLETAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '0.86', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(199, '741000260', 'ANADENT X 25 SOBRES X 4 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '15.15', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(200, '189017907', 'ATORVASTATINA ARGUS 40 MG X 30 TABLETAS RM.	', '', '0.00', '', '0.00', '0.00', '0.00', '21.12', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(201, '189017905', 'ATORVASTATINA ARGUS 20 MG X 30 TABLETAS RM.	', '', '0.00', '', '0.00', '0.00', '0.00', '14.74', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(202, '74107087', 'VITADAK 15 AMPOLLA BEBIBLE	', '', '0.00', '', '0.00', '0.00', '0.00', '3.58', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(203, '74107735', 'VITADAK 5 AMPOLLA BEBIBLE	', '', '0.00', '', '0.00', '0.00', '0.00', '3.42', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(204, '7410000342', 'METFORMINA  ECOMED 500 MG X 100 TABLETAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '9.68', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(205, '456874512', 'DEXAMETASONA SM AMPOLLA 8 MG. X  ML. RM	', '', '0.00', '', '0.00', '0.00', '0.00', '0.36', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(206, '770376365', 'GENTAMICINA LS 160 MG. X1 AMPOLLA	', '', '0.00', '', '0.00', '0.00', '0.00', '2.58', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(207, '779308108', 'QUADRIERM CREMA X 30 GR. RM ND	', '', '0.00', '', '0.00', '0.00', '0.00', '22.93', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(208, '764600212', 'NEOBOL SPRAY X 30 ML . RM	', '', '0.00', '', '0.00', '0.00', '0.00', '5.62', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(209, '741000341', 'IBUPROFENO ECOMED 600 MG. X 60 TABLETAS', '', '0.00', '', '0.00', '0.00', '0.00', '7.04', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(210, '764600212', 'NEOBOL CREMA X 30 GR. RM	', '', '0.00', '', '0.00', '0.00', '0.00', '5.24', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(211, '765446470', 'PROSTAMEN X 30 CAPSULAS RM	', '', '0.00', '', '0.00', '0.00', '0.00', '14.69', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(212, '83276', 'METFORMINA SM 850 MG X 100 TABLETAS	', '', '0.00', '', '0.00', '0.00', '0.00', '7.20', 0, 0, '2021-04-04 06:59:38', 0, 0, 0, 0, 0),
+(213, '911', 'DOLOFIN', '', '0.00', 'TABLETA', '0.15', '0.00', '0.15', '0.25', 0, 0, '2021-07-24 15:09:52', 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prov_proveedor`
+--
+
+CREATE TABLE `prov_proveedor` (
+  `prov_codigo` int(11) NOT NULL,
+  `prov_nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `prov_direccion` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `prov_pais` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `prov_responsable` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `prov_contacto` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `prov_fecha` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `prov_proveedor`
+--
+
+INSERT INTO `prov_proveedor` (`prov_codigo`, `prov_nombre`, `prov_direccion`, `prov_pais`, `prov_responsable`, `prov_contacto`, `prov_fecha`) VALUES
+(1, 'Distribuidora F', 'Direccion', 'El Salvador', 'Carlos Guzman', '2550-5005', '2021-04-03 18:25:20');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sucu_sucursal`
+--
+
+CREATE TABLE `sucu_sucursal` (
+  `sucu_codigo` int(11) NOT NULL,
+  `sucu_nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `sucu_descripcion` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `sucu_orden` int(11) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `sucu_sucursal`
+--
+
+INSERT INTO `sucu_sucursal` (`sucu_codigo`, `sucu_nombre`, `sucu_descripcion`, `sucu_orden`) VALUES
+(1, 'JUCUAPA', 'ESTA ES LA TIENDA SECUNDARIA', 1),
+(2, 'GOTERA', 'SEGUNDA TIENDA', 2),
+(3, 'BODEGA PRINCIPAL', '', 3),
+(4, 'SIN USO', '', 4),
+(5, 'SIN USO', '', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sucu_usuario`
+--
+
+CREATE TABLE `sucu_usuario` (
+  `sucu_usua_codigo` int(11) NOT NULL,
+  `sucu_usuario_codigo` int(11) DEFAULT NULL,
+  `sucu_sucursal_codigo` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `sucu_usuario`
+--
+
+INSERT INTO `sucu_usuario` (`sucu_usua_codigo`, `sucu_usuario_codigo`, `sucu_sucursal_codigo`) VALUES
+(52, 1, 1),
+(53, 1, 2),
+(54, 1, 3),
+(55, 1, 4),
+(56, 1, 5),
+(57, 2, 1),
+(58, 2, 5),
+(59, 4, 1),
+(60, 4, 2),
+(61, 4, 3),
+(62, 4, 4),
+(63, 4, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tabl_temporal`
+--
+
+CREATE TABLE `tabl_temporal` (
+  `codigo` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nombre` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `precio` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tabl_temporal`
+--
+
+INSERT INTO `tabl_temporal` (`codigo`, `nombre`, `precio`) VALUES
+('741510020', 'ULTRADOCEPLEX MEGA', '9.61'),
+('745107900', 'ZENTEL SUSPENSION X 10 ML. RM', '4.76'),
+('750104319', 'ZENTEL 200 MG. X 25 SOBRES X 2 TABLETAS RM', '70.90'),
+('740101090', 'PASINERVA X 30 CAPSULA', '5.07'),
+('11418218', 'TABCIN GRIPE Y TOS X 60 TABLETAS	', '9.90'),
+('11418666', 'TABCIN NINOS MASTICABLE X 48 TABLETAS', '5.25'),
+('11418219', 'TABCIN ADULTO X72 TABLETAS', '10.30'),
+('741000342', 'IRBESARTAN ECOMED 300 MG. X 100 TABLETAS', '35.20'),
+('7410003421', 'IRBESARTAN ECOMED 150 MG. X 100 TABLETAS  RM	', '24.20'),
+('741100215', 'HONGOSIL PLUS SOLUCION X 20 ML', '4.18'),
+('189017907', 'LOSARTAN POTASICO ARGUS 100 MG X 50 TABLETAS	', '19.80'),
+('189017907', 'PARACETAMOL  ARGUS 500 MG. X 100 TABLETAS', '3.30'),
+('1890179071', 'AMLODIPINA ARGUS 5MG X 100 TABLETAS', '17.60'),
+('1890179072', 'ERITROMICINA ARGUS 500 MG. X 50 TABLETAS', '9.66'),
+('741510020', 'MENOPAUSIA VIJOSA N X 90 CAPSULAS	', '12.68'),
+('750129821', 'DEXA NEUROBION AMPOLLA ND	', '7.16'),
+('11418030', 'ASPIRINA NINO X 100 TABLETAS', '7.80'),
+('11418203', 'CARDIOASPIRINA X 30 TABLETAS	', '7.85'),
+('750112301', 'BEDOYECTA TRI 50000X 5 AMPOLLAS	', '13.67'),
+('741510020', 'VIROGRIP PM GEL CAPS X 24 SOBRES', '8.00'),
+('7414100201', 'VIROGRIP AMPOLLA X 5 ML RM', '1.70'),
+('890179068', 'AMOXICILINA SM 500 MG X 100 CAPSULAS', '6.60'),
+('4344', 'BISMUTO COMPUESTO X 100 SOBRES', '15.50'),
+('71000371', 'DICLOFENACO BK 75 MG. AMPOLLA RM ND', '0.67'),
+('765446073', 'NERVO TIAMIN X 100 TABLETAS', '9.40'),
+('355687451', 'SAL INGLERSA EL TRIUNFO X 50 SOBRES', '3.30'),
+('764600121', 'MEBENDAMIN X 25 SOBRES X 6 TABLETAS', '49.40'),
+('7415100202', 'FENAKER JARABE X 120 ML	', '2.23'),
+('125458745', 'DEXAMETASONA VJH AMPOLLA 4MG X 2 ML', '2.50'),
+('83381', 'DICLOFENACO SODICO GEL CAPS SM X 100 RM	', '2.40'),
+('741000200', 'DICLOSONA AMPOLLA RM', '5.52'),
+('890179068', 'LORATADINA SM SUSPENSION X 100', '1.50'),
+('83038', 'TRIMETOPRIN 960 MG. SM X 100 TABLETAS RM', '4.00'),
+('741000342', 'TRAMADOL ECOMED 50 MG. X 100 TABLETAS', '19.80'),
+('722000200', 'MUSFLEX COMPUESTO X 50 TABLETAS	', '20.00'),
+('189017907', 'AZITROMUICINA ARGUS 500 MG. X 5 TABLETAS', '9.40'),
+('769041002', 'BACZOL EXPECTORANTE X 120 ML. ND', '5.70'),
+('740604800', 'CROMATOMBIC FERRO X 5 AMPOLLAS RM	', '22.95'),
+('770724392', 'CUAJO MARSHALL X 100 TABLETAS', '11.20'),
+('779534500', 'SERTAl COMPUESTO X 3 AMPOLLAS RM	', '7.75'),
+('740103610', 'NOVALGINA  X 100 TABLETAS ND	', '6.55'),
+('74100235', 'RINOFIN X 100 TABLETAS RM', '25.00'),
+('18917906', 'ALOPURINOL SM 300 X 100 TABLETAS RM', '6.00'),
+('78544614', 'ZORRITONE X 100 CARAMELO', '2.65'),
+('742000200', 'MUSFLEX COMPUESTO X 50 TABLETAS	', '20.00'),
+('791000201', 'SUDAGRIP X 100  CAPSULAS', '11.40'),
+('741000540', 'ORANGE VIT C X 15 AMPOLLAS BEBIBLES	', '12.39'),
+('18901907', 'SALBUTAMOL INHALADOR ARGUS X 200	', '3.23'),
+('741000342', 'METOCARBAMOL ECOMED 500 MG X100 TABLETAS	', '9.68'),
+('74100640', 'ULTRA APETIT JARABE X 220 ML.	', '8.68'),
+('74100046', 'GLUTAPLEX CEREBRAL JARABE X 220 ML.	', '5.42'),
+('741000567', 'SECNI PARA X 500 MG X 4 TABLETAS	', '5.08'),
+('74100054012', 'SECNI PARA X SUSPENSIÃ“N X 30 ML.	', '4.29'),
+('741005412', 'HEMOTOTAL  JARABE X 220 ML', '7.44'),
+('741005413', 'BRONK OFLU HEDERA JARABE X 120ML.	', '5.94'),
+('751000540', 'DOL JARABE120 ML	', '2.51'),
+('75104611', 'COMPLEJO B FUERTE X10 CC RM	', '1.38'),
+('4389', 'PIOJIN X 12 BURBUJA', '2.25'),
+('470051106', 'TOMA PARA EMPACHO SALUFRAMA SOBRE', '0.55'),
+('890179068', 'NEUROTROPAS 25000 SM AMP. JERINGA', '1.80'),
+('789611688', 'MICROGYNON X 21 GRAGEAS	', '4.68'),
+('741000371', 'DOLO ULTRAESTRES X 20 SOB X 4 CAP RM ND', '8.65'),
+('741000342', 'PREDNISONA ECOMED 5 MG X 100TABLETAS RM', '8.80'),
+('711604102', 'IBUPROFENO GAMMA SUSPENSION X 120 ML	', '1.63'),
+('769041045', 'INTESTINOMICINA AD CAPSULAS ND', '12.40'),
+('741002602', 'ANADENT TODO DOLOR X 100 TABLETAS', '15.15'),
+('740107896', 'SARGENOR FORTE X 10 AMPOLLA BEBIBLES RM	', '19.93'),
+('769041009', 'ALERFIN 4MG. X 200 TABLETAS ND	', '19.72'),
+('741000070', 'CLORFENIRAMINA FD 8MG X 25 SOBRES X 4 TAB	', '14.66'),
+('769041001', 'VERMEX SUSPENSION X 30 ML ND', '2.78'),
+('711604100', 'CLORANFENICOL GAMMA COLIRIO X 15 ML	', '1.55'),
+('741006120', 'MAGNESIA CALCINADA SOBRE X 15 GR.	', '1.44'),
+('741000280', 'TETRACICLINA MK 500 MG X 100 CAPSULAS RM', '7.55'),
+('741510020', 'ULTRADOCEPLEX AMPOLLA RM	', '3.83'),
+('189017907', 'NAPPIL 550 MG X 100 TABLETAS', '8.40'),
+('741510022', 'NERVIDOCE 25000 AMPOLLAS RM	', '2.30'),
+('7410000371', 'ARTRIBION VITAMINADO AMPOLLAS RM ND	', '2.72'),
+('1000371', 'FOSKROL DESESTRESANTE X10 AMP.BEB .ND	', '4.45'),
+('751000201', 'SUDAGRIP CARAMELO X 100', '2.88'),
+('790179068', 'GENTA + BETA + CLOTRI SM CREMA X 3O GR RMA	', '0.70'),
+('161000540', 'FLUCONAZOL ARGUS 200 MG X 2 CPS RM', '3.52'),
+('799110600', 'CANESTEN CREMA VAGINAL 1 % X 35 GR', '9.93'),
+('733331168', 'YASMIN X 21 COMPRIMIDOS RM	', '13.33'),
+('751000342', 'LOSARTAN ECOMED 50 MG X 100 TABLETAS RM	', '13.20'),
+('35874954', 'GARGANTINAS X 50 BLISTERS Y 6 CARAMELOS', '16.94'),
+('750129826', 'NEUROBION X 120 TABLETAS', '35.00'),
+('1510021', 'ULTRADOCEPLEX X 12 AMPOLLAS BEBIBLES	', '6.00'),
+('79100021', 'SELECTAVIT AMPOLLA X 10 ML RM	', '1.36'),
+('189874512', 'CLORFENIRAMINA GAMMA 8 MG X 100 TABLETAS', '3.50'),
+('15100024', 'ULTRADOCEPLEX MEGA MAN X 50 TABLETAS', '3.50'),
+('75129822', 'ERITROMICINA ARGUS 500 MG. X 50 TABLETAS', '9.68'),
+('741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '5.40'),
+('750240024', 'NIKZON X 40 TABLETAS MASTICABLES', '9.75'),
+('741690410', 'ARTRIFIN VITAMINADO X 20 SOBRES	', '6.40'),
+('750240001', 'NIKZON X 90 TABLETAS MASTICABLES	', '19.05'),
+('745107900', 'PANADOL INFANTIL X 100 TABLETAS', '6.85'),
+('74101931', 'ACETAMINOFEN MK GOTAS X 30 ML	', '5.30'),
+('4001077892', 'AVAMIGRAN X 200 TABLETAS RM	', '46.00'),
+('75012932', 'DOLO NEUROBION X 120 TABLETAS ND.RM	', '34.50'),
+('741009363', 'ARTRIBION VITAMINADO X 20 SOBRES RM ND', '20.00'),
+('790179068', 'DICLOFENAC SODICO PL AMPOLLA RM', '1.33'),
+('75013392', 'DAYAMINERAL JARABE X 240 ML', '13.23'),
+('7410000260', 'NORPURINOL X 30 TAVLETAS RM', '6.92'),
+('741000371', 'LAGRIMAS DE BIOMIXIN X 100 ND', '5.50'),
+('76035131', 'NAZIL OFTENO X 15 ML	', '2.87'),
+('13354', 'SILDENAFIL SM 100 MG X 4 TABLETAS RM', '3.52'),
+('741000163', 'HIGAVIT 5 AMPOLLA X 10 CC RM	', '1.38'),
+('74104611', 'COMPLEJO B FUERTE PAIL AMPOLLA X 10 CC RM	', '1.38'),
+('741006120', 'ROJAMINA FUERTE 50000 AMPOLLA X 10 CC RM	', '5.00'),
+('745207970', 'SINSUENO X 100 TABLETAS	', '11.14'),
+('764600121', 'MEDOX  PRENATAL X 30 GRAGEAS', '11.14'),
+('5374', 'PEINE FINO GRANDE DOCENA', '0.75'),
+('569041002', 'CLOTEN UNA X1 CAPSULA', '3.13'),
+('741000371', 'BIOBENZOLE X 20 SOBRES X TABLETAS ND	', '9.00'),
+('741000370', 'FOSKROL ESCOLAR X 15 AMPOLLAS BEBIBLES', '4.60'),
+('741000540', 'APETTI KID JARABE X 220 ML	', '5.70'),
+('741100260', 'RABANO YODADO LAINEZ  X 240 ML	', '1.58'),
+('11418040', 'ALKASELTZER X 60 TABLETAS', '8.65'),
+('741000540', 'SECNI PARAX 500 MG X 4 TABLETAS', '5.08'),
+('741005401', 'SECNI PARAX SUSPENSION X 30 ML.	', '4.29'),
+('741000375', 'TRICALCIO X 10 AMPOLLA BEBIBLES', '4.50'),
+('12849020', 'KOMILON JARABE X 120 ML.	', '3.00'),
+('82940', 'OMEPRAZOL SM 20 MG X 100 CAPSULAS RM	', '4.30'),
+('332220', 'RANITIDINA SM 150 MG X 100 TABLETAS', '1.80'),
+('741510022', 'NEURO CAMPOLON ENERGY X 12 AMPOLLAS BEBIBLES', '6.00'),
+('71510022', 'FORTIPLEX OMEGA 3 X 50 SOFTGELS	', '8.00'),
+('789041001', 'ESPASMOFIN X 100 TABLETAS', '14.39'),
+('470051102', 'BICARBONATO DE SODIO 500 MG X 100 CAPSULAS	', '9.33'),
+('758745120', 'BICARBONATO DE SODIO 800 MG. X 100 CAPSULAS', '9.33'),
+('741510020', 'ULTRADOCEPLEX MEGA WOMAN X 50 TABLETAS', '9.60'),
+('759041002', 'UROFIN POLVO X 100 SOBRES', '23.85'),
+('7410000332', 'COLIPAX X 100 TABLETAS', '11.75'),
+('7501103790', 'BUSCAPINA 10 MG X 24 GRAGEAS', '8.41'),
+('759041045', 'INTESTINOMICINA AD X 100 CAPSULAS', '11.60'),
+('745207971', 'NOVOMIT X 250 TABLETAS', '21.00'),
+('21418240', 'ALKA D X 60 TABLETAS', '10.75'),
+('90179068', 'ENALAPRIL SM 20 MH X 100 TABLETAS RM', '2.40'),
+('544113940', 'DEPO PROVERA 150 MG AMPOLLAS ND RM', '10.40'),
+('74104598', 'NOVULAR AMPOLLA X 1 ML. RM', '3.16'),
+('10000340', 'FINADOL MUJER 200 MG X 50 SOBRES X TABLETAS	', '7.00'),
+('7415100022', 'NOMAGEST AMPOLA X 1 ML.RM', '4.27'),
+('7401114005', 'REGULADOR GESTEIRA X 120 ML	', '5.62'),
+('7510000211', 'PERLA X 24 SOBRES ND', '43.50'),
+('750110463', 'CUERPO AMARILLO AMPOLLA X 2 ML. RM', '4.56'),
+('741510025', 'VERMAGEST X 2 TABLETAS RM', '8.25'),
+('764600113', 'UNICIL L. A. 1.2 UNIDADES AMPOLLAS RM	', '3.98'),
+('771000077', 'CIPROFLOXACINA SM 500 MG X 100 TABLETAS', '5.50'),
+('76100194', 'FENAKLER AMPOLLA X 1 ML RM', '2.04'),
+('711418206', 'DORIVAL LIQUI GELS X 36 TABLETAS', '10.05'),
+('750104317', 'VENTOLIN INHALADOR X200 DOSIS RM	', '6.17'),
+('7555446120', 'OIDOL GOTAS X 15 ML.	', '2.40'),
+('740110460', 'BETA 2 PAN AMPOLLA RM', '9.12'),
+('7510000540', 'ORANGE VIT C JARABE X22O ML	', '7.28'),
+('721000201', 'DRAMANYL X 100 CAPSULAS', '8.72'),
+('761000371', 'FOSKROL X 15 AMPOLLA BEBIBLES ND', '4.55'),
+('741000371', 'BIOBENZOLE SUSPENSION X 30 ML. ND', '0.76'),
+('769041009', 'VERMEX TOTAL 500 MG X 6 TABLETAS ND', '3.99'),
+('744101310', 'MATRICARIA POLVO X 20	', '2.20'),
+('76544641', 'SUPER TIAMINA 300 X 100 TABLETAS	', '6.25'),
+('7410000371', 'FOSKROL COMPLEX X 30 TABLETAS ND', '2.55'),
+('7501799055', 'DOLO NEUROTROPAS SM X 20 SOB X 4 TABS RM	', '7.80'),
+('755207970', 'FOSFO B12 X 15 AMPOLLAS BEBIBLES', '13.67'),
+('744410187', 'SAL ANDREWS X 50 SOBRES', '6.35'),
+('78904145', 'INTESTINOMINA AD X 100 CAPSULAS ND', '17.81'),
+('741510022', 'VIROGRIP A.M. TE X 24 SOBRES', '8.00'),
+('7415100022', 'VIROGRIP P.M TE X 24SOBRES	', '8.00'),
+('741510020', 'FENALER JARABE X 120 M.L', '2.22'),
+('760219510', 'CREMOQUINONA 4% X 30 GR. RM', '7.88'),
+('789041052', 'DESMOXIDO CREMA LATA ND', '0.98'),
+('750103392', 'PENICILINA UNGÃœENTO LATA LOPEZ X 12 GR. ND', '0.82'),
+('741510020', 'VIROGRIP AM GEL CAPS X 24 SOBRES	', '8.00'),
+('735987429', 'LOSARTAN SM 50 MG. X 50 TABLETAS', '9.60'),
+('750129821', 'DEXA NEUROBION AMPOLLA ND	', '7.16'),
+('7415100200', 'VIROGRIP GRIPE Y TOS X 120 ML	', '2.90'),
+('765446120', 'ZORRITONE JARABE X120 ML	', '2.09'),
+('74101726', 'ACETAMINOFEN MK JARABE X 60 ML', '2.59'),
+('74109364', 'DICLOFENAC SODICO PL AMPOLLA RM', '1.33'),
+('741410020', 'DOLO NERVIDOCE AMPOLLA RM	', '1.80'),
+('759041045', 'DOLOFIN RAPIDA ACCION X 100 TABLETAS ND	', '6.65'),
+('74160020', 'DOLAREN AMPOLLA X 2 ML RN	', '0.65'),
+('1148205', 'DORIVAL 200 MG. X 60 TABLETAS', '11.00'),
+('82938', 'IBUPROFENO SM 600 MG X 100 TABLETAS RM	', '4.80'),
+('741000280', 'METFORMINA MK 850 MG. X 30 TABLETAS RM	', '7.71'),
+('741000080', 'PARACETAMOL MK 750 MG. X 100 CAPSULAS RM	', '22.58'),
+('741000260', 'SALVADOL X 25 SOBRES X 2 TABLETAS', '4.80'),
+('741000281', 'METFORMINA MK 1000 MG. X 30 TABLETAS RM	', '13.64'),
+('852019491', 'AZIMEX 500 MG .X 9 TABLETAS	', '20.92'),
+('124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '1.44'),
+('741000612', 'ALCANFOR FORSON LIBRA	', '36.00'),
+('750112510', 'SOLUCION SALINA NORMAL PISA X 250 ML	', '1.43'),
+('750129821', 'NEUROBION 25000 X 1 AMPOLLA X 3 ML. RM ND	', '7.90'),
+('741510020', 'ROCEFORT 1 GR. AMPOLLA INTRAMUSCULAR RM', '3.90'),
+('189017907', 'DICLOFENACO SODICO SM 50 MG X 100 TABLETAS RM	', '0.86'),
+('741000260', 'ANADENT X 25 SOBRES X 4 TABLETAS', '15.15'),
+('189017907', 'ATORVASTATINA ARGUS 40 MG X 30 TABLETAS RM.	', '21.12'),
+('189017905', 'ATORVASTATINA ARGUS 20 MG X 30 TABLETAS RM.	', '14.74'),
+('74107087', 'VITADAK 15 AMPOLLA BEBIBLE	', '3.58'),
+('74107735', 'VITADAK 5 AMPOLLA BEBIBLE	', '3.42'),
+('7410000342', 'METFORMINA  ECOMED 500 MG X 100 TABLETAS RM	', '9.68'),
+('456874512', 'DEXAMETASONA SM AMPOLLA 8 MG. X  ML. RM	', '0.36'),
+('770376365', 'GENTAMICINA LS 160 MG. X1 AMPOLLA	', '2.58'),
+('779308108', 'QUADRIERM CREMA X 30 GR. RM ND	', '22.93'),
+('764600212', 'NEOBOL SPRAY X 30 ML . RM	', '5.62'),
+('741000341', 'IBUPROFENO ECOMED 600 MG. X 60 TABLETAS', '7.04'),
+('764600212', 'NEOBOL CREMA X 30 GR. RM	', '5.24'),
+('765446470', 'PROSTAMEN X 30 CAPSULAS RM	', '14.69'),
+('83276', 'METFORMINA SM 850 MG X 100 TABLETAS	', '7.20');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `talo_talonario`
+--
+
+CREATE TABLE `talo_talonario` (
+  `talo_codigo` int(11) NOT NULL,
+  `talo_sucursal_codigo` int(11) DEFAULT '0',
+  `talo_serie` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `talo_correlativo` int(11) DEFAULT '0',
+  `talo_comanda` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `talo_talonario`
+--
+
+INSERT INTO `talo_talonario` (`talo_codigo`, `talo_sucursal_codigo`, `talo_serie`, `talo_correlativo`, `talo_comanda`) VALUES
+(1, 1, 'SERIE A.', 1, 101),
+(2, 2, 'SERIE B..', 2, 202),
+(3, 3, 'SERIE C.', 3, 303),
+(4, 4, 'SERIE D..', 4, 404),
+(5, 5, 'SERIE E.', 5, 505);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `trad_detalle`
+--
+
+CREATE TABLE `trad_detalle` (
+  `trad_codigo` int(11) NOT NULL,
+  `trand_tran_codigo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trand_producto_codigo` int(11) DEFAULT '0',
+  `trad_producto_codigo_barra` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `trad_producto_nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `trand_producto_costo` decimal(10,4) DEFAULT NULL,
+  `trand_unidad_codigo` int(11) DEFAULT '0',
+  `trand_unidad` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `trand_unidad_precio` decimal(10,4) DEFAULT '0.0000',
+  `trand_unidad_cantidad` int(11) DEFAULT '0',
+  `trand_cantidad` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `trad_detalle`
+--
+
+INSERT INTO `trad_detalle` (`trad_codigo`, `trand_tran_codigo`, `trand_producto_codigo`, `trad_producto_codigo_barra`, `trad_producto_nombre`, `trand_producto_costo`, `trand_unidad_codigo`, `trand_unidad`, `trand_unidad_precio`, `trand_unidad_cantidad`, `trand_cantidad`) VALUES
+(18, '1', 181, '74101726', 'ACETAMINOFEN MK JARABE X 60 ML', '0.0000', 0, 'Unidad', '2.5900', 1, 1),
+(21, '2', 14, '7410003421', 'IRBESARTAN ECOMED 150 MG. X 100 TABLETAS  RM	', '0.0000', 0, 'Unidad', '24.2000', 1, 1),
+(22, '2', 93, '79100021', 'SELECTAVIT AMPOLLA X 10 ML RM	', '0.0000', 0, 'Unidad', '1.3600', 1, 1),
+(23, '2', 7, '745107900', 'ZENTEL SUSPENSION X 10 ML. RM', '0.0000', 0, 'Unidad', '4.7600', 1, 1),
+(24, '2', 97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '1.0000', 4, 'caja', '22.0000', 20, 3),
+(25, '3', 97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '1.0000', 3, 'vlister', '12.0000', 10, 5),
+(26, '3', 87, '799110600', 'CANESTEN CREMA VAGINAL 1 % X 35 GR', '0.0000', 0, 'Unidad', '9.9300', 1, 1),
+(27, '4', 193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '0.0000', 0, 'Unidad', '1.4400', 1, 10),
+(28, '5', 193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '0.0000', 0, 'Unidad', '1.4400', 1, 15),
+(30, '6', 97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '1.0000', 0, 'tabletas', '5.4000', 1, 12),
+(31, '6', 97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '1.0000', 0, 'tabletas', '5.4000', 1, 10),
+(32, '6', 97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '1.0000', 0, 'tabletas', '5.4000', 1, 9),
+(33, '7', 60, '741005413', 'BRONK OFLU HEDERA JARABE X 120ML.	', '0.0000', 0, 'Unidad', '5.9400', 1, 1),
+(34, '7', 43, '740604800', 'CROMATOMBIC FERRO X 5 AMPOLLAS RM	', '0.0000', 0, 'Unidad', '22.9500', 1, 1),
+(35, '7', 29, '71000371', 'DICLOFENACO BK 75 MG. AMPOLLA RM ND', '0.0000', 0, 'Unidad', '0.6700', 1, 1),
+(36, '7', 186, '1148205', 'DORIVAL 200 MG. X 60 TABLETAS', '0.0000', 0, 'Unidad', '11.0000', 1, 1),
+(37, '8', 62, '75104611', 'COMPLEJO B FUERTE X10 CC RM	', '0.0000', 0, 'Unidad', '1.3800', 1, 1),
+(38, '8', 35, '83381', 'DICLOFENACO SODICO GEL CAPS SM X 100 RM	', '0.0000', 0, 'Unidad', '2.4000', 1, 1),
+(39, '8', 33, '7415100202', 'FENAKER JARABE X 120 ML	', '0.0000', 0, 'Unidad', '2.2300', 1, 1),
+(40, '8', 109, '741000371', 'LAGRIMAS DE BIOMIXIN X 100 ND', '0.0000', 0, 'Unidad', '5.5000', 1, 1),
+(41, '9', 173, '760219510', 'CREMOQUINONA 4% X 30 GR. RM', '0.0000', 0, 'Unidad', '7.8800', 1, 1),
+(42, '9', 19, '1890179072', 'ERITROMICINA ARGUS 500 MG. X 50 TABLETAS', '0.0000', 0, 'Unidad', '9.6600', 1, 1),
+(43, '10', 94, '189874512', 'CLORFENIRAMINA GAMMA 8 MG X 100 TABLETAS', '0.0000', 0, 'Unidad', '3.5000', 1, 1),
+(44, '10', 86, '161000540', 'FLUCONAZOL ARGUS 200 MG X 2 CPS RM', '0.0000', 0, 'Unidad', '3.5200', 1, 1),
+(45, '10', 40, '722000200', 'MUSFLEX COMPUESTO X 50 TABLETAS	', '0.0000', 0, 'Unidad', '20.0000', 1, 1),
+(46, '11', 193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '0.0000', 0, 'Unidad', '1.4400', 1, 1),
+(47, '11', 193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '0.0000', 0, 'Unidad', '1.4400', 1, 1),
+(48, '11', 193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '0.0000', 0, 'Unidad', '1.4400', 1, 1),
+(49, '12', 213, '911', 'DOLOFIN', '0.1500', 0, 'TABLETA', '0.2500', 1, 1),
+(50, '12', 213, '911', 'DOLOFIN', '0.1500', 7, 'VLISTER', '2.5000', 10, 2),
+(52, '12', 213, '911', 'DOLOFIN', '0.1500', 8, 'CAJA', '7.5000', 30, 3),
+(53, '14', 193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '0.0000', 0, 'Unidad', '1.4400', 1, 1),
+(54, '17', 97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '1.0000', 0, 'tabletas', '5.4000', 1, 1),
+(55, '17', 102, '74101931', 'ACETAMINOFEN MK GOTAS X 30 ML	', '0.0000', 0, 'Unidad', '5.3000', 1, 1),
+(56, '17', 181, '74101726', 'ACETAMINOFEN MK JARABE X 60 ML', '0.0000', 0, 'Unidad', '2.5900', 1, 1),
+(57, '19', 181, '74101726', 'ACETAMINOFEN MK JARABE X 60 ML', '0.0000', 0, 'Unidad', '2.5900', 1, 1),
+(58, '19', 102, '74101931', 'ACETAMINOFEN MK GOTAS X 30 ML	', '0.0000', 0, 'Unidad', '5.3000', 1, 1),
+(60, '22', 181, '74101726', 'ACETAMINOFEN MK JARABE X 60 ML', '0.0000', 0, 'Unidad', '2.5900', 1, 1),
+(61, '22', 193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '0.0000', 0, 'Unidad', '1.4400', 1, 1),
+(62, '22', 194, '741000612', 'ALCANFOR FORSON LIBRA	', '0.0000', 0, 'Unidad', '36.0000', 1, 1),
+(63, '24', 193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '0.0000', 0, 'Unidad', '1.4400', 1, 1),
+(70, '30', 97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '1.0000', 4, 'caja', '22.0000', 20, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tran_transaccion`
+--
+
+CREATE TABLE `tran_transaccion` (
+  `tran_codigo` int(11) NOT NULL,
+  `tran_codigo_temporal` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tran_sucursal_codigo` int(11) DEFAULT '0',
+  `tran_tipo` int(11) DEFAULT '0',
+  `tran_estado` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tran_codigo_concepto` int(11) DEFAULT '0',
+  `tran_nombre_concepto` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tran_referencia` int(11) DEFAULT '0',
+  `tran_comentario` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tran_usuario` int(11) DEFAULT '0',
+  `tran_fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `tran_fecha_anula` datetime DEFAULT NULL,
+  `tran_usuario_anula` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tran_transaccion`
+--
+
+INSERT INTO `tran_transaccion` (`tran_codigo`, `tran_codigo_temporal`, `tran_sucursal_codigo`, `tran_tipo`, `tran_estado`, `tran_codigo_concepto`, `tran_nombre_concepto`, `tran_referencia`, `tran_comentario`, `tran_usuario`, `tran_fecha`, `tran_fecha_anula`, `tran_usuario_anula`) VALUES
+(1, '1-.-288 - Josue Romero-.-19-07-2021 10:20:19', 0, 0, 'PROCESADO', 0, 'sin', 0, '', 1, '2021-07-19 10:41:19', NULL, 0),
+(2, '1-.-649 - Josue Romero-.-20-07-2021 15:39:32', 2, 0, 'ANULADO', 3, '\n        POR VENCIMIENTO    ', 0, 'comentario por test', 1, '2021-07-21 14:08:25', '2021-08-02 17:25:59', 1),
+(3, '1-.-649 - Josue Romero-.-20-07-2021 15:39:32', 2, 0, 'ANULADO', 3, '\n        POR VENCIMIENTO    ', 0, '', 1, '2021-07-21 16:26:41', '2021-08-02 16:59:31', 1),
+(4, '1-.-649 - Josue Romero-.-20-07-2021 15:39:32', 2, 0, 'ANULADO', 3, '\n        POR VENCIMIENTO    ', 0, '', 1, '2021-07-21 16:30:04', '2021-08-02 16:59:01', 1),
+(5, '1-.-649 - Josue Romero-.-20-07-2021 15:39:32', 1, 1, 'ANULADO', 1, '\n        POR COMPRA    ', 0, '', 1, '2021-07-21 16:30:46', '2021-08-02 16:57:13', 1),
+(6, '1-.-649 - Josue Romero-.-20-07-2021 15:39:32', 5, 0, 'ANULADO', 3, '\n        POR VENCIMIENTO    ', 0, '', 1, '2021-07-22 10:06:22', '2021-08-02 16:57:10', 1),
+(7, '1-.-649 - Josue Romero-.-20-07-2021 15:39:32', 3, 1, 'ANULADO', 1, '\n        POR COMPRA    ', 0, '', 1, '2021-07-22 16:37:32', '2021-08-02 16:56:12', 1),
+(8, '1-.-649 - Josue Romero-.-20-07-2021 15:39:32', 3, 1, 'ANULADO', 1, '\n        POR COMPRA    ', 0, '', 1, '2021-07-22 16:38:17', '2021-08-02 16:53:36', 1),
+(9, '1-.-649 - Josue Romero-.-20-07-2021 15:39:32', 4, 1, 'ANULADO', 1, '\n        POR COMPRA    ', 0, '', 1, '2021-07-22 16:46:07', '2021-08-02 16:52:23', 1),
+(10, '1-.-649 - Josue Romero-.-20-07-2021 15:39:32', 2, 1, 'ANULADO', 1, '\n        POR COMPRA    ', 0, '', 1, '2021-07-22 16:46:46', '2021-08-02 16:56:23', 1),
+(11, '1-.-590 - Josue Romero-.-24-07-2021 14:21:53', 3, 1, 'ANULADO', 1, '\n        POR COMPRA    ', 0, 'anulado porque era incorrecto', 1, '2021-07-24 14:39:03', '2021-08-02 17:27:05', 1),
+(12, '1-.-654 - Josue Romero-.-24-07-2021 14:58:46', 1, 1, 'PROCESADO', 1, '\n        POR COMPRA    ', 0, '', 1, '2021-07-24 15:46:22', '2021-08-02 16:51:08', 1),
+(13, '1-.-184 - Josue Romero-.-24-07-2021 15:46:48', 0, 0, 'PROCESADO', 0, 'sin', 0, '', 1, '2021-07-24 15:46:52', NULL, 0),
+(14, '1-.-21 - Josue Romero-.-02-08-2021 13:52:21', 0, 0, 'PROCESADO', 0, 'sin', 0, '', 1, '2021-08-02 14:32:38', NULL, 0),
+(15, '1-.-21 - Josue Romero-.-02-08-2021 13:52:21', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 1, '2021-08-02 17:38:35', NULL, 0),
+(16, '2-.-164 - jefe  jefe-.-04-08-2021 10:21:05', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 2, '2021-08-04 10:21:11', NULL, 0),
+(17, '1-.-208 - Josue Romero-.-04-08-2021 11:10:55', 2, 0, 'ANULADO', 5, '\n        POR DESPERFECTOS DE LLUVIA    ', 0, 'Este producto no se lo llevaron', 1, '2021-08-04 11:22:11', '2021-08-04 11:23:42', 1),
+(18, '2-.-985 - jefe  jefe-.-04-08-2021 11:31:08', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 2, '2021-08-04 11:31:21', NULL, 0),
+(19, '1-.-151 - Josue Romero-.-04-08-2021 11:38:28', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 1, '2021-08-04 11:46:07', NULL, 0),
+(20, '4-.-66 - caja1 caja1-.-05-08-2021 17:04:51', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 4, '2021-08-05 17:11:24', NULL, 0),
+(21, '1-.-148 - Josue Romero-.-05-08-2021 18:59:25', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 1, '2021-08-06 14:27:57', NULL, 0),
+(22, '1-.-897 - Josue Romero-.-18-08-2021 16:05:00', 2, 1, 'PROCESADO', 1, '\n        POR COMPRA    ', 0, '', 1, '2021-08-20 10:17:02', NULL, 0),
+(23, NULL, 1, 0, 'PROCESADO', 0, '', 0, '', 1, '2021-08-21 18:40:55', NULL, 0),
+(24, '1-.-897 - Josue Romero-.-18-08-2021 16:05:00', 4, 0, 'PROCESADO', 2, '\n        POR VENTA    ', 0, '', 1, '2021-08-20 10:37:05', NULL, 0),
+(25, '1-.-897 - Josue Romero-.-18-08-2021 16:05:00', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 1, '2021-08-20 10:37:08', NULL, 0),
+(26, '1-.-600 - Josue Romero-.-20-08-2021 11:00:02', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 1, '2021-08-20 17:08:31', NULL, 0),
+(27, '1-.-518 - Josue Romero-.-20-08-2021 17:47:41', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 1, '2021-08-20 17:56:33', NULL, 0),
+(28, '1-.-290 - Josue Romero-.-21-08-2021 10:51:30', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 1, '2021-08-21 11:16:00', NULL, 0),
+(29, '1-.-362 - Josue Romero-.-21-08-2021 14:47:03', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 1, '2021-08-21 18:05:59', NULL, 0),
+(30, '1-.-68 - Josue Romero-.-21-08-2021 18:41:25', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 1, '2021-08-21 18:41:44', NULL, 0),
+(31, '4-.-436 - caja1 caja1-.-21-08-2021 18:45:33', 0, 0, 'TEMPORAL', 0, 'sin', 0, '', 4, '2021-08-22 19:39:53', NULL, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tran_transaccion2`
+--
+
+CREATE TABLE `tran_transaccion2` (
+  `tran_codigo` int(11) NOT NULL,
+  `tran_codigo_temporal` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT 'Cuando este sea cero entonces se creara un nuevo token para almacenarlo, no aparecera en el historial de transacicones hechas',
+  `tran_tipo` int(11) DEFAULT '0' COMMENT '0 salida, 1 entrada',
+  `tran_estado` int(11) DEFAULT '0' COMMENT '0 borrador 1 ok 2 anulado',
+  `tran_sucursal_codigo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tran_codigo_concepto` int(11) DEFAULT '0' COMMENT 'concepto transaccion codigo',
+  `tran_nombre_concepto` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT 'concepto transaccion NOMBRE',
+  `tran_codigo_cliente` int(11) DEFAULT '0',
+  `tran_nombre_cliente` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `tran_codigo_proveedor` int(11) DEFAULT '0',
+  `tran_nombre_proveedor` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `tran_actualizar_costo` int(11) DEFAULT '0' COMMENT '0 no 1 si',
+  `tran_referencia` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT 'cualquier comentario sobre esta transaccion',
+  `tran_cantidad_articulo` int(11) DEFAULT '0',
+  `tran_fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `tran_usuario` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `unid_unidad`
+--
+
+CREATE TABLE `unid_unidad` (
+  `unid_codigo` int(11) NOT NULL,
+  `unid_nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `unid_fecha` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `unid_unidad`
+--
+
+INSERT INTO `unid_unidad` (`unid_codigo`, `unid_nombre`, `unid_fecha`) VALUES
+(2, 'caja 10', '2021-04-03 17:24:09'),
+(3, 'caja 12', '2021-04-03 17:24:43'),
+(5, '123', '2021-07-04 14:29:48');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usua_usuario`
+--
+
+CREATE TABLE `usua_usuario` (
+  `usua_codigo` int(11) NOT NULL,
+  `usua_nombre` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `usua_apellido` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `usua_usuario` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `usua_contra` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `usua_status` int(11) DEFAULT '0',
+  `usua_cajero` smallint(6) DEFAULT '0',
+  `usua_sucu_venta` int(11) NOT NULL DEFAULT '0',
+  `usua_fecha` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usua_usuario`
+--
+
+INSERT INTO `usua_usuario` (`usua_codigo`, `usua_nombre`, `usua_apellido`, `usua_usuario`, `usua_contra`, `usua_status`, `usua_cajero`, `usua_sucu_venta`, `usua_fecha`) VALUES
+(1, 'Josue', 'Romero', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1, 0, 1, '2021-08-21 14:46:46'),
+(2, 'jefe ', 'jefe', 'jefe', 'a7434f460c6827fd280bc540f309c25003a50ef4', 1, 1, 0, '2021-07-03 10:04:05'),
+(4, 'caja1', 'caja1', 'caja1', 'b2620e7780274ca3bf47d573523c226e4963c6ef', 1, 0, 0, '2021-08-21 18:45:24'),
+(5, 'caja2', 'caja2', 'caja2', 'c04f1c71584db46211882016375faa951b604f76', 1, 1, 2, '2021-08-05 17:05:25');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `venc_vencimiento`
+--
+
+CREATE TABLE `venc_vencimiento` (
+  `venc_codigo` int(11) NOT NULL,
+  `venc_lote` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `venc_producto_codigo` int(11) DEFAULT '0',
+  `venc_cantidad` int(11) DEFAULT '0',
+  `venc_cantidad_restante` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `venc_fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `venc_fecha_vencimiento` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `venc_sucursal` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `venc_vencimiento`
+--
+
+INSERT INTO `venc_vencimiento` (`venc_codigo`, `venc_lote`, `venc_producto_codigo`, `venc_cantidad`, `venc_cantidad_restante`, `venc_fecha`, `venc_fecha_vencimiento`, `venc_sucursal`) VALUES
+(1, 'L-2021-01', 97, 10, '10', '2021-07-20 13:10:58', '2021-07-10', 5),
+(2, 'L-2021-02.', 97, 16, '16', '2021-08-03 10:01:32', '2021-05-29', 5),
+(3, 'L-2021-03', 97, 20, '20', '2021-07-20 13:10:50', '2021-12-12', 5),
+(4, 'lote 1', 97, 222, '222', '2021-07-20 11:19:41', '2021-07-20', NULL),
+(5, 'lote dos', 97, 0, '0', '2021-07-20 11:30:38', '', NULL),
+(6, 'lote tres', 97, 0, '0', '2021-07-20 11:31:41', '', NULL),
+(7, 'sdafsdf', 97, 0, '0', '2021-07-20 11:38:56', '', NULL),
+(8, 'lote cuatro', 97, 0, '0', '2021-07-20 11:40:22', '', NULL),
+(9, 'lote cinco', 97, 0, '0', '2021-07-20 11:43:29', '#5 AGENCIA #5 edit five', NULL),
+(10, 'lote seis', 97, 0, '0', '2021-07-20 11:45:16', '4', NULL),
+(12, 'LT-DOLO-01', 213, 300, '300', '2021-08-04 11:12:45', '2021-07-08', 1),
+(13, 'LT-DOLO-02', 213, 20, '20', '2021-07-24 15:18:30', '2021-07-25', 1),
+(14, 'LT-DOLO-01', 213, 25, '25', '2021-07-24 15:20:25', '2021-08-19', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventd_detalle`
+--
+
+CREATE TABLE `ventd_detalle` (
+  `ventd_codigo` int(11) NOT NULL,
+  `ventd_vent_codigo` int(11) NOT NULL,
+  `ventd_producto_codigo` int(11) DEFAULT '0',
+  `ventd_producto_codigo_barra` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `ventd_producto_nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `ventd_producto_costo` decimal(10,4) DEFAULT '0.0000',
+  `ventd_producto_precio` decimal(10,4) DEFAULT '0.0000',
+  `ventd_unidad_codigo` int(11) DEFAULT '0',
+  `ventd_unidad` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `ventd_unidad_precio` decimal(10,4) DEFAULT '0.0000',
+  `ventd_unidad_cantidad` int(11) DEFAULT '0',
+  `ventd_cantidad` int(11) DEFAULT '0',
+  `ventd_producto_total` decimal(10,4) DEFAULT '0.0000'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ventd_detalle`
+--
+
+INSERT INTO `ventd_detalle` (`ventd_codigo`, `ventd_vent_codigo`, `ventd_producto_codigo`, `ventd_producto_codigo_barra`, `ventd_producto_nombre`, `ventd_producto_costo`, `ventd_producto_precio`, `ventd_unidad_codigo`, `ventd_unidad`, `ventd_unidad_precio`, `ventd_unidad_cantidad`, `ventd_cantidad`, `ventd_producto_total`) VALUES
+(30, 25, 97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '1.0000', '5.4000', 0, 'tabletas', '5.4000', 1, 1, '5.4000'),
+(31, 25, 102, '74101931', 'ACETAMINOFEN MK GOTAS X 30 ML	', '0.0000', '5.3000', 0, 'Unidad', '5.3000', 1, 2, '10.6000'),
+(32, 25, 181, '74101726', 'ACETAMINOFEN MK JARABE X 60 ML', '0.0000', '2.5900', 0, 'Unidad', '2.5900', 1, 3, '7.7700'),
+(33, 25, 193, '124', 'AGUA DESTILANDA VHJ X 10 CC. RM ND	', '0.0000', '1.4400', 0, 'Unidad', '1.4400', 1, 4, '5.7600'),
+(34, 25, 97, '741000281', 'ACETAMINOFEN MK 500 MG X 100 TABLETAS	', '1.0000', '22.0000', 4, 'caja', '22.0000', 20, 3, '66.0000');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `vent_venta`
+--
+
+CREATE TABLE `vent_venta` (
+  `vent_codigo` int(11) NOT NULL,
+  `vent_codigo_temporal` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `vent_serie` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `vent_correlativo` int(11) DEFAULT '0',
+  `vent_comanda` int(11) DEFAULT '0',
+  `vent_sucursal_codigo` int(11) DEFAULT '0',
+  `vent_estado` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `vent_referencia` int(11) DEFAULT '0',
+  `vent_comentario` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '',
+  `vent_usuario` int(11) DEFAULT '0',
+  `vent_fecha_venta` datetime DEFAULT NULL,
+  `vent_fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `vent_efectivo` decimal(10,2) DEFAULT '0.00',
+  `vent_cambio` decimal(10,2) DEFAULT '0.00',
+  `vent_total` decimal(10,4) DEFAULT '0.0000',
+  `vent_fecha_anula` datetime DEFAULT NULL,
+  `vent_usuario_anula` int(11) DEFAULT '0',
+  `vent_usuario_venta` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `vent_venta`
+--
+
+INSERT INTO `vent_venta` (`vent_codigo`, `vent_codigo_temporal`, `vent_serie`, `vent_correlativo`, `vent_comanda`, `vent_sucursal_codigo`, `vent_estado`, `vent_referencia`, `vent_comentario`, `vent_usuario`, `vent_fecha_venta`, `vent_fecha`, `vent_efectivo`, `vent_cambio`, `vent_total`, `vent_fecha_anula`, `vent_usuario_anula`, `vent_usuario_venta`) VALUES
+(1, 'temporal', 'a', 0, 0, 1, 'COMANDA', 0, '', 1, NULL, '2021-08-06 00:00:00', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(2, '1-.-969 - Josue Romero-.-20-08-2021 11:00:02', '', 0, 0, 1, 'TEMPORAL', 0, '', 1, NULL, '2021-08-20 11:01:27', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(3, NULL, '', 0, 0, NULL, 'TEMPORAL', 0, '', NULL, NULL, '2021-08-20 17:46:46', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(4, '1-.-616 - Josue Romero-.-20-08-2021 17:47:41', '', 0, 0, 1, 'TEMPORAL', 0, '', 1, NULL, '2021-08-20 17:47:45', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(5, '1-.-109 - Josue Romero-.-21-08-2021 10:26:12', '', 0, 0, 1, 'TEMPORAL', 0, '', 1, NULL, '2021-08-21 10:26:20', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(6, '1-.-753 - Josue Romero-.-21-08-2021 10:26:53', '', 0, 0, 0, 'TEMPORAL', 0, '', 1, NULL, '2021-08-21 10:26:56', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(7, '1-.-871 - Josue Romero-.-21-08-2021 10:43:54', '', 0, 0, 1, 'TEMPORAL', 0, '', 1, NULL, '2021-08-21 10:43:57', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(8, NULL, '', 0, 0, NULL, 'TEMPORAL', 0, '', NULL, NULL, '2021-08-21 10:44:10', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(9, NULL, '', 0, 0, NULL, 'TEMPORAL', 0, '', NULL, NULL, '2021-08-21 10:44:13', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(10, '1-.-67 - Josue Romero-.-21-08-2021 10:44:25', '', 0, 0, 1, 'TEMPORAL', 0, '', 1, NULL, '2021-08-21 10:44:29', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(11, NULL, '', 0, 0, NULL, 'TEMPORAL', 0, '', NULL, NULL, '2021-08-21 10:44:51', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(12, '1-.-416 - Josue Romero-.-21-08-2021 10:44:56', '', 0, 0, 0, 'TEMPORAL', 0, '', 1, NULL, '2021-08-21 10:44:59', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(13, NULL, '', 0, 0, NULL, 'TEMPORAL', 0, '', NULL, NULL, '2021-08-21 10:48:29', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(14, '1-.-439 - Josue Romero-.-21-08-2021 10:48:34', '', 0, 0, 0, 'TEMPORAL', 0, '', 1, NULL, '2021-08-21 10:48:37', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(15, '1-.-299 - Josue Romero-.-21-08-2021 10:51:30', '', 1001, 11, 1, 'COMANDA', 0, '456', 1, NULL, '2021-08-21 10:51:42', '0.00', '0.00', '15.7500', NULL, 0, 0),
+(16, '1-.-658 - Josue Romero-.-21-08-2021 14:02:20', '', 1002, 22, 1, 'PROCESADO', 0, '123', 1, NULL, '2021-08-21 14:02:23', '0.00', '0.00', '10.3000', NULL, 0, 0),
+(17, '1-.-658 - Josue Romero-.-21-08-2021 14:02:20', '', 0, 0, 2, 'COMANDA', 0, '', 1, NULL, '2021-08-21 14:29:36', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(18, '1-.-658 - Josue Romero-.-21-08-2021 14:02:20', '', 0, 0, 2, 'ANULADO', 0, '', 1, NULL, '2021-08-21 14:30:58', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(19, '1-.-658 - Josue Romero-.-21-08-2021 14:02:20', '', 0, 0, 2, 'TEMPORAL', 0, '', 1, NULL, '2021-08-21 14:31:37', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(20, '1-.-736 - Josue Romero-.-21-08-2021 14:44:42', '', 0, 0, 0, 'TEMPORAL', 0, '', 1, NULL, '2021-08-21 14:44:46', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(21, '1-.-210 - Josue Romero-.-21-08-2021 14:47:03', '', 0, 0, 1, 'TEMPORAL', 0, '', 1, NULL, '2021-08-21 14:47:15', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(22, '4-.-626 - caja1 caja1-.-21-08-2021 18:27:49', '', 0, 0, 1, 'TEMPORAL', 0, '', 4, NULL, '2021-08-21 18:30:39', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(23, '4-.-792 - caja1 caja1-.-21-08-2021 18:32:36', '', 0, 0, 1, 'TEMPORAL', 0, '', 4, NULL, '2021-08-21 18:32:39', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(24, '4-.-486 - caja1 caja1-.-21-08-2021 18:45:33', '', 0, 0, 0, 'TEMPORAL', 0, '', 4, NULL, '2021-08-21 18:45:38', '0.00', '0.00', '0.0000', NULL, 0, 0),
+(25, '1-.-838 - Josue Romero-.-25-08-2021 11:05:17', '', 0, 0, 1, 'ANULADO', 0, 'comentari', 1, NULL, '2021-08-25 11:05:22', '0.00', '0.00', '0.0000', '2021-08-27 14:18:13', 1, 0),
+(26, '1-.-238 - Josue Romero-.-27-08-2021 14:08:08', '', 0, 0, 1, 'TEMPORAL', 0, '', 1, NULL, '2021-08-28 11:10:04', '0.00', '0.00', '0.0000', NULL, 0, 0);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `acce_acceso`
+--
+ALTER TABLE `acce_acceso`
+  ADD PRIMARY KEY (`acce_codigo`);
+
+--
+-- Indices de la tabla `clie_cliente`
+--
+ALTER TABLE `clie_cliente`
+  ADD PRIMARY KEY (`clie_codigo`);
+
+--
+-- Indices de la tabla `conc_concepto`
+--
+ALTER TABLE `conc_concepto`
+  ADD PRIMARY KEY (`conc_codigo`);
+
+--
+-- Indices de la tabla `equi_equivalencia`
+--
+ALTER TABLE `equi_equivalencia`
+  ADD PRIMARY KEY (`equi_codigo`);
+
+--
+-- Indices de la tabla `form_formulario`
+--
+ALTER TABLE `form_formulario`
+  ADD PRIMARY KEY (`form_codigo`);
+
+--
+-- Indices de la tabla `hist_historial`
+--
+ALTER TABLE `hist_historial`
+  ADD PRIMARY KEY (`hist_codigo`);
+
+--
+-- Indices de la tabla `kardex`
+--
+ALTER TABLE `kardex`
+  ADD PRIMARY KEY (`kard_codigo`);
+
+--
+-- Indices de la tabla `labo_laboratorio`
+--
+ALTER TABLE `labo_laboratorio`
+  ADD PRIMARY KEY (`labo_codigo`);
+
+--
+-- Indices de la tabla `prod_producto`
+--
+ALTER TABLE `prod_producto`
+  ADD PRIMARY KEY (`prod_codigo`);
+
+--
+-- Indices de la tabla `prov_proveedor`
+--
+ALTER TABLE `prov_proveedor`
+  ADD PRIMARY KEY (`prov_codigo`);
+
+--
+-- Indices de la tabla `sucu_sucursal`
+--
+ALTER TABLE `sucu_sucursal`
+  ADD PRIMARY KEY (`sucu_codigo`);
+
+--
+-- Indices de la tabla `sucu_usuario`
+--
+ALTER TABLE `sucu_usuario`
+  ADD PRIMARY KEY (`sucu_usua_codigo`);
+
+--
+-- Indices de la tabla `talo_talonario`
+--
+ALTER TABLE `talo_talonario`
+  ADD PRIMARY KEY (`talo_codigo`);
+
+--
+-- Indices de la tabla `trad_detalle`
+--
+ALTER TABLE `trad_detalle`
+  ADD PRIMARY KEY (`trad_codigo`);
+
+--
+-- Indices de la tabla `tran_transaccion`
+--
+ALTER TABLE `tran_transaccion`
+  ADD PRIMARY KEY (`tran_codigo`);
+
+--
+-- Indices de la tabla `tran_transaccion2`
+--
+ALTER TABLE `tran_transaccion2`
+  ADD PRIMARY KEY (`tran_codigo`);
+
+--
+-- Indices de la tabla `unid_unidad`
+--
+ALTER TABLE `unid_unidad`
+  ADD PRIMARY KEY (`unid_codigo`);
+
+--
+-- Indices de la tabla `usua_usuario`
+--
+ALTER TABLE `usua_usuario`
+  ADD PRIMARY KEY (`usua_codigo`);
+
+--
+-- Indices de la tabla `venc_vencimiento`
+--
+ALTER TABLE `venc_vencimiento`
+  ADD PRIMARY KEY (`venc_codigo`);
+
+--
+-- Indices de la tabla `ventd_detalle`
+--
+ALTER TABLE `ventd_detalle`
+  ADD PRIMARY KEY (`ventd_codigo`);
+
+--
+-- Indices de la tabla `vent_venta`
+--
+ALTER TABLE `vent_venta`
+  ADD PRIMARY KEY (`vent_codigo`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `acce_acceso`
+--
+ALTER TABLE `acce_acceso`
+  MODIFY `acce_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+-- AUTO_INCREMENT de la tabla `clie_cliente`
+--
+ALTER TABLE `clie_cliente`
+  MODIFY `clie_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `conc_concepto`
+--
+ALTER TABLE `conc_concepto`
+  MODIFY `conc_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `equi_equivalencia`
+--
+ALTER TABLE `equi_equivalencia`
+  MODIFY `equi_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `form_formulario`
+--
+ALTER TABLE `form_formulario`
+  MODIFY `form_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT de la tabla `hist_historial`
+--
+ALTER TABLE `hist_historial`
+  MODIFY `hist_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
+
+--
+-- AUTO_INCREMENT de la tabla `kardex`
+--
+ALTER TABLE `kardex`
+  MODIFY `kard_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=311;
+
+--
+-- AUTO_INCREMENT de la tabla `labo_laboratorio`
+--
+ALTER TABLE `labo_laboratorio`
+  MODIFY `labo_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `prod_producto`
+--
+ALTER TABLE `prod_producto`
+  MODIFY `prod_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
+
+--
+-- AUTO_INCREMENT de la tabla `prov_proveedor`
+--
+ALTER TABLE `prov_proveedor`
+  MODIFY `prov_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `sucu_sucursal`
+--
+ALTER TABLE `sucu_sucursal`
+  MODIFY `sucu_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `sucu_usuario`
+--
+ALTER TABLE `sucu_usuario`
+  MODIFY `sucu_usua_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+
+--
+-- AUTO_INCREMENT de la tabla `talo_talonario`
+--
+ALTER TABLE `talo_talonario`
+  MODIFY `talo_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `trad_detalle`
+--
+ALTER TABLE `trad_detalle`
+  MODIFY `trad_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+
+--
+-- AUTO_INCREMENT de la tabla `tran_transaccion`
+--
+ALTER TABLE `tran_transaccion`
+  MODIFY `tran_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT de la tabla `tran_transaccion2`
+--
+ALTER TABLE `tran_transaccion2`
+  MODIFY `tran_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `unid_unidad`
+--
+ALTER TABLE `unid_unidad`
+  MODIFY `unid_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `usua_usuario`
+--
+ALTER TABLE `usua_usuario`
+  MODIFY `usua_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `venc_vencimiento`
+--
+ALTER TABLE `venc_vencimiento`
+  MODIFY `venc_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT de la tabla `ventd_detalle`
+--
+ALTER TABLE `ventd_detalle`
+  MODIFY `ventd_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT de la tabla `vent_venta`
+--
+ALTER TABLE `vent_venta`
+  MODIFY `vent_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
