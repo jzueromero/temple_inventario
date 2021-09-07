@@ -351,6 +351,18 @@ if (trim($codigo_tran) == "") {
 <script type="text/javascript">
   $(document).ready(function() {
     $('#btn_procesar').click(function() {
+     
+      guardar_documento("VENTA");
+
+      
+
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#btn_comanda').click(function() {
       var sucursal = $("#hdd_sucursal").val();
       var sucursal_nombre = $("#sel_sucursal option:selected").text();
 
@@ -378,6 +390,42 @@ if (trim($codigo_tran) == "") {
     });
   });
 </script>
+
+<script type="text/javascript">
+  function guardar_documento(tipo) {
+
+    var venta_codigo = $('#txt_codigo_tran').val();
+    var venta_total = $('#total_venta' ).val();
+    var venta_cambio = $('#cambio').val();
+    var venta_efectivo = $('#efectivo').val();
+    var sucursal = $("#hdd_sucursal").val();
+
+    var ejecutar = true;
+      if (parseInt(sucursal) == 0) {
+        alertify.error("ADMINISTRADOR: No tiene sucursal de venta asignado");
+        ejecutar = false;
+        return;
+      }
+
+      if (ejecutar == true) {
+        //alert('paso');
+        var transaccion_codigo = $('#txt_codigo_tran').val();
+        //alert(transaccion_codigo);
+        var numero_productos = verificar_productos(venta_codigo);
+        if(numero_productos > 0 )
+       {
+        alertify.success("Si se puede");
+       }
+       else
+       {
+        alertify.error("No se puede procesar sin productos");
+       }
+      }
+
+    //CrearDetalle(transaccion_codigo, producto_codigo, producto_costo, unidad_codigo, unidad, unidad_precio, unidad_cantidad, tran_cantidad, codigo_barra, nombre_producto, tran_total);
+  }
+</script>
+
 
 <script type="text/javascript">
   function NuevoProducto(codigo) {

@@ -4,14 +4,14 @@ if (!isset($_SESSION['usua_codigo'])) {
     header('location:index.php');
 }
 
-$modelo = 'menu o catalogos';
-$nombre_form = "sis_menu";
-$titulo_form = "Menus o Catalogos";
+$modelo = 'Venta';
+$nombre_form = "sis_venta";
+$titulo_form = "Venta";
 $descripcion_form = 'Aqui se catalogan o seccionan los comercios y afiliados de un comercio en especifico.';
 $nombre_negocio = "BiciMandados Sv - Zona Administrativa";
 @$numero_menu = 0;
 
-@$codigo = $_GET['codigo'];
+@$venta_codigo = $_GET['venta_codigo'];
 
 $q = $_GET['q'];
 $desde = $_GET['desde'];
@@ -22,7 +22,7 @@ $sucursal = trim($_GET['s']);
 @$nombre_comercio = '';
 require '../src_php/db/db_funciones.php';
 
-$tran = "SELECT tran_codigo, tran_codigo_temporal, tran_sucursal_codigo, ss.sucu_nombre, tran_tipo, tran_estado, tran_codigo_concepto,
+$tran = "/*SELECT tran_codigo, tran_codigo_temporal, tran_sucursal_codigo, ss.sucu_nombre, tran_tipo, tran_estado, tran_codigo_concepto,
         trim(tran_nombre_concepto) tran_nombre_concepto, tran_referencia, tran_comentario, tran_usuario, tran_fecha,tran_usuario_anula, tran_fecha_anula,
         concat( uu.usua_nombre,' ', uu.usua_apellido) usuario,
         (select concat(uu.usua_nombre,' ', uu.usua_apellido,' ',tran_fecha_anula)
@@ -30,13 +30,13 @@ $tran = "SELECT tran_codigo, tran_codigo_temporal, tran_sucursal_codigo, ss.sucu
         FROM tran_transaccion
         inner join sucu_sucursal ss  on ss.sucu_codigo = tran_sucursal_codigo
         inner join usua_usuario uu  on uu.usua_codigo  = tran_usuario
-                WHERE tran_codigo= $codigo;";
+                WHERE tran_codigo=*/ $venta_codigo;";
 
-@$tran_detalle = "SELECT trad_codigo, trand_tran_codigo, trand_producto_codigo, trad_producto_codigo_barra,
+@$tran_detalle = "/*SELECT trad_codigo, trand_tran_codigo, trand_producto_codigo, trad_producto_codigo_barra,
                 trad_producto_nombre, trand_producto_costo, trand_unidad_codigo, trand_unidad, trand_unidad_precio,
                 trand_unidad_cantidad, trand_cantidad
                 FROM trad_detalle
-                WHERE trand_tran_codigo= " . @$codigo;
+                WHERE trand_tran_codigo=*/ " . @$venta_codigo;
 
 $objeto_datos = new db_funciones();
 
@@ -124,7 +124,7 @@ foreach ($r_tran as $item) {
                                                     <input type="hidden" id="hdd_desde" value="<?php echo $desde; ?>">
                                                     <input type="hidden" id="hdd_hasta" value="<?php echo $hasta; ?>">
                                                     <input type="hidden" id="hdd_susursal" value="<?php echo $sucursal; ?>">
-                                                    <input type="hidden" id="hdd_codigo" value="<?php echo $codigo; ?>">
+                                                    <input type="hidden" id="hdd_codigo" value="<?php echo $venta_codigo; ?>">
 
 
                                                     <div class="row">
@@ -312,9 +312,9 @@ foreach ($r_tran as $item) {
 <script type="text/javascript">
     $(document).ready(function() {
         $('#btn_anular').click(function() {
-            codigo = $('#hdd_codigo').val();
+            venta_codigo = $('#hdd_codigo').val();
 
-            anular(codigo);
+            anular(venta_codigo);
 
             //window.location.href = 'sis_movimiento.php?s=' + sucursal + '&desde=' + desde + '&hasta=' + hasta + '&q=' + query;
         });
@@ -324,7 +324,7 @@ foreach ($r_tran as $item) {
 
 
 <script>
-    function anularno(codigo) {
+    function anularno(venta_codigo) {
         var comentario = $.trim($("#txt_comentario").val());
 
         alert(comentario.length);
@@ -332,7 +332,7 @@ foreach ($r_tran as $item) {
         if (comentario.length == 0) {
             alert('Es obligatorio un comentario.');
         } else {
-            cadena = "codigo=" + codigo;
+            cadena = "venta_codigo=" + venta_codigo;
 
             $.ajax({
                 type: "POST",
@@ -340,7 +340,7 @@ foreach ($r_tran as $item) {
                 data: cadena,
                 success: function(r) {
                     if (r >= 1) {
-                        anular_transaccion(codigo);
+                        anular_transaccion(venta_codigo);
                     } else {
                         alert("Esta transaccion ya fue anulada");
                     }
@@ -354,7 +354,7 @@ foreach ($r_tran as $item) {
 </script>
 
 <script>
-    function anular(codigo) {
+    function anular(venta_codigo) {
         var comentario = $.trim($("#txt_comentario").val());
 
         if (comentario.length < 3) {
@@ -367,7 +367,7 @@ foreach ($r_tran as $item) {
             hasta = $('#hdd_hasta').val();
             query = $('#hdd_query').val();
 
-            cadena = "codigo=" + codigo + "&comentario=" + comentario;
+            cadena = "venta_codigo=" + venta_codigo + "&comentario=" + comentario;
 
             $.ajax({
                 type: "POST",

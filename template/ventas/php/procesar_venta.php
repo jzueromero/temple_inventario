@@ -16,7 +16,6 @@ $comanda = 0;
 @$codigo_venta = $_POST["codigo_venta"];
 @$tipo = "SALIDA";
 
-@$concepto_nombre = $_POST["concepto_nombre"]; 
 @$comentario = $_POST["comentario"]; 
 
 @$total = $_POST["total"]; 
@@ -26,12 +25,10 @@ $comanda = 0;
 $serie = '';
 $correlativo = 0;
 
-
 @$tipo_tran = 0;
 @$operacion = " - " ;
 
 $flujo = 0;
-
 
 ///     actualiza encabezado
 $venta_update_sql="/*

@@ -215,12 +215,12 @@ function verificar_productos(transaccion_codigo,tipo,sucursal,sucursal_nombre,co
 	url:"php/tran_numero_productos.php",
 	data:cadena,
 	success:function(r){
-		//alert(r);
-		if(r>0){
-			procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario);
-		}else{
-			alertify.error("No se puede procesar sin productos");
-		}
+		return parseInt(r);
+		// if(r>0){
+		// 	procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario);
+		// }else{
+		// 	alertify.error("No se puede procesar sin productos");
+		// }
 	}
 	});
 }
