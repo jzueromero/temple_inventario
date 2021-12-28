@@ -156,10 +156,21 @@ function calcular_cambio()
 		var cambio =  efectivo - total_venta;
 		$('#cambio').val(parseFloat(cambio).toFixed(2)) ;
 	}
+
+
 	
 }
 
+function efectivo_validacion()
+{
+	if($('#efectivo').val().trim() == '' )
+	{
+		$('#efectivo').val('0.00');
+	}
+}
+
 function validarCualquierNumero(){
+
 	$(".numeric").numeric();
 	$(".integer").numeric(false, function() { alert("Integers only"); this.value = ""; this.focus(); });
 	$(".positive").numeric({ negative: false }, function() { alert("No negative values"); this.value = ""; this.focus(); });
@@ -206,41 +217,41 @@ function CrearDetalle(transaccion_codigo,producto_codigo,producto_costo,unidad_c
 	});
 }
 
-function verificar_productos(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario)
+function verificar_productos(transaccion_codigo)
 {
 	cadena="venta_codigo=" + transaccion_codigo;
-
+	var n_productos = 0;
 	$.ajax({
 	type:"POST",
+	async: false,
 	url:"php/tran_numero_productos.php",
 	data:cadena,
 	success:function(r){
-		return parseInt(r);
-		// if(r>0){
-		// 	procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario);
-		// }else{
-		// 	alertify.error("No se puede procesar sin productos");
-		// }
+	    n_productos = r;
+
 	}
 	});
+
+	return n_productos;	
 }
 
-function procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,concepto,concepto_nombre,comentario)
-{
-	cadena="transaccion_codigo=" + transaccion_codigo +
-		"&tipo="+tipo+
-		"&sucursal="+sucursal+
-		"&sucursal_nombre="+sucursal_nombre+
-		"&concepto="+concepto+
-		"&concepto_nombre="+concepto_nombre+
-		"&comentario="+comentario;
 
+function procesar_venta(venta_codigo, comentario, sucursal, venta_total, venta_efectivo, venta_cambio)
+{
+
+	var comentario_enviado = comentario.trim().length = 0 ? " " : comentario.trim();
+	cadena="venta_codigo=" + parseInt(venta_codigo) +
+		"&sucursal="+parseInt(sucursal)+
+		"&comentario="+comentario_enviado+
+		"&venta_total="+parseFloat(venta_total)+
+		"&venta_efectivo="+parseFloat(venta_efectivo)+
+		"&venta_cambio="+parseFloat(venta_cambio);
+console.log(cadena);
 	$.ajax({
 	type:"POST",
-	url:"php/procesar_transaccion.php",
+	url:"php/procesar_venta.php",
 	data:cadena,
 	success:function(r){
-		//alert(r);
 		if(r>0){
 			window.location.href = '../../template/sis_movimiento.php'
 			return;
@@ -248,7 +259,8 @@ function procesar_transaccion(transaccion_codigo,tipo,sucursal,sucursal_nombre,c
 			$('#buscador').load('componentes/buscador.php');
 			alertify.success("Transacción Procesada con Exito");
 		}else{
-			alertify.error("No se puede procesar sin productos");
+			console.log(r.trim());
+			alertify.error("Esta venta no pudo efectuarse...");
 		}
 	}
 	});

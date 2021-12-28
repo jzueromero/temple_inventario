@@ -24,14 +24,14 @@ if ($mostrar_errores == 1) {
 	ini_set('error_reporting', E_ALL);
 }
 
-/*
-define('DB_HOST', 'localhost:3306');
-define('DB_NAME', 'kxdrzfsc_temple_inventario_01');
-define('DB_USUARIO', 'kxdrzfsc_temple_user_root_mitienditasv');
-define('DB_PASS', 'rTP?Spw_+S^v');
-define('DB_CHARSET', 'utf8');
-define('ZONE_TIME', "America/El_Salvador");
-*/
+
+// define('DB_HOST', 'localhost:3306');
+// define('DB_NAME', 'kxdrzfsc_temple_inventario_02');
+// define('DB_USUARIO', 'kxdrzfsc_temple_user_root_mitienditasv');
+// define('DB_PASS', 'rTP?Spw_+S^v');
+// define('DB_CHARSET', 'utf8');
+// define('ZONE_TIME', "America/El_Salvador");
+
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'temple_inventario_07');

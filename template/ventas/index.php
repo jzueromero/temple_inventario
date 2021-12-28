@@ -351,11 +351,7 @@ if (trim($codigo_tran) == "") {
 <script type="text/javascript">
   $(document).ready(function() {
     $('#btn_procesar').click(function() {
-     
       guardar_documento("VENTA");
-
-      
-
     });
   });
 </script>
@@ -384,7 +380,7 @@ if (trim($codigo_tran) == "") {
         //alert('paso');
         var transaccion_codigo = $('#txt_codigo_tran').val();
         //alert(transaccion_codigo);
-        verificar_productos(transaccion_codigo, tipo, sucursal, sucursal_nombre, concepto, concepto_nombre, comentario);
+        verificar_productos(transaccion_codigo);
       }
 
     });
@@ -395,34 +391,34 @@ if (trim($codigo_tran) == "") {
   function guardar_documento(tipo) {
 
     var venta_codigo = $('#txt_codigo_tran').val();
+    var comentario = $("#txt_comentario").val();
+    var sucursal = $("#hdd_sucursal").val();
+    var venta_efectivo = $('#efectivo').val();
     var venta_total = $('#total_venta' ).val();
     var venta_cambio = $('#cambio').val();
-    var venta_efectivo = $('#efectivo').val();
-    var sucursal = $("#hdd_sucursal").val();
 
     var ejecutar = true;
-      if (parseInt(sucursal) == 0) {
+      
+    if (parseInt(sucursal) == 0) {
         alertify.error("ADMINISTRADOR: No tiene sucursal de venta asignado");
         ejecutar = false;
         return;
       }
 
-      if (ejecutar == true) {
-        //alert('paso');
-        var transaccion_codigo = $('#txt_codigo_tran').val();
-        //alert(transaccion_codigo);
-        var numero_productos = verificar_productos(venta_codigo);
-        if(numero_productos > 0 )
-       {
-        alertify.success("Si se puede");
-       }
-       else
-       {
-        alertify.error("No se puede procesar sin productos");
-       }
-      }
+      var n_productos =  parseInt( verificar_productos(venta_codigo));
+      console.log('resultado: '+ n_productos)
 
-    //CrearDetalle(transaccion_codigo, producto_codigo, producto_costo, unidad_codigo, unidad, unidad_precio, unidad_cantidad, tran_cantidad, codigo_barra, nombre_producto, tran_total);
+      if(parseInt(n_productos) < 1 ){
+        alertify.error("No se puede procesar sin productos");
+        ejecutar = false;
+        return;
+       }
+      
+       if(ejecutar == true)
+       {
+        procesar_venta(venta_codigo, comentario, sucursal, venta_total, venta_efectivo, venta_cambio);
+       }
+
   }
 </script>
 

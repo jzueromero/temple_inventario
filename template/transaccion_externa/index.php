@@ -531,7 +531,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#btn_regresar').click(function(){
-          window.location.href = '../../template/sis_movimiento.php'
+          window.location.href = '../../template/sis_envio.php'
 			return;
         });
 

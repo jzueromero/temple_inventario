@@ -32,7 +32,7 @@ CREATE TABLE `acce_acceso` (
   `acce_codigo` int(11) NOT NULL,
   `acce_usua_codigo` int(11) NOT NULL DEFAULT '0',
   `acce_form_codigo` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `acce_acceso`

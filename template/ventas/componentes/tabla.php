@@ -60,7 +60,8 @@ $total_venta = $total_venta + number_format((float)$ver['total'], 2, '.', '');
 
 <div class="input-group">
   <span class="input-group-addon">Efectivo $</span>
-  <input type="text" class="form-control decimal-2-places" aria-label="Amount (to the nearest dollar)"  id="efectivo" onkeyup="calcular_cambio()">
+  <input type="text" class="form-control decimal-2-places" aria-label="Amount (to the nearest dollar)"  id="efectivo" onkeyup="calcular_cambio()"
+  onblur="efectivo_validacion()">
 </div>
 </div>
 

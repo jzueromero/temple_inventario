@@ -1,26 +1,28 @@
 
 <?php
+session_start();
 require_once "conexion.php";
 $conexion = conexion();
 
-@$ttipo_codigo = 0;
 @$ttipo ="";
 @$tconcepto = "";
 @$tcomentario = "";
-@$tusuario = "";
+@$tusuario = $_SESSION['usua_codigo'];
 @$tfecha = "";
 //@$testado = $_POST['estado'];
 @$tanulado="";
 $comanda = 0; 
 
-@$codigo_venta = $_POST["codigo_venta"];
-@$tipo = "SALIDA";
-
+@$codigo_venta = $_POST["venta_codigo"];
+@$codigo_sucursal = $_POST["sucursal"];
+@$total = $_POST["venta_total"]; 
+@$efectivo = $_POST["venta_efectivo"]; 
+@$cambio = $_POST["venta_cambio"];
 @$comentario = $_POST["comentario"]; 
 
-@$total = $_POST["total"]; 
-@$efectivo = $_POST["efectivo"]; 
-@$cambio = $_POST["cambio"];
+@$tipo = "SALIDA";
+@$ttipo_codigo = 0;
+
 
 $serie = '';
 $correlativo = 0;
@@ -35,25 +37,23 @@ $venta_update_sql="/*
         parametros obtenidos
         * */
         SET @comentario = '".trim($comentario)."';
-        SET @usuario_codigo = ".$_SESSION['usua_codigo'].";
-
+        SET @usuario_codigo = ".$tusuario.";
         SET  @venta_codigo := ".@$codigo_venta.";
         SET @total := ". $total."; set @efectivo := ". $efectivo."; set @cambio := ".$cambio.";
+        SET @caja_numero :=  vent_sucursal_codigo from vent_venta where vent_codigo = @venta_codigo;
 
-        SET @caja_numero := (select vent_sucursal_codigo from vent_venta where vent_codigo = @venta_codigo);
         /*
         parametros obtenidos
-        * */
-        SET @correlativo := (select ifnull(talo_correlativo,0) + 1  from talo_talonario tt where talo_sucursal_codigo = @caja_numero);
-        SET @comanda := (select ifnull(talo_comanda,0) from talo_talonario tt where talo_sucursal_codigo = @caja_numero);
-
-        SET @serie := (select ifnull(talo_serie,'-')  from talo_talonario tt where talo_sucursal_codigo = @caja_numero);
+        */
+        select @correlativo :=  ifnull(talo_correlativo,0) + 1  from talo_talonario tt where talo_sucursal_codigo = @caja_numero;
+        select @comanda :=  ifnull(talo_comanda,0) from talo_talonario tt where talo_sucursal_codigo = @caja_numero;
+        select @serie :=  ifnull(talo_serie,'-')  from talo_talonario tt where talo_sucursal_codigo = @caja_numero;
 
 
         update talo_talonario 
         set
         talo_correlativo = @correlativo
-        where talo_sucursal_codigo = @caja_numero
+        where talo_sucursal_codigo = @caja_numero;
 
         update vent_venta 
         set
@@ -66,6 +66,7 @@ $venta_update_sql="/*
         vent_fecha_venta = CURRENT_TIMESTAMP
         where vent_codigo  = @venta_codigo;	";
 
+    //"<script> console.log(".$venta_update_sql.");</script>";
 
     $flujo=mysqli_query($conexion,$venta_update_sql);
 ///     actualiza encabezado
@@ -97,14 +98,12 @@ while ($item =  mysqli_fetch_assoc($r_maestro)) {
 
     @$concepto = "POR VENTA: # $correlativo COMANDA: # $comanda ID: # $vent_codigo" ;
     @$tcomentario = trim($comentario);
-    @$tusuario = $_SESSION['usua_codigo'];
+
     @$tfecha = $item['vent_fecha'];
     @$testado = $item['vent_estado'];
     @$tanulado = trim($item['anulo']);
 
 }
-
-$kard_tipo = "SALIDA";
 
 @$tipo_tran = 0;
 @$operacion = " - ";
@@ -125,7 +124,7 @@ if($flujo > 0)
         (kard_tipo, kard_concepto, kard_fecha, kard_sucursal_codigo,
          kard_producto_codigo, kard_producto_nombre, kard_unidad_codigo,
           kard_unidad, kard_cantidad_unidades, kard_cantidad) 
-        VALUES('".$kard_tipo."', '"."$concepto ', CURRENT_TIMESTAMP, '$vent_sucursal_codigo',
+        VALUES('SALIDA', '"."$concepto ', CURRENT_TIMESTAMP, '$vent_sucursal_codigo',
          ".$codigo_producto.", '".$prod_nombre."', ".$uni_codigo.", '".$unidad."', ". $uni_unidades.", ".$cantidad.");";
        
          $total_uniades = $uni_unidades * $cantidad;
@@ -210,6 +209,6 @@ function nombre_sucursal($codigo_sucursal)
     return $s;
 }
 
-echo $flujo;
+echo $venta_update_sql;
 
 ?>

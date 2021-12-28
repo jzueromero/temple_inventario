@@ -8,7 +8,7 @@ require '../src_php/db/db_funciones.php';
 $objeto_datos = new db_funciones();
 
 $modelo = 'Movimientos de Producto';
-$nombre_form = "sis_movimiento";
+$nombre_form = "sis_envio";
 $titulo_form = "Modulo Movimiento de producto entre sucursales";
 $descripcion_form = 'Configuracion transacciones, entras y salidas de producto.';
 $nombre_negocio = $objeto_datos->empresa;
@@ -101,7 +101,7 @@ require 'nav_plantilla/menu_left.php';
 								<div class="panel-body no-padding">
 									<div class="col-md-12">
 									<div class=" row">
-                                    <form action="sis_movimiento.php" method="get">
+                                    <form action="sis_envio.php" method="get">
 									<div class="form-group col-sm-2  col-md-2">
                                             <label for="sel1">Sucursal:</label>
                                             <select class="form-control" id="s" name="s">
@@ -199,7 +199,7 @@ require 'nav_plantilla/menu_left.php';
 
                                         <div class="col-md-2">
                                         <br >
-                                        <a href="./entradas_salidas_test/index.php?codigo_tran=0"> 
+                                        <a href="./transaccion_externa/index.php?codigo_tran=0"> 
                                             <button type="button" class="btn btn-info btn-block">NUEVA TRANSACCION</button>
                                         </a>
                                         </div>
